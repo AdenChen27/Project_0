@@ -1,0 +1,84 @@
+<html>
+
+<head>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <!-- <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script> -->
+  <title>test passage</title>
+  <style>
+  .passage-text {
+    font-size: 1.5em;
+    line-height: 1.5em;
+    text-indent: 2em;
+    color: #111;
+    /*word-wrap: break-word;*/
+  }
+
+  .word-blank {
+    color: rgb(30, 144, 255);
+    /*padding: 0.1em 0.4em;*/
+    /*height: 1em;*/
+  }
+
+  .hint {
+    color: #000;
+    position: fixed;
+    /*overflow-x: hidden;
+    z-index: 1;*/
+  }
+
+  .hint-row {
+    margin-top: 0.2em;
+  }
+
+  .word-input:focus {
+    border-color: #00FFFF;
+    box-shadow: none;
+  }
+  </style>
+  <script>
+  var ans = {{ ans }};
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <h1 style="text-align: center; margin: 1em 0">{{ passage_title }}</h1>
+    <div class="row">
+      <!-- <div class="col-2"></div> -->
+      <div class="col-2">
+        <div class="hint">
+          {% for word, word_id in hints %}
+          <div class="row hint-row">
+            <div class="col-9"
+              id="hint_{{ word_id }}"
+              onclick="click_hint({{ word_id }}, '{{ word }}')">
+              {{ word }}
+            </div>
+            <div class="col-2" style="margin-top: 0.3em;">
+              <img class="img-play" src="../../static/pictures/play.svg" onclick="play_audio({{ word_id }}, '{{ word }}')" />
+              <audio id="word_audio_{{ word_id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ word }}--_gb_1.mp3" onloadeddata="word_audio_loded.add({{ word_id }})"/>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-8">
+        {% autoescape off %}{{ passage_text }}{% endautoescape %}
+        <div class="row">
+          <!-- <div style="font-size: 2em; margin: 1em 0" id="count_down_display"></div> -->
+          <!-- <button class="btn btn-outline-dark" style="margin: 30px 0" onclick="start_timer()">Start</button> -->
+          <!-- <button class="btn btn-outline-dark" style="margin: 30px 0" onclick="stop_timer()">Stop</button> -->
+          <div class="col-2"></div>
+          <button class="btn btn-outline-dark col-8" style="margin: 30px 0" onclick="check()">check</button>
+          <div class="col-2"></div>
+        </div>
+      </div>
+      <div class="col-2"></div>
+    </div>
+  </div>
+  <script src="../../static/javascript/test-passage.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<html>
+
+<head>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <script>
+  function select_passage(id) {
+    window.location.href = "/passage/?p_id=" + id;
+  }
+  </script>
+  <title>passage-select</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <h1 style="margin: 30px 0">Select a Passage</h1>
+        <table class="table table-hover">
+          <thead>
+            <th>#</th>
+            <th>title</th>
+            <th>tags</th>
+          </thead>
+          <tbody>
+            {% for passage in passages %}
+            <tr onclick="select_passage({{ passage.id }})">
+              <th scope="row">{{ passage.id }}</th>
+              <td>{{ passage.title }}</td>
+              <td>{{ passage.tags }}</td>
+            </tr>
+            {% endfor%}
+          </tbody>
+        </table>
+      </div>
+      <div class="col-2"></div>
+    </div>
+  </div>
+</body>
+
+</html>
