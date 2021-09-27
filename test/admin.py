@@ -10,7 +10,7 @@ class PassageAdmin(admin.ModelAdmin):
 
 class WordAdmin(admin.ModelAdmin):
     list_display = ('name', 'rank', 'p_id', 'select_cnt', 'def_id', 'id', )
-    search_fields = ('name', 'id', )
+    search_fields = ('name', 'p_id', )
     ordering = ('p_id', )
     list_filter = ("p_id", )
 
@@ -18,7 +18,7 @@ class WordAdmin(admin.ModelAdmin):
 class WordFreqAdmin(admin.ModelAdmin):
     list_display = ('name', 'rank', 'id', )
     search_fields = ('name', 'id', )
-    ordering = ('rank', )
+    ordering = ('rank', ) 
 
 class WordDefAdmin(admin.ModelAdmin):
     list_display = ('name', 'definition', 'id', )
