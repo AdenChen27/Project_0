@@ -27,6 +27,8 @@ DEFAULT_WORD_ID = 0
 class Lemma(models.Model):
     name = models.CharField(max_length=WORD_MAX_LEN, default="")
     freq = models.IntegerField(default=0)
+    def_en = models.TextField(default="", blank=True)
+    def_zh = models.TextField(default="", blank=True)
 
 
 class Word(models.Model):

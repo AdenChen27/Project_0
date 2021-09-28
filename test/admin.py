@@ -14,7 +14,7 @@ class WordAdmin(admin.ModelAdmin):
     ordering = ('lem_id', )
 
 class LemmaAdmin(admin.ModelAdmin):
-    list_display = ('name', 'freq', 'id', )
+    list_display = ('name', 'freq', 'id', 'def_en', 'def_zh', )
     search_fields = ('name', 'freq', 'id', )
     ordering = ('-freq', )
 

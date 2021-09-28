@@ -20,15 +20,41 @@ def read_lemma():
                 lines.append((lemma, freq, words))
     return lines
 
+def read_dict():
+    with open(r"test/static/words_data/ecdict_slim.csv", "r") as file:
+        lines = {}
+        while True:
+            line = file.readline()
+            if not line:
+                break
+            word, def1, def2 = line.split(",")
+            if lines.get(word, -1) != -1:
+                print(word)
+            lines[word] = (def1, def2)
+    return lines
+
+
 
 def main():
-    from test.models import Lemma, Word
-    lines = read_lemma()
 
-    for i in range(len(lines)):
-        lemma, freq, words = lines[i]
-        lemma_id = Lemma.objects.filter(name=lemma).first().id
-        for word in words:
-            Word(name=word, lem_id=lemma_id).save()
+    #     for word in words:
+    #         Word(name=word, lem_id=lemma_id).save()
+    from test.models import Lemma, Word
+    ecdict = read_dict()
+    lemma_lines = read_lemma()
+    for i in range(len(lemma_lines)):
+        lemma, *_ = lemma_lines[i]
+        lemma_obj = Lemma.objects.filter(name=lemma).first()
+        defs = ecdict.get(lemma, ("", ""))
+        lemma_obj.def_en, lemma_obj.def_zh = defs
+        lemma_obj.save()
         if i % 500 == 0:
             print("[done %d]" % i)
+
+
+
+    
+
+
+
+
