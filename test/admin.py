@@ -1,11 +1,11 @@
 from django.contrib import admin
-from test.models import Word, Lemma
+from test.models import Word, Lemma, Passage
 
 
-# class PassageAdmin(admin.ModelAdmin):
-#     list_display = ('title', 'id', 'tags', )
-#     search_fields = ('title', )
-#     ordering = ('title', )
+class PassageAdmin(admin.ModelAdmin):
+    list_display = ('title', 'id', 'tags', )
+    search_fields = ('title', )
+    ordering = ('title', )
 
 
 class WordAdmin(admin.ModelAdmin):
@@ -30,7 +30,7 @@ class LemmaAdmin(admin.ModelAdmin):
 #     ordering = ('name', )
 
 
-# admin.site.register(Passage, PassageAdmin)
+admin.site.register(Passage, PassageAdmin)
 admin.site.register(Word, WordAdmin)
 admin.site.register(Lemma, LemmaAdmin)
 # admin.site.register(WordFreq, WordFreqAdmin)

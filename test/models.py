@@ -5,7 +5,7 @@ PASSAGE_TITLE_MAX_LEN = 100
 TAG_MAX_NUM = 5
 WORD_MAX_LEN = 34
 
-MAX_RANK = 60025
+# MAX_RANK = 60025
 DEFAULT_WORD_ID = 0
 
 
@@ -29,6 +29,9 @@ class Lemma(models.Model):
     freq = models.IntegerField(default=0)
     def_en = models.TextField(default="", blank=True)
     def_zh = models.TextField(default="", blank=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Word(models.Model):
@@ -130,34 +133,59 @@ class Word(models.Model):
 #     print("done all")
 
 
-# class Passage(models.Model):
-#     title = models.CharField(max_length=PASSAGE_TITLE_MAX_LEN)
-#     text = models.TextField(default="")
-#     text_expand = models.TextField(default="", blank=True)
-#     tags = model_ListCharField(
-#         base_field=models.CharField(max_length=WORD_MAX_LEN), 
-#         size=TAG_MAX_NUM, 
-#         max_length=TAG_MAX_NUM*(WORD_MAX_LEN + 1), 
-#         default=""
-#     )
+def get_lem_word_map(text):
+    from nltk.corpus import stopwords
+    from re import findall
+    stop_words = set(stopwords.words("english"))
+    all_words = set(findall(r"'?\w+", text))
+    lem_word_map = {}
+    for word in all_words:
+        if word in stop_words:
+            continue
+        filter_ret = Word.objects.filter(name=word)
+        if not filter_ret.exists():
+            continue
+        lem_id = filter_ret.first().lem_id
+        if lem_id not in lem_word_map:
+            lem_word_map[lem_id] = []
+        lem_word_map[lem_id].append(word)
+    return lem_word_map # {lem_id1: [word1, ], }
 
-#     def __str__(self):
-#         return self.title
 
-#     def save(self, *args, **kwargs):
-#         super().save(*args, **kwargs)
-#         if not Word.objects.filter(p_id=self.id).exists():
-#             from json import dumps
-#             from nltk import pos_tag
-#             from nltk.corpus import stopwords
-#             from nltk.tokenize import word_tokenize
-#             stop_words = set(stopwords.words("english"))
-#             paragraphs = [para.replace('\r', '') for para in self.text.split("\n")]
-#             paragraphs = filter(None, paragraphs)
-#             paragraphs = [pos_tag(word_tokenize(para)) for para in paragraphs]
-#             self.text_expand = dumps(add_words(paragraphs, stop_words, self.id))
-#             super().save(*args, **kwargs)
-#         add_definitions(self.id)
+class Passage(models.Model):
+    title = models.CharField(max_length=PASSAGE_TITLE_MAX_LEN)
+    text = models.TextField(default="")
+    lemmas_pos = models.TextField(default="", blank=True)
+    # {lemma_id_1: [pos_in_text_1, ], }
+    tags = model_ListCharField(
+        base_field=models.CharField(max_length=WORD_MAX_LEN), 
+        size=TAG_MAX_NUM, 
+        max_length=TAG_MAX_NUM*(WORD_MAX_LEN + 1), 
+        default=""
+    )
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        from json import dumps
+        import re
+
+        lemmas_pos = {}
+        lem_word_map = get_lem_word_map(self.text)
+        for lem_id in lem_word_map:
+            for word in lem_word_map[lem_id]:
+                if word[0] == "'":
+                    reg = r"(\W|')(%s)(\W|')" % (word)
+                else:
+                    reg = r"(%s)(\W|')" % (word)
+                if lem_id not in lemmas_pos:
+                    lemmas_pos[lem_id] = []
+                lemmas_pos[lem_id].append((len(word), [w.start() for w in re.finditer(reg, self.text)]))
+        
+        self.lemmas_pos = dumps(lemmas_pos)
+        super().save(*args, **kwargs)
+        # add_definitions(self.id)
 
         
 
