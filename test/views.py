@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from test.models import Passage, Word
+from test.models import Word
 from django.forms.models import model_to_dict
 
 
