@@ -89,6 +89,7 @@ function click_blank(blank_id) {
     if (hint_clipboard_word_id == -1) {
         return ;
     }
+    console.log("blank_" + blank_id);
     blank.innerHTML = hint_clipboard_word_name;
     var hint = document.getElementById("hint_" + hint_clipboard_word_id);
     hint.style.backgroundColor = `rgb(30, 144, 255, ${get_chosen_cnt(hint_clipboard_word_id, 1)/10})`;

@@ -59,34 +59,32 @@ def test_passage(request):
     selected_defs_id = [int(i) for i in lemma_id]
     passage = Passage.objects.get(id=passage_id)
     text = passage.text
-    e_blank = """<span class="word-blank" id="blank_{}" onclick="click_blank({})">{}</span>"""
+    blank_e_template = """<span class="word-blank" id="blank_{}" onclick="click_blank({})">{}</span>"""
     ans = {} # {blank_id: ans_id, }
 
     global blank_id, ans_id
     blank_id = 1
 
-    def get_e_blank(arg):
-        global blank_id
-        blank_id += 1
-        ans[blank_id] = ans_id;
-        return e_blank.format(blank_id, blank_id, "_"*5)
-
     lemma_pos = loads(passage.lemma_pos)
+    pos_offset = 0
+    blank_id = 0
+    blank_rep_buf = [] # {(pos, word_len, blank_id), }
     for lem_id in lemma_pos:
         if lem_id not in lemma_id:
             continue
+        hints.append((Lemma.objects.get(id=lem_id).name, int(lem_id)))
         for word_len, pos_list in lemma_pos[lem_id]:
             for pos in pos_list:
-                text = text[:pos] + "_"*word_len + text[pos + word_len:]
-    print(lemma_id)
+                blank_id += 1
+                ans[blank_id] = int(lem_id)
+                blank_rep_buf.append((pos, word_len, blank_id))
+    blank_rep_buf.sort(key=lambda x: x[0])
+    for pos, word_len, blank_id in blank_rep_buf:
+        blank_e = blank_e_template.format(blank_id, blank_id, "_"*5)
+        text = text[:pos + pos_offset] + blank_e + \
+            text[pos + pos_offset + word_len:]
+        pos_offset += len(blank_e) - word_len
     text = p_start + text.replace("\n", p_end + p_start) + p_end
-    # for paragraph in loads(passage.text_expand):
-    #     for word, lemma, tag, word_id in paragraph:
-    #         word_def = Word.objects.filter(id=word_id).first() if word_id else None
-    #         if word_def and word_def.def_id in selected_defs_id:
-    #             ans_id = word_id;
-    #             text = sub(r"\b%s\b" % word, get_e_blank, text)
-    #             hints.append((word, ans_id))
 
     return render(request, "test-passage.html", {
         "passage_text": text, 

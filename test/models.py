@@ -175,13 +175,16 @@ class Passage(models.Model):
         lem_word_map = get_lem_word_map(self.text)
         for lem_id in lem_word_map:
             for word in lem_word_map[lem_id]:
+                pos_offset = 0
                 if word[0] == "'":
-                    reg = r"(\W|')(%s)(\W|')" % (word)
-                else:
                     reg = r"(%s)(\W|')" % (word)
+                else:
+                    reg = r"(\W|')(%s)(\W|')" % (word)
+                    pos_offset = 1
                 if lem_id not in lemma_pos:
                     lemma_pos[lem_id] = []
-                lemma_pos[lem_id].append((len(word), [w.start() for w in re.finditer(reg, self.text)]))
+                pos_list = [w.start() + pos_offset for w in re.finditer(reg, self.text)]
+                lemma_pos[lem_id].append((len(word), pos_list))
         
         self.lemma_pos = dumps(lemma_pos)
         super().save(*args, **kwargs)
