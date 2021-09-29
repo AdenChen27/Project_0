@@ -6,8 +6,8 @@
   {% bootstrap_javascript %}
   <script>
   const p_id = {{ p_id | safe }},
-    words_id = {{ words_id | safe }},
-    words_cnt = {{ words_cnt | safe }},
+    lemmas_id = {{ lemma_id | safe }},
+    lem_cnt = {{ lem_cnt | safe }},
     str_defs = {{ str_defs | safe }},
     csrf_token = "{{ csrf_token }}";
   </script>
@@ -85,28 +85,22 @@
         </div>
       </div>
       <div class="container row" id="def_holder">
-        {% for word in words %}
+        {% for lem in lemmas %}
         <div class="row word-def-row" name="def-row">
-          <div class="col-3 def-name" id="word_name_{{ word.id }}" onclick="click_event('word_name_{{ word.id }}')">
-            {{ word.name }}
+          <div class="col-3 def-name" id="word_name_{{ lem.id }}" onclick="click_event('word_name_{{ lem.id }}')">
+            {{ lem.name }}
           </div>
-          <div class="col-8" id="word_defs_{{ word.id }}" onclick="click_event('word_defs_{{ word.id }}')">
-            {% for tag, def in word.defs.items %}
-            <div class="row word-def">
-              <div class="col-2 def-tag">
-                {{ tag }}
-              </div>
-              <div class="col-10 def">
-                {% for line in def %}
-                <p> {{ line }} </p>
-                {% endfor %}
-              </div>
+          <div class="col-8" id="word_defs_{{ lem.id }}" onclick="click_event('word_defs_{{ lem.id }}')">
+            <div class="row">
+              <p>{{ lem.def_en }}</p>
             </div>
-            {% endfor %}
+            <div class="row">
+              <p>{{ lem.def_zh }}</p>
+            </div>
           </div>
           <div class="col-1">
-            <img class="img-play" src="../../static/pictures/play.svg" onclick="play_audio({{ word.id }}, '{{ word.name }}')" />
-            <audio id="word_audio_{{ word.id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ word.name }}--_gb_1.mp3" onloadeddata="word_audio_loded.add({{ word.id }})"/>
+            <img class="img-play" src="../../static/pictures/play.svg" onclick="play_audio({{ wordlemid }}, '{{ lem.name }}')" />
+            <audio id="word_audio_{{ lem.id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ lem.name }}--_gb_1.mp3" onloadeddata="word_audio_loded.add({{ lem.id }})"/>
           </div>
         </div>
         {% endfor %}
@@ -121,7 +115,7 @@
           <div class="col-6">
             <select class="form-select" id="export_option">
               <option selected value="null">Select Export Format</option>
-              <option value="wtdn">Quizlet (Words with Definitions)</option>
+              <option value="wtE Zn">Quizlet (Words with Definitions)</option>
               <option value="wn">不背单词 (Words only)</option>
             </select>
           </div>

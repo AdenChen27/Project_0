@@ -1,5 +1,4 @@
 var selected_words = new Set([]);
-const MAX_LEM_RANK = 60025;
 const WORD_PER_ROW = 6;
 
 
@@ -25,7 +24,7 @@ function submit() {
     form.action = "show_definition/";
     var data = {
         "p_id": p_id,
-        "words_id": Array.from(selected_words),
+        "lemma_id": Array.from(selected_words),
         "csrfmiddlewaretoken": csrf_token
     }
     for (const key in data) {
@@ -46,16 +45,15 @@ var word_list = [];
 
 
 function filter_select() {
-    var value = (100 - document.getElementById("lem_rank_filter").value) / 99;
-    value = value ** 3;
-    var threshold = value * MAX_LEM_RANK;
+    var value = document.getElementById("lem_rank_filter").value / 100;
+    var threshold = value*word_list.length;
     for (var i in word_list) {
         var word = word_list[i][1];
-        var rank = word["rank"];
-        if (rank >= threshold && !selected_words.has(word["def_id"])) {
-            choose_word(word["def_id"]);
-        } else if (rank < threshold && selected_words.has(word["def_id"])) {
-            choose_word(word["def_id"]);
+        var freq = word["freq"];
+        if (i < threshold && !selected_words.has(word["id"])) {
+            choose_word(word["id"]);
+        } else if (i >= threshold && selected_words.has(word["id"])) {
+            choose_word(word["id"]);
         }
     }
 }
@@ -84,14 +82,14 @@ function create_div(class_name, parent, expend = null) {
 
 for (var i in pre_word_list) {
     if (/[A-Z]/.test(pre_word_list[i]["name"])) {
-        pre_word_list[i]["rank"] = 0;
+        pre_word_list[i]["freq"] = 0;
     }
 }
 
 
 function main() {
     pre_word_list.sort((a, b) => {
-        return b["rank"] - a["rank"];
+        return a["freq"] - b["freq"];
     });
 
     var word_holder = document.getElementById("word_holder"),
@@ -110,10 +108,10 @@ function main() {
         }
         var word_div = create_div("col-2", cur_row_div);
         var new_word = create_div("word", word_div, {
-            "id": "word_" + word["def_id"],
+            "id": "word_" + word["id"],
             "text": word["name"],
         })
-        new_word.setAttribute("onclick", "choose_word(" + word["def_id"] + ")");
+        new_word.setAttribute("onclick", "choose_word(" + word["id"] + ")");
         word_list.push([new_word, word]);
         ++word_n;
     }

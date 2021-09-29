@@ -155,7 +155,7 @@ def get_lem_word_map(text):
 class Passage(models.Model):
     title = models.CharField(max_length=PASSAGE_TITLE_MAX_LEN)
     text = models.TextField(default="")
-    lemmas_pos = models.TextField(default="", blank=True)
+    lemma_pos = models.TextField(default="", blank=True)
     # {lemma_id_1: [pos_in_text_1, ], }
     tags = model_ListCharField(
         base_field=models.CharField(max_length=WORD_MAX_LEN), 
@@ -171,7 +171,7 @@ class Passage(models.Model):
         from json import dumps
         import re
 
-        lemmas_pos = {}
+        lemma_pos = {}
         lem_word_map = get_lem_word_map(self.text)
         for lem_id in lem_word_map:
             for word in lem_word_map[lem_id]:
@@ -179,11 +179,11 @@ class Passage(models.Model):
                     reg = r"(\W|')(%s)(\W|')" % (word)
                 else:
                     reg = r"(%s)(\W|')" % (word)
-                if lem_id not in lemmas_pos:
-                    lemmas_pos[lem_id] = []
-                lemmas_pos[lem_id].append((len(word), [w.start() for w in re.finditer(reg, self.text)]))
+                if lem_id not in lemma_pos:
+                    lemma_pos[lem_id] = []
+                lemma_pos[lem_id].append((len(word), [w.start() for w in re.finditer(reg, self.text)]))
         
-        self.lemmas_pos = dumps(lemmas_pos)
+        self.lemma_pos = dumps(lemma_pos)
         super().save(*args, **kwargs)
         # add_definitions(self.id)
 
