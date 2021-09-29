@@ -16,19 +16,23 @@
     font-size: 1.4em;
   }
 
-  .def-tag,
   .def {
     font-size: 1.2em;
-    line-height: 1em;
+    line-height: 1.3em;
     padding: 0 1em;
+    white-space: pre-line;
+  }
+  
+  .text-hide {
+    color: #F7FFF7;
   }
 
-  .word-def {
+  /*.word-def {
     margin: 0.5em 0;
     border-left-style: solid;
     border-width: 0.15em;
     border-color: #000000;
-  }
+  }*/
 
   .word-def-row {
     /*padding: 0.5em 0;*/
@@ -37,10 +41,6 @@
     border-radius: 0.5em;
     border-width: 0.15em;
     background-color: #F7FFF7;
-  }
-
-  .text-hide {
-    color: #F7FFF7;
   }
 
   .block-space {
@@ -91,10 +91,10 @@
             {{ lem.name }}
           </div>
           <div class="col-8" id="word_defs_{{ lem.id }}" onclick="click_event('word_defs_{{ lem.id }}')">
-            <div class="row">
+            <div class="row def">
               <p>{{ lem.def_en }}</p>
             </div>
-            <div class="row">
+            <div class="row def">
               <p>{{ lem.def_zh }}</p>
             </div>
           </div>

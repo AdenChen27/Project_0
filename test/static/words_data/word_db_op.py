@@ -1,5 +1,3 @@
-# from test.static.words_data import word_db_op;import importlib
-# importlib.reload(word_db_op); word_db_op.main()
 from functools import wraps
 from time import time
 
@@ -17,6 +15,7 @@ def timer(f):
     return wrap
 
 
+@timer
 def read_lemma():
     lines = []
     with open(r"test/static/words_data/lemma.en.txt", "r") as lemma_file:
@@ -35,6 +34,8 @@ def read_lemma():
                 lines.append((lemma, freq, words))
     return lines
 
+
+@timer
 def read_dict():
     with open(r"test/static/words_data/ecdict_slim.csv", "r") as file:
         lines = {}
@@ -43,13 +44,9 @@ def read_dict():
             if not line:
                 break
             word, def1, def2 = line.split(",")
-            if lines.get(word, -1) != -1:
-                print(word)
-            lines[word] = (def1, def2)
+            lines[word.lower()] = (def1, def2)
     return lines
 
-
-from test.models import Lemma
 
 @timer
 def f1(length):
@@ -64,10 +61,35 @@ def f2(lemmas):
         le = Lemma.objects.get(name=lemmas[i][0]).name
 
 
+# from test.static.words_data import word_db_op;import importlib
+# importlib.reload(word_db_op); word_db_op.main()
 def main():
-    test_len = 100
-    f1(test_len)
-    f2(read_lemma()[:test_len])
+    # test_len = 100
+    # f1(test_len)
+    # f2(read_lemma()[:test_len])
+    @timer
+    def f():
+        from test.models import Lemma
+        lem_objs = Lemma.objects.all()
+        cnt = 0
+        outer_cnt = 0
+        for lem in lem_objs:
+            changed = False
+            if lem.def_en and lem.def_en[:2] == 'v ':
+                changed = True
+                lem.def_en = "v. " + lem.def_en[2:]
+
+            if lem.def_zh and lem.def_zh[:2] == 'v ':
+                changed = True
+                lem.def_zh = "v. " + lem.def_zh[2:]
+
+            if changed:
+                lem.save()
+            outer_cnt += 1
+            if outer_cnt % 5000 == 0:
+                print("done %d" % outer_cnt)
+    f()
+
     #     for word in words:
     #         Word(name=word, lem_id=lemma_id).save()
     # from test.models import Lemma, Word

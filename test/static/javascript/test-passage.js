@@ -38,7 +38,6 @@ function choose_word(word_id)
 {
     word_block = document.getElementById("word_" + word_id);
     if (word_block == null) {
-        console.log(word_id);
         return -1;
     }
     if (selected_words.has(word_id)) {
@@ -51,7 +50,6 @@ function choose_word(word_id)
         word_block.style.borderBottomColor = "#808080";
         word_block.style.borderBottomStyle = "solid";
     }
-    console.log(selected_words);
 }
 
 
@@ -89,7 +87,6 @@ function click_blank(blank_id) {
     if (hint_clipboard_word_id == -1) {
         return ;
     }
-    console.log("blank_" + blank_id);
     blank.innerHTML = hint_clipboard_word_name;
     var hint = document.getElementById("hint_" + hint_clipboard_word_id);
     hint.style.backgroundColor = `rgb(30, 144, 255, ${get_chosen_cnt(hint_clipboard_word_id, 1)/10})`;
@@ -109,7 +106,6 @@ function play_audio(word_id, word_name) {
 
 
 function check() {
-    console.log(1231);
     for (blank_id in chosen_word) {
         if (chosen_word[blank_id] == ans[parseInt(blank_id)]) {
             document.getElementById("blank_" + blank_id).style.color = "rgb(27, 176, 60)";

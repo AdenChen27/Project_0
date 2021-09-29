@@ -113,7 +113,9 @@ function export_words() {
 function shuffel() {
     var def_rows = document.getElementsByName("def-row");
     for (const i in def_rows) {
-        def_rows[i].style.order = Math.floor(Math.random() * 100);
+        if (def_rows[i].style) {
+            def_rows[i].style.order = Math.floor(Math.random() * 100);
+        }
     }
 }
 
