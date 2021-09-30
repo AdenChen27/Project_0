@@ -5,9 +5,6 @@ PASSAGE_TITLE_MAX_LEN = 100
 TAG_MAX_NUM = 5
 WORD_MAX_LEN = 34
 
-# MAX_RANK = 60025
-DEFAULT_WORD_ID = 0
-
 
 class Lemma(models.Model):
     name = models.CharField(max_length=WORD_MAX_LEN, default="")
@@ -82,7 +79,6 @@ class Passage(models.Model):
         
         self.lemma_pos = dumps(lemma_pos)
         super().save(*args, **kwargs)
-        # add_definitions(self.id)
 
         
 

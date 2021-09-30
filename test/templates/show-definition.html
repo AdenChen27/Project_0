@@ -16,6 +16,7 @@
   }
 
   .def {
+    margin: 0.2em 0em;
     font-size: 1.2em;
     line-height: 1.3em;
     padding: 0 1em;
@@ -47,7 +48,7 @@
   }
 
   .button-holder {
-    padding: 0.3em 2em;
+    padding: 0.3em 0.5em;
   }
 
   .img-play {
@@ -64,9 +65,14 @@
     <div class="col-8">
       <div class="block-space">
         <div class="row">
-          <div class="col-12 button-holder">
+          <div class="col-4 button-holder">
             <button class="btn btn-outline-dark col-12" onclick="shuffel()">
               Shuffel
+            </button>
+          </div>
+          <div class="col-8 button-holder">
+            <button class="btn btn-outline-dark col-12" onclick="change_defs_show_state('btn_change_defs_show_state')" id="btn_change_defs_show_state">
+              Show English Definition Only
             </button>
           </div>
         </div>
@@ -98,7 +104,7 @@
             </div>
           </div>
           <div class="col-1">
-            <img class="img-play" src="../../static/pictures/play.svg" onclick="play_audio({{ wordlemid }}, '{{ lem.name }}')" />
+            <img class="img-play" src="../../static/pictures/play.svg" onclick="play_audio({{ lem.id }}, '{{ lem.name }}')" />
             <audio id="word_audio_{{ lem.id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ lem.name }}--_gb_1.mp3" onloadeddata="word_audio_loded.add({{ lem.id }})"/>
           </div>
         </div>

@@ -9,6 +9,21 @@
     window.location.href = "/passage/?p_id=" + id;
   }
   </script>
+  <style>
+  .tag {
+    margin: 0 0.2em;
+    padding: 0.15em 0.2em;
+    border-style: solid;
+    border-radius: 0.3em;
+    border-width: 0.1em;
+    background-color: rgb(224, 255, 255, 1);
+  }
+
+  .tag:hover {
+    background-color: rgb(224, 255, 255, 0.3);
+  }
+
+  </style>
   <title>passage-select</title>
 </head>
 
@@ -20,16 +35,18 @@
         <h1 style="margin: 30px 0">Select a Passage</h1>
         <table class="table table-hover">
           <thead>
-            <th>#</th>
-            <th>title</th>
-            <th>tags</th>
+            <th>Title</th>
+            <th>Tags</th>
           </thead>
           <tbody>
             {% for passage in passages %}
             <tr onclick="select_passage({{ passage.id }})">
-              <th scope="row">{{ passage.id }}</th>
               <td>{{ passage.title }}</td>
-              <td>{{ passage.tags }}</td>
+              <td>
+                {% for tag in passage.tags %}
+                  <span class="tag">{{ tag }}</span>
+                {% endfor %}
+              </td>
             </tr>
             {% endfor%}
           </tbody>

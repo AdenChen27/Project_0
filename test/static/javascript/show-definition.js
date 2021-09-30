@@ -63,6 +63,39 @@ function flip_all(btn_id, element_suffix) {
 }
 
 
+
+function change_defs_show_state(btn_id) {
+    const button = document.getElementById(btn_id);
+    var show;
+    // 0 -> show all defs
+    // 1 -> show only def_en
+    // 2 -> show only def_zh
+    if (button.innerHTML.includes("English")) {
+        show = 1;
+        button.innerHTML = "Show Chinese Definition Only";
+    } else if (button.innerHTML.includes("Chinese")) {
+        show = 2;
+        button.innerHTML = "Show Both Definitions";
+    } else {
+        show = 0;
+        button.innerHTML = "Show English Definition Only";
+    }
+    for (var i in lemmas_id) {
+        lem_id = lemmas_id[i];
+        if (show == 0) {
+            document.getElementById(`def_en_${lem_id}`).style.display = "flex";
+            document.getElementById(`def_zh_${lem_id}`).style.display = "flex";
+        } else if (show == 1) {
+            document.getElementById(`def_en_${lem_id}`).style.display = "flex";
+            document.getElementById(`def_zh_${lem_id}`).style.display = "none";
+        } else {
+            document.getElementById(`def_en_${lem_id}`).style.display = "none";
+            document.getElementById(`def_zh_${lem_id}`).style.display = "flex";
+        }
+    }
+}
+
+
 function export_word_to_str(format, word_id) {
     const e_word_name = document.getElementById(`word_name_${word_id}`);
     const e_def_en = document.getElementById(`def_en_${word_id}`);
