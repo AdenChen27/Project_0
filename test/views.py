@@ -39,42 +39,45 @@ def show_definition(request):
         "lemma_id": lemma_id, 
         "lem_cnt": lem_cnt, 
     })
-    
 
-def test_passage(request):
-    from json import loads
+
+def blank_rep_init(lemma_pos, request):
+    blank_rep_buf = []
     hints = []
-    passage_id = request.POST.get("p_id")
-    p_start = r"<div class='passage-text'>"
-    p_end = r"</div>"
+    ans = {}
+    blank_id = 0
     lemma_id = request.POST.get("lemma_id")
     if (lemma_id):
         lemma_id = lemma_id.split(',')
     else:
         lemma_id = []
-    selected_defs_id = [int(i) for i in lemma_id]
-    passage = Passage.objects.get(id=passage_id)
-    text = passage.text
-    blank_e_template = """<span class="word-blank" id="blank_{}" onclick="click_blank({})">{}</span>"""
-    ans = {} # {blank_id: ans_id, }
-
-    global blank_id, ans_id
-    blank_id = 1
-
-    lemma_pos = loads(passage.lemma_pos)
-    pos_offset = 0
-    blank_id = 0
-    blank_rep_buf = [] # {(pos, word_len, blank_id), }
     for lem_id in lemma_pos:
         if lem_id not in lemma_id:
             continue
-        hints.append((Lemma.objects.get(id=lem_id).name, int(lem_id)))
+        word_name_list = []
         for word_id, word_len, pos_list in lemma_pos[lem_id]:
+            word_name_list.append(Word.objects.get(id=word_id).name)
             for pos in pos_list:
                 blank_id += 1
                 ans[blank_id] = int(lem_id)
                 blank_rep_buf.append((pos, word_len, blank_id))
+        hints.append((Lemma.objects.get(id=lem_id).name, int(lem_id), word_name_list))
     blank_rep_buf.sort(key=lambda x: x[0])
+    return blank_rep_buf, hints, ans
+    
+
+def test_passage(request):
+    from json import loads
+    passage_id = request.POST.get("p_id")
+    p_start = r"<div class='passage-text'>"
+    p_end = r"</div>"
+    passage = Passage.objects.get(id=passage_id)
+    text = passage.text
+    blank_e_template = """<span class="lem-blank" id="blank_{}" onclick="click_blank({})">{}</span>"""
+    pos_offset = 0
+    blank_rep_buf, hints, ans = blank_rep_init(loads(passage.lemma_pos), request)
+    # blank_rep_buf = {(pos, word_len, blank_id), }
+    # ans = {blank_id: ans_id, }
     for pos, word_len, blank_id in blank_rep_buf:
         blank_e = blank_e_template.format(blank_id, blank_id, "_"*5)
         text = text[:pos + pos_offset] + blank_e + text[pos + pos_offset + word_len:]

@@ -9,31 +9,6 @@ var count_down_display = document.getElementById("count_down_display"),
     chosen_word = {};//blank_id -> word_id
 
 
-function start_timer() {
-    if (counter == -1) {
-        counter = setInterval(function () {
-            time += 1;
-            time_m = Math.floor(time/60);
-            time_s = time % 60;
-            display_text = time_s + "s";
-            if (time_m != 0)
-            {
-                display_text = time_m + "m" + display_text;
-            }
-
-            count_down_display.innerHTML = display_text;
-        }, 1000);
-    }
-}
-
-function stop_timer() {
-    if (counter != -1) {
-        clearInterval(counter);
-        counter = -1;
-    }
-}
-
-
 function choose_word(word_id)
 {
     word_block = document.getElementById("word_" + word_id);
