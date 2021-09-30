@@ -8,7 +8,6 @@
   const p_id = {{ p_id | safe }},
     lemmas_id = {{ lemma_id | safe }},
     lem_cnt = {{ lem_cnt | safe }},
-    str_defs = {{ str_defs | safe }},
     csrf_token = "{{ csrf_token }}";
   </script>
   <style>
@@ -91,10 +90,10 @@
             {{ lem.name }}
           </div>
           <div class="col-8" id="word_defs_{{ lem.id }}" onclick="click_event('word_defs_{{ lem.id }}')">
-            <div class="row def">
+            <div class="row def" id="def_en_{{ lem.id }}">
               <p>{{ lem.def_en }}</p>
             </div>
-            <div class="row def">
+            <div class="row def" id="def_zh_{{ lem.id }}">
               <p>{{ lem.def_zh }}</p>
             </div>
           </div>

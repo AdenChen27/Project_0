@@ -20,6 +20,7 @@ def passage_handler(request):
     return render(request, "select-words.html", \
         {"words": lemma_list, "p_id": passage_id})
 
+
 def show_definition(request):
     passage_id = request.POST.get("p_id")
     lemma_id = request.POST.get("lemma_id")
@@ -29,21 +30,16 @@ def show_definition(request):
         lemma_id = []
     lemmas = []
     lem_cnt = 0
-    str_defs = {}
     for lem_id in lemma_id:
         lem_cnt += 1
-        lem_obj = Lemma.objects.get(id=lem_id)
-        lemmas.append(model_to_dict(lem_obj))
-        str_defs[lem_id] = [lem_obj.def_en, lem_obj.def_zh]
+        lemmas.append(model_to_dict(Lemma.objects.get(id=lem_id)))
     return render(request, "show-definition.html", {
         "p_id": passage_id, 
         "lemmas": lemmas, 
         "lemma_id": lemma_id, 
         "lem_cnt": lem_cnt, 
-        "str_defs": str_defs, 
     })
     
-
 
 def test_passage(request):
     from json import loads

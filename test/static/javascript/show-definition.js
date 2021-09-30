@@ -65,15 +65,16 @@ function flip_all(btn_id, element_suffix) {
 
 function export_word_to_str(format, word_id) {
     const e_word_name = document.getElementById(`word_name_${word_id}`);
+    const e_def_en = document.getElementById(`def_en_${word_id}`);
+    const e_def_zh = document.getElementById(`def_zh_${word_id}`);
     var export_str = "";
-    console.log(str_defs[word_id]);
     for (var i in format) {
         if (format[i] == 'w') {
             export_str += e_word_name.innerText;
-        } else if (format[i] == 'E') { // English definition
-            export_str += str_defs[word_id][0];
-        } else if (format[i] == 'Z') { // Chinese definition
-            export_str += str_defs[word_id][1];
+        } else if (format[i] == 'E') {
+            export_str += e_def_en.innerText.replace(/\n/g, ';');
+        } else if (format[i] == 'Z') {
+            export_str += e_def_zh.innerText.replace(/\n/g, ';');
         } else if (format[i] == 'n') {
             export_str += '\n'
         } else if (format[i] == 't') {
