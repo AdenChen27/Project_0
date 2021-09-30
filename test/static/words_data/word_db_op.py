@@ -47,6 +47,7 @@ def read_dict():
             lines[word.lower()] = (def1, def2)
     return lines
 
+from test.models import Word, Lemma
 
 @timer
 def f1(length):
@@ -55,40 +56,39 @@ def f1(length):
 
 
 @timer
-def f2(lemmas):
-    for i in range(len(lemmas)):
-        # le = Lemma.objects.filter(name=lemmas[i][0]).first().name
-        le = Lemma.objects.get(name=lemmas[i][0]).name
+def f2(length):
+    for i in range(length):
+        le = Word.objects.get(id=i + 1).name
 
 
 # from test.static.words_data import word_db_op;import importlib
 # importlib.reload(word_db_op); word_db_op.main()
 def main():
-    # test_len = 100
-    # f1(test_len)
-    # f2(read_lemma()[:test_len])
-    @timer
-    def f():
-        from test.models import Lemma
-        lem_objs = Lemma.objects.all()
-        cnt = 0
-        outer_cnt = 0
-        for lem in lem_objs:
-            changed = False
-            if lem.def_en and lem.def_en[:2] == 'v ':
-                changed = True
-                lem.def_en = "v. " + lem.def_en[2:]
+    test_len = 10000
+    f1(test_len)
+    f2(test_len)
+    # @timer
+    # def f():
+    #     from test.models import Lemma
+    #     lem_objs = Lemma.objects.all()
+    #     cnt = 0
+    #     outer_cnt = 0
+    #     for lem in lem_objs:
+    #         changed = False
+    #         if lem.def_en and lem.def_en[:2] == 'v ':
+    #             changed = True
+    #             lem.def_en = "v. " + lem.def_en[2:]
 
-            if lem.def_zh and lem.def_zh[:2] == 'v ':
-                changed = True
-                lem.def_zh = "v. " + lem.def_zh[2:]
+    #         if lem.def_zh and lem.def_zh[:2] == 'v ':
+    #             changed = True
+    #             lem.def_zh = "v. " + lem.def_zh[2:]
 
-            if changed:
-                lem.save()
-            outer_cnt += 1
-            if outer_cnt % 5000 == 0:
-                print("done %d" % outer_cnt)
-    f()
+    #         if changed:
+    #             lem.save()
+    #         outer_cnt += 1
+    #         if outer_cnt % 5000 == 0:
+    #             print("done %d" % outer_cnt)
+    # f()
 
     #     for word in words:
     #         Word(name=word, lem_id=lemma_id).save()

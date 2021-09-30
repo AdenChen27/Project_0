@@ -69,7 +69,7 @@ def test_passage(request):
         if lem_id not in lemma_id:
             continue
         hints.append((Lemma.objects.get(id=lem_id).name, int(lem_id)))
-        for word_len, pos_list in lemma_pos[lem_id]:
+        for word_id, word_len, pos_list in lemma_pos[lem_id]:
             for pos in pos_list:
                 blank_id += 1
                 ans[blank_id] = int(lem_id)
@@ -77,8 +77,7 @@ def test_passage(request):
     blank_rep_buf.sort(key=lambda x: x[0])
     for pos, word_len, blank_id in blank_rep_buf:
         blank_e = blank_e_template.format(blank_id, blank_id, "_"*5)
-        text = text[:pos + pos_offset] + blank_e + \
-            text[pos + pos_offset + word_len:]
+        text = text[:pos + pos_offset] + blank_e + text[pos + pos_offset + word_len:]
         pos_offset += len(blank_e) - word_len
     text = p_start + text.replace("\n", p_end + p_start) + p_end
 

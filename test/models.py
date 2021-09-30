@@ -33,21 +33,22 @@ def get_lem_word_map(text):
     for word in all_words:
         if word in stop_words:
             continue
-        filter_ret = Word.objects.filter(name=word)
-        if not filter_ret.exists():
+        word_objs = Word.objects.filter(name=word)
+        if not word_objs.exists():
             continue
-        lem_id = filter_ret.first().lem_id
+        lem_id = word_objs.first().lem_id
+        word_id = word_objs.first().id
         if lem_id not in lem_word_map:
             lem_word_map[lem_id] = []
-        lem_word_map[lem_id].append(word)
-    return lem_word_map # {lem_id1: [word1, ], }
+        lem_word_map[lem_id].append((word_id, word))
+    return lem_word_map # {lem_id1: [(word1id, word1.name), ], }
 
 
 class Passage(models.Model):
     title = models.CharField(max_length=PASSAGE_TITLE_MAX_LEN)
     text = models.TextField(default="")
     lemma_pos = models.TextField(default="", blank=True)
-    # {lemma_id_1: [pos_in_text_1, ], }
+    # {lemma1.id: [(word1.id, len(word1.name), [pos1, ]), ], }
     tags = model_ListCharField(
         base_field=models.CharField(max_length=WORD_MAX_LEN), 
         size=TAG_MAX_NUM, 
@@ -65,7 +66,7 @@ class Passage(models.Model):
         lemma_pos = {}
         lem_word_map = get_lem_word_map(self.text)
         for lem_id in lem_word_map:
-            for word in lem_word_map[lem_id]:
+            for word_id, word in lem_word_map[lem_id]:
                 pos_offset = 0
                 if word[0] == "'":
                     reg = r"(%s)(\W|')" % (word)
@@ -75,7 +76,7 @@ class Passage(models.Model):
                 if lem_id not in lemma_pos:
                     lemma_pos[lem_id] = []
                 pos_list = [w.start() + pos_offset for w in re.finditer(reg, self.text)]
-                lemma_pos[lem_id].append((len(word), pos_list))
+                lemma_pos[lem_id].append((word_id, len(word), pos_list))
         
         self.lemma_pos = dumps(lemma_pos)
         super().save(*args, **kwargs)
