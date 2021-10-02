@@ -3,7 +3,7 @@ const WORD_PER_ROW = 6;
 
 
 function choose_word(word_id) {
-    word_id = Number(word_id)
+    word_id = Number(word_id);
     word_block = document.getElementById("word_" + word_id);
     if (selected_words.has(word_id)) {
         selected_words.delete(word_id);
@@ -26,7 +26,7 @@ function submit() {
         "p_id": p_id,
         "lemma_id": Array.from(selected_words),
         "csrfmiddlewaretoken": csrf_token
-    }
+    };
     for (const key in data) {
         if (data.hasOwnProperty(key)) {
             const hiddenField = document.createElement("input");
@@ -104,21 +104,21 @@ function main() {
         if (word_n % WORD_PER_ROW == 0) {
             cur_row_div = create_div("row", word_holder, {
                 "id": "word_row_" + Math.floor(word_n / WORD_PER_ROW),
-            })
+            });
         }
         var word_div = create_div("col-2", cur_row_div);
         var new_word = create_div("word", word_div, {
             "id": "word_" + word["id"],
             "text": word["name"],
-        })
+        });
         new_word.setAttribute("onclick", "choose_word(" + word["id"] + ")");
         word_list.push([new_word, word]);
-        ++word_n;
+        word_n += 1;
     }
 
     document.getElementById("lem_rank_filter").value = 0;
-    filter_select()
+    filter_select();
 }
 
-main()
+main();
 

@@ -5,7 +5,7 @@ var count_down_display = document.getElementById("count_down_display"),
     word_audio_loded = new Set(),
     hint_clipboard_word_id = -1, 
     hint_clipboard_word_name, 
-    chosen_count = {}
+    chosen_count = {}, 
     chosen_word = {};//blank_id -> word_id
 
 

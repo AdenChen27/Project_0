@@ -21,15 +21,15 @@
     /*height: 1em;*/
   }
 
-  .hint {
+  .hint-container {
     color: #000;
     position: fixed;
     /*overflow-x: hidden;
     z-index: 1;*/
   }
 
-  .hint-row {
-    margin-top: 0.2em;
+  .hint-sub {
+    font-size: 0.7em;
   }
 
   .lem-input:focus {
@@ -44,35 +44,34 @@
 
 <body>
   <div class="container">
-    <h1 style="text-align: center; margin: 1em 0">{{ passage_title }}</h1>
     <div class="row">
-      <!-- <div class="col-2"></div> -->
       <div class="col-2">
-        <div class="hint">
+        <div class="hint-container">
           {% for lem, lem_id, word_name_list in hints %}
-          <div class="row hint-row">
-            <div class="col-8"
-              id="hint_{{ lem_id }}"
-              onclick="click_hint({{ lem_id }}, '{{ lem }}')">
-              {{ lem }}
-              {% for word_name in word_name_list %}
-                {{ word_name }}
-              {% endfor %}
+          <div class="row">
+            <div class="col-8">
+              <div class="row" id="hint_{{ lem_id }}" onclick="click_hint({{ lem_id }}, '{{ lem }}')">
+                {{ lem }}
+              </div>
             </div>
             <div class="col-2" style="margin-top: 0.3em;">
               <img class="img-play" src="../../static/pictures/play.svg" onclick="play_audio({{ lem_id }}, '{{ lem }}')" />
               <audio id="word_audio_{{ lem_id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ lem }}--_gb_1.mp3" onloadeddata="word_audio_loded.add({{ lem_id }})"/>
             </div>
           </div>
+            {% for word_name in word_name_list %}
+              <div class="row hint-sub">
+                - {{ word_name }}
+              </div>
+            {% endfor %}
           {% endfor %}
         </div>
       </div>
+
       <div class="col-8">
+        <h1 style="text-align: center; margin: 1em 0">{{ passage_title }}</h1>
         {% autoescape off %}{{ passage_text }}{% endautoescape %}
         <div class="row">
-          <!-- <div style="font-size: 2em; margin: 1em 0" id="count_down_display"></div> -->
-          <!-- <button class="btn btn-outline-dark" style="margin: 30px 0" onclick="start_timer()">Start</button> -->
-          <!-- <button class="btn btn-outline-dark" style="margin: 30px 0" onclick="stop_timer()">Stop</button> -->
           <div class="col-2"></div>
           <button class="btn btn-outline-dark col-8" style="margin: 30px 0" onclick="check()">check</button>
           <div class="col-2"></div>

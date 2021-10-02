@@ -18,7 +18,7 @@ function create_div(class_name, parent, expend=null) {
         }
     }
     if (parent) {
-        parent.appendChild(new_element)
+        parent.appendChild(new_element);
     }
     return new_element;
 }
@@ -109,7 +109,7 @@ function export_word_to_str(format, word_id) {
         } else if (format[i] == 'Z') {
             export_str += e_def_zh.innerText.replace(/\n/g, ';');
         } else if (format[i] == 'n') {
-            export_str += '\n'
+            export_str += '\n';
         } else if (format[i] == 't') {
             export_str += '\t';
         } else {
@@ -172,7 +172,7 @@ function next() {
         "p_id": p_id, 
         "lemma_id": lemmas_id, 
         "csrfmiddlewaretoken": csrf_token
-    }
+    };
     for (const key in data) {
         if (data.hasOwnProperty(key)) {
             const hiddenField = document.createElement("input");
