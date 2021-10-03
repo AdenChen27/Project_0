@@ -1,0 +1,84 @@
+:root {
+    --main-bg-color: #F7FFF7;
+}
+
+.tag {
+  margin: 0 0.2em;
+  padding: 0.15em 0.2em;
+  border-style: solid;
+  border-radius: 0.3em;
+  border-width: 0.1em;
+  background-color: rgb(224, 255, 255, 1);
+}
+
+.tag:hover {
+  background-color: rgb(224, 255, 255, 0.3);
+}
+
+.passage-text {
+  font-size: 1.5em;
+  line-height: 1.5em;
+  text-indent: 2em;
+  color: #111;
+}
+
+.lem-blank {
+  color: rgb(30, 144, 255);
+}
+
+.hint-container {
+  color: #000;
+  position: fixed;
+}
+
+.hint-sub {
+  font-size: 0.7em;
+}
+
+.lem-input:focus {
+  border-color: #00FFFF;
+  box-shadow: none;
+}
+
+.sel-word-block {
+  font-size: 1.2em;
+  line-height: 1.5em;
+  margin: 0em;
+}
+
+.def-name {
+  font-size: 1.4em;
+}
+
+.def {
+  margin: 0.2em 0em;
+  font-size: 1.2em;
+  line-height: 1.3em;
+  padding: 0 1em;
+  white-space: pre-line;
+}
+
+.text-hide {
+  color: #F7FFF7;
+}
+
+.word-def-row {
+  margin: 0.75em 0;
+  border-style: solid;
+  border-radius: 0.5em;
+  border-width: 0.15em;
+  background-color: var(--main-bg-color);
+}
+
+.block-space {
+  margin: 1em 0;
+}
+
+.button-holder {
+  padding: 0.3em 0.5em;
+}
+
+.img-play {
+  height: 1em;
+  width: 1em;
+}

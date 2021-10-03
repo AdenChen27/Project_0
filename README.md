@@ -7,3 +7,6 @@ word definitions from https://github.com/skywind3000/ECDICT
 
 word to lemma mapping from https://github.com/skywind3000/lemma.en
 
+
+TODO:
+word `also` -> `conjurer`

@@ -76,7 +76,7 @@ class Passage(models.Model):
                 if lem_id not in lemma_pos:
                     lemma_pos[lem_id] = []
                 pos_list = [w.start() + pos_offset for w in re.finditer(reg, self.text)]
-                lemma_pos[lem_id].append((word_id, len(word), pos_list))
+                lemma_pos[lem_id].append((word_id, pos_list))
         
         self.lemma_pos = dumps(lemma_pos)
         super().save(*args, **kwargs)

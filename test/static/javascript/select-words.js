@@ -107,7 +107,7 @@ function main() {
             });
         }
         var word_div = create_div("col-2", cur_row_div);
-        var new_word = create_div("word", word_div, {
+        var new_word = create_div("sel-word-block", word_div, {
             "id": "word_" + word["id"],
             "text": word["name"],
         });

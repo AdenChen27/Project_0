@@ -4,39 +4,8 @@
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
-  <!-- <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script> -->
   <title>test passage</title>
-  <style>
-  .passage-text {
-    font-size: 1.5em;
-    line-height: 1.5em;
-    text-indent: 2em;
-    color: #111;
-    /*lem-wrap: break-lem;*/
-  }
-
-  .lem-blank {
-    color: rgb(30, 144, 255);
-    /*padding: 0.1em 0.4em;*/
-    /*height: 1em;*/
-  }
-
-  .hint-container {
-    color: #000;
-    position: fixed;
-    /*overflow-x: hidden;
-    z-index: 1;*/
-  }
-
-  .hint-sub {
-    font-size: 0.7em;
-  }
-
-  .lem-input:focus {
-    border-color: #00FFFF;
-    box-shadow: none;
-  }
-  </style>
+  <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
   <script>
   var ans = {{ ans }};
   </script>
@@ -44,6 +13,8 @@
 
 <body>
   <div class="container">
+    <h1 style="text-align: center; margin: 1em 0">{{ passage_title }}</h1>
+
     <div class="row">
       <div class="col-2">
         <div class="hint-container">
@@ -59,17 +30,11 @@
               <audio id="word_audio_{{ lem_id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ lem }}--_gb_1.mp3" onloadeddata="word_audio_loded.add({{ lem_id }})"/>
             </div>
           </div>
-            <!-- {% for word_name in word_name_list %}
-              <div class="row hint-sub">
-                - {{ word_name }}
-              </div>
-            {% endfor %} -->
           {% endfor %}
         </div>
       </div>
 
       <div class="col-8">
-        <h1 style="text-align: center; margin: 1em 0">{{ passage_title }}</h1>
         {% autoescape off %}{{ passage_text }}{% endautoescape %}
         <div class="row">
           <div class="col-2"></div>
@@ -79,6 +44,7 @@
       </div>
       <div class="col-2"></div>
     </div>
+
   </div>
   <script src="../../static/javascript/test-passage.js"></script>
 </body>

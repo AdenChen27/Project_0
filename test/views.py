@@ -55,14 +55,13 @@ def blank_rep_init(lemma_pos, request):
         if lem_id not in lemma_id:
             continue
         # word_name_list = []
-        for word_id, word_len, pos_list in lemma_pos[lem_id]:
-            # word_name_list.append(Word.objects.get(id=word_id).name)
-            hints.append((Word.objects.get(id=word_id).name, int(word_id)))
+        for word_id, pos_list in lemma_pos[lem_id]:
+            word_name = Word.objects.get(id=word_id).name
+            hints.append((word_name, int(word_id)))
             for pos in pos_list:
                 blank_id += 1
                 ans[blank_id] = int(word_id)
-                blank_rep_buf.append((pos, word_len, blank_id))
-        # hints.append((Lemma.objects.get(id=lem_id).name, int(lem_id), word_name_list))
+                blank_rep_buf.append((pos, len(word_name), blank_id))
     blank_rep_buf.sort(key=lambda x: x[0])
     return blank_rep_buf, hints, ans
     
