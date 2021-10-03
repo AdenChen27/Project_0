@@ -47,7 +47,7 @@
     <div class="row">
       <div class="col-2">
         <div class="hint-container">
-          {% for lem, lem_id, word_name_list in hints %}
+          {% for lem, lem_id in hints %}
           <div class="row">
             <div class="col-8">
               <div class="row" id="hint_{{ lem_id }}" onclick="click_hint({{ lem_id }}, '{{ lem }}')">
@@ -59,11 +59,11 @@
               <audio id="word_audio_{{ lem_id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ lem }}--_gb_1.mp3" onloadeddata="word_audio_loded.add({{ lem_id }})"/>
             </div>
           </div>
-            {% for word_name in word_name_list %}
+            <!-- {% for word_name in word_name_list %}
               <div class="row hint-sub">
                 - {{ word_name }}
               </div>
-            {% endfor %}
+            {% endfor %} -->
           {% endfor %}
         </div>
       </div>

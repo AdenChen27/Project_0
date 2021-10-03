@@ -54,14 +54,15 @@ def blank_rep_init(lemma_pos, request):
     for lem_id in lemma_pos:
         if lem_id not in lemma_id:
             continue
-        word_name_list = []
+        # word_name_list = []
         for word_id, word_len, pos_list in lemma_pos[lem_id]:
-            word_name_list.append(Word.objects.get(id=word_id).name)
+            # word_name_list.append(Word.objects.get(id=word_id).name)
+            hints.append((Word.objects.get(id=word_id).name, int(word_id)))
             for pos in pos_list:
                 blank_id += 1
-                ans[blank_id] = int(lem_id)
+                ans[blank_id] = int(word_id)
                 blank_rep_buf.append((pos, word_len, blank_id))
-        hints.append((Lemma.objects.get(id=lem_id).name, int(lem_id), word_name_list))
+        # hints.append((Lemma.objects.get(id=lem_id).name, int(lem_id), word_name_list))
     blank_rep_buf.sort(key=lambda x: x[0])
     return blank_rep_buf, hints, ans
     
@@ -77,6 +78,7 @@ def test_passage(request):
     pos_offset = 0
     blank_rep_buf, hints, ans = blank_rep_init(loads(passage.lemma_pos), request)
     # blank_rep_buf = {(pos, word_len, blank_id), }
+    # hints = [(lemma.name, lemma.id, word_list)]
     # ans = {blank_id: ans_id, }
     for pos, word_len, blank_id in blank_rep_buf:
         blank_e = blank_e_template.format(blank_id, blank_id, "_"*5)

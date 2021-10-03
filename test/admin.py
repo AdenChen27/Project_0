@@ -10,7 +10,7 @@ class PassageAdmin(admin.ModelAdmin):
 
 class WordAdmin(admin.ModelAdmin):
     list_display = ('name', 'lem_id', 'id', )
-    search_fields = ('name', )
+    search_fields = ('name', 'lem_id', )
     ordering = ('lem_id', )
 
 class LemmaAdmin(admin.ModelAdmin):
