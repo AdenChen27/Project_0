@@ -1,5 +1,5 @@
 :root {
-    --main-bg-color: #F7FFF7;
+  --main-bg-color: rgb(224, 255, 255, 1);
 }
 
 .tag {
@@ -15,7 +15,8 @@
   background-color: rgb(224, 255, 255, 0.3);
 }
 
-.passage-text {
+.passage-text-para {
+  background-color: var(--main-bg-color);
   font-size: 1.5em;
   line-height: 1.5em;
   text-indent: 2em;
@@ -31,8 +32,10 @@
   position: fixed;
 }
 
-.hint-sub {
-  font-size: 0.7em;
+.hint {
+  border-style: solid;
+  border-color: white;
+  padding: 0 0.3em;
 }
 
 .lem-input:focus {
@@ -43,7 +46,7 @@
 .sel-word-block {
   font-size: 1.2em;
   line-height: 1.5em;
-  margin: 0em;
+  margin: 0.1em 0em;
 }
 
 .def-name {

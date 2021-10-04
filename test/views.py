@@ -69,7 +69,7 @@ def blank_rep_init(lemma_pos, request):
 def test_passage(request):
     from json import loads
     passage_id = request.POST.get("p_id")
-    p_start = r"<div class='passage-text'>"
+    p_start = r"<div class='passage-text-para'>"
     p_end = r"</div>"
     passage = Passage.objects.get(id=passage_id)
     text = passage.text

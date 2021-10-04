@@ -21,7 +21,7 @@
           {% for lem, lem_id in hints %}
           <div class="row">
             <div class="col-8">
-              <div class="row" id="hint_{{ lem_id }}" onclick="click_hint({{ lem_id }}, '{{ lem }}')">
+              <div class="row hint" id="hint_{{ lem_id }}" onclick="click_hint({{ lem_id }}, '{{ lem }}')">
                 {{ lem }}
               </div>
             </div>
@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <div class="col-8">
+      <div class="col-8 passage-text">
         {% autoescape off %}{{ passage_text }}{% endautoescape %}
         <div class="row">
           <div class="col-2"></div>

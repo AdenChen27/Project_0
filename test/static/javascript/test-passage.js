@@ -9,25 +9,6 @@ var count_down_display = document.getElementById("count_down_display"),
     chosen_word = {};//blank_id -> word_id
 
 
-function choose_word(word_id)
-{
-    word_block = document.getElementById("word_" + word_id);
-    if (word_block == null) {
-        return -1;
-    }
-    if (selected_words.has(word_id)) {
-        selected_words.delete(word_id);
-        word_block.style.backgroundColor = "#FFFFFF";
-        word_block.style.borderBottomStyle = "hidden";
-    } else {
-        selected_words.add(word_id)
-        word_block.style.backgroundColor = "#FCFBB0";
-        word_block.style.borderBottomColor = "#808080";
-        word_block.style.borderBottomStyle = "solid";
-    }
-}
-
-
 function get_chosen_cnt(word_id, add=0) {
     if (chosen_count[word_id]) {
         chosen_count[word_id] += add;
@@ -42,9 +23,10 @@ function click_hint(word_id, word_name) {
     if (hint_clipboard_word_id != -1) {
         var pre_hint = document.getElementById("hint_" + hint_clipboard_word_id);
         pre_hint.style.backgroundColor = `rgb(30, 144, 255, ${get_chosen_cnt(hint_clipboard_word_id)/10})`;
+        pre_hint.style.borderColor = "#FFF";
     }
     var hint = document.getElementById("hint_" + word_id);
-    hint.style.backgroundColor = "rgb(30, 144, 255)";
+    hint.style.borderColor = "rgb(30, 144, 255)";
     hint_clipboard_word_id = word_id;
     hint_clipboard_word_name = word_name;
 }
@@ -66,7 +48,6 @@ function click_blank(blank_id) {
     var hint = document.getElementById("hint_" + hint_clipboard_word_id);
     hint.style.backgroundColor = `rgb(30, 144, 255, ${get_chosen_cnt(hint_clipboard_word_id, 1)/10})`;
     chosen_word[blank_id] = hint_clipboard_word_id;
-    hint_clipboard_word_id = -1;
 }
 
 
