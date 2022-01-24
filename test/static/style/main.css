@@ -3,16 +3,20 @@
 }
 
 .tag {
-  margin: 0 0.2em;
+  margin: 0.1em 0.2em;
   padding: 0.15em 0.2em;
   border-style: solid;
   border-radius: 0.3em;
   border-width: 0.1em;
   background-color: rgb(224, 255, 255, 1);
+  transition: transform .15s linear;
+  position: relative;
+  display: block;
 }
 
-.tag:hover {
+.tag:hover, .tag:focus {
   background-color: rgb(224, 255, 255, 0.3);
+  transform: scale(1.1);
 }
 
 .passage-text-para {
