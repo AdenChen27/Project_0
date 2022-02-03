@@ -85,6 +85,7 @@ function change_defs_show_state(btn_id) {
         if (show == 0) {
             document.getElementById(`def_en_${lem_id}`).style.display = "flex";
             document.getElementById(`def_zh_${lem_id}`).style.display = "flex";
+            
         } else if (show == 1) {
             document.getElementById(`def_en_${lem_id}`).style.display = "flex";
             document.getElementById(`def_zh_${lem_id}`).style.display = "none";

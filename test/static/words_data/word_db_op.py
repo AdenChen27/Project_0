@@ -49,6 +49,7 @@ def read_dict():
 
 from test.models import Word, Lemma
 
+
 @timer
 def f1(length):
     for i in range(length):

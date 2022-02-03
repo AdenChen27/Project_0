@@ -66,7 +66,7 @@
 }
 
 .text-hide {
-  color: #F7FFF7;
+  color: var(--main-bg-color);
 }
 
 .word-def-row {
