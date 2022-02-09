@@ -165,14 +165,15 @@ function play_audio(word_id, word_name) {
 }
 
 
-function next() {
+function next(test_mode) {
     const form = document.createElement("form");
     form.method = "post";
     form.action = "../submit_selected_words/";
     var data = {
         "p_id": p_id, 
         "lemma_id": lemmas_id, 
-        "csrfmiddlewaretoken": csrf_token
+        "csrfmiddlewaretoken": csrf_token, 
+        "test_mode": test_mode, 
     };
     for (const key in data) {
         if (data.hasOwnProperty(key)) {

@@ -7,7 +7,9 @@
   <title>test passage</title>
   <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
   <script>
-  var ans = {{ ans }};
+    {% autoescape off %}
+    var ans = {{ ans }};
+    {% endautoescape %}
   </script>
 </head>
 
@@ -18,18 +20,20 @@
     <div class="row">
       <div class="col-2">
         <div class="hint-container">
-          {% for lem, lem_id in hints %}
-          <div class="row">
-            <div class="col-8">
-              <div class="row hint" id="hint_{{ lem_id }}" onclick="click_hint({{ lem_id }}, '{{ lem }}')">
-                {{ lem }}
+          {% for lem_id, lem_name, words_list in hints %}
+            {% for word, word_id in words_list %}
+            <div class="row">
+              <div class="col-8">
+                <div class="row hint" id="hint_{{ word_id }}" onclick="click_hint({{ word_id }}, '{{ word }}')">
+                  {{ word }}
+                </div>
+              </div>
+              <div class="col-2" style="margin-top: 0.3em;">
+                <img class="img-play" src="../../static/pictures/play.svg" onclick="play_audio({{ word_id }}, '{{ word }}')" />
+                <audio id="word_audio_{{ word_id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ word }}--_gb_1.mp3" onloadeddata="word_audio_loded.add({{ word_id }})"/>
               </div>
             </div>
-            <div class="col-2" style="margin-top: 0.3em;">
-              <img class="img-play" src="../../static/pictures/play.svg" onclick="play_audio({{ lem_id }}, '{{ lem }}')" />
-              <audio id="word_audio_{{ lem_id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ lem }}--_gb_1.mp3" onloadeddata="word_audio_loded.add({{ lem_id }})"/>
-            </div>
-          </div>
+            {% endfor %}
           {% endfor %}
         </div>
       </div>
@@ -46,7 +50,7 @@
     </div>
 
   </div>
-  <script src="../../static/javascript/test-passage.js"></script>
+  <script src="../../static/javascript/test-standard.js"></script>
 </body>
 
 </html>

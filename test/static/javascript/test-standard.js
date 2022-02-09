@@ -63,7 +63,8 @@ function play_audio(word_id, word_name) {
 
 function check() {
     for (blank_id in chosen_word) {
-        if (chosen_word[blank_id] == ans[parseInt(blank_id)]) {
+        console.log(chosen_word[blank_id], ans[parseInt(blank_id)]["id"])
+        if (chosen_word[blank_id] == ans[parseInt(blank_id)]["id"]) {
             document.getElementById("blank_" + blank_id).style.color = "rgb(27, 176, 60)";
         } else {
             document.getElementById("blank_" + blank_id).style.color = "rgb(234, 27, 70)";

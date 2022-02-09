@@ -16,11 +16,10 @@
 
 .tag:hover, .tag:focus {
   background-color: rgb(224, 255, 255, 0.3);
-  transform: scale(1.1);
+  transform: scale(1.03);
 }
 
 .passage-text-para {
-  background-color: var(--main-bg-color);
   font-size: 1.5em;
   line-height: 1.5em;
   text-indent: 2em;
@@ -89,3 +88,22 @@
   height: 1em;
   width: 1em;
 }
+
+.test-blank {
+  height: 1em;
+  width: 5em;
+  color: rgb(30, 144, 255);
+  border-style: none;
+  border-bottom: solid;
+  border-color: rgb(30, 144, 255);
+}
+
+.test-blank:focus {
+  outline: none;
+}
+
+::placeholder {
+  color: rgb(30, 144, 255, 0.2);
+  opacity: 1;
+}
+
