@@ -74,8 +74,13 @@ def blank_rep_init(lemma_pos, request):
 
 P_START = r"<div class='passage-text-para'>"
 P_END = r"</div>"
-CHOICE_TEST_BLANK = """<span class="lem-blank" id="blank_{}" onclick="click_blank({})">{}</span>"""
-BLANK_TEST_BLANK = """<input type="text" class="test-blank" id="blank_{}" style="width: {}em;" placeholder="{}">"""
+CHOICE_TEST_BLANK = """
+<span class="lem-blank" id="blank_{}" onclick="click_blank({})">{}</span>
+""".replace("\n", "")
+BLANK_TEST_BLANK = """
+<input type="text" class="test-blank" id="blank_{}" style="width: {}em;" placeholder="">
+<div class="hint-btn" onclick="document.getElementById('blank_' + {}).placeholder='{}'">hint</div>
+""".replace("\n", "")
 
 def test_passage(request):
     test_mode = request.POST.get("test_mode");
@@ -93,7 +98,8 @@ def test_passage(request):
         if test_mode == "choice":
             blank_e = blank_e_template.format(blank_id, blank_id, "_"*5)
         else:
-            blank_e = blank_e_template.format(blank_id, word_len/2 + 1, lem_name)
+            blank_e = blank_e_template.format(blank_id, word_len/2 + 1, blank_id, lem_name)
+            print(blank_e)
         text = text[:pos + pos_offset] + blank_e + text[pos + pos_offset + word_len:]
         pos_offset += len(blank_e) - word_len
     text = P_START + text.replace("\n", P_END + P_START) + P_END
