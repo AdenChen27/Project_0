@@ -20,7 +20,8 @@ from test import views as test_views
 
 urlpatterns = [
     path(r'admin/', admin.site.urls), 
-    path(r'select_passage/', test_views.select_passage), 
+    path(r'index/', test_views.index), 
+    path(r'show_word_search_result/', test_views.show_word_search_result), 
     path(r'passage/', test_views.passage_handler), 
     path(r'passage/show_definition/', test_views.show_definition), 
     path(r'passage/submit_selected_words/', test_views.test_passage), 

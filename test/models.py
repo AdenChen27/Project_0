@@ -29,6 +29,8 @@ class Lemma(models.Model):
     freq = models.IntegerField(default=0)
     def_en = models.TextField(default="", blank=True)
     def_zh = models.TextField(default="", blank=True)
+    sent_ids = JSONField(null=True)
+    # {passage_id1: [pos1, ], }
 
     def __str__(self):
         return self.name
@@ -37,15 +39,6 @@ class Lemma(models.Model):
 class Word(models.Model):
     name = models.CharField(max_length=WORD_MAX_LEN, default="")
     lem_id = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.name
-
-class LemToSent(models.Model):
-    # share name & id with `Lemma`
-    # maps lemmas to sentences
-    name = models.CharField(max_length=WORD_MAX_LEN, default="")
-    sent_ids = JSONField(null=True) # set
 
     def __str__(self):
         return self.name
@@ -79,55 +72,69 @@ def get_lem_word_map(text):
     return lem_word_map # {lem_id1: [(word1id, word1.name), ], }
 
 
+def find_all_word_pos(word, text):
+    import re
+    pos_offset = 0
+    if word[0] == "'":
+        reg = r"(%s)(\W|'|$)" % (word)
+    else:
+        reg = r"(\W|'|^)(%s)(\W|'|$)" % (word)
+        pos_offset = 1
+    return [w.start() + pos_offset for w in re.finditer(reg, text)]
+
+
+@timer
 def get_lemma_pos_string(text):
     from json import dumps
-    import re
     lemma_pos = {}
     lem_word_map = get_lem_word_map(text)
     for lem_id in lem_word_map:
         for word_id, word in lem_word_map[lem_id]:
-            pos_offset = 0
-            if word[0] == "'":
-                reg = r"(%s)(\W|')" % (word)
-            else:
-                reg = r"(\W|')(%s)(\W|')" % (word)
-                pos_offset = 1
             if lem_id not in lemma_pos:
                 lemma_pos[lem_id] = []
-            pos_list = [w.start() + pos_offset for w in re.finditer(reg, text)]
+            pos_list = find_all_word_pos(word, text)
             lemma_pos[lem_id].append((word_id, pos_list))
     # {lemma1.id: [(word1.id, len(word1.name), [pos1, ]), ], }
     return dumps(lemma_pos)
+
+
+def add_words(sentence, s_id, stop_words):
+    from nltk.tokenize import word_tokenize
+    from json import loads, dumps
+    words = word_tokenize(sentence)
+    for word in words:
+        if word in stop_words:
+            continue
+        word_objs = Word.objects.filter(name=word)
+        if not word_objs.exists():
+            continue
+        lemma = Lemma.objects.get(id=word_objs.first().lem_id)
+        sent_ids = loads(lemma.sent_ids) if lemma.sent_ids else {}
+        all_pos = find_all_word_pos(word, sentence)
+        if s_id in sent_ids:
+            sent_ids[s_id].extend(all_pos)
+        else:
+            sent_ids[s_id] = all_pos
+        lemma.sent_ids = dumps(sent_ids)
+        lemma.save()
 
 
 @timer
 def add_sentences_to_db(p_id, p_text):
     # delete all `Sentence` with same `passage_id`
     # add all sentences in passage to db
-    # link `LemToSent` to newly created `Sentence` for lemma of each word in passage
+    # link `Lemma` to newly created `Sentence` for lemma of each word in passage
     if Sentence.objects.filter(passage_id=p_id).exists():
         Sentence.objects.filter(passage_id=p_id).delete()
     from nltk.corpus import stopwords
-    from nltk.tokenize import sent_tokenize, word_tokenize
-    from json import loads, dumps
+    from nltk.tokenize import sent_tokenize
     sentences = sent_tokenize(p_text)
     stop_words = list(stopwords.words("english"))
     stop_words.extend([',', '.', '?', '!'])
     for sentence in sentences:
         new_sent = Sentence(passage_id=p_id, text=sentence)
         new_sent.save()
-        words = word_tokenize(sentence)
-        for word in words:
-            if word in stop_words:
-                continue
-            word_objs = Word.objects.filter(name=word)
-            if not word_objs.exists():
-                continue
-            lemtosent = LemToSent.objects.get(id=word_objs.first().lem_id)
-            sent_ids = loads(lemtosent.sent_ids) if lemtosent.sent_ids else []
-            sent_ids.append(new_sent.id)
-            lemtosent.sent_ids = dumps(list(set(sent_ids)))
-            lemtosent.save()
+        add_words(sentece, new_sent.id, stop_words)
 
 
 class Passage(models.Model):
@@ -149,7 +156,7 @@ class Passage(models.Model):
         # generate `lemma_pos`
         if not self.lemma_pos:
             self.lemma_pos = get_lemma_pos_string(self.text)
-        # creat `LemToSent` mappings
+        # creat `Lemma` to `Sentence` mappings
         if not Sentence.objects.filter(passage_id=self.id).exists():
             add_sentences_to_db(self.id, self.text)
         super().save(*args, **kwargs)

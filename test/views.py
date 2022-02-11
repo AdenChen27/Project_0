@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from test.models import Word, Lemma, Passage
+from test.models import *
 from django.forms.models import model_to_dict
 
 
-def select_passage(request):
+def index(request):
     passages = Passage.objects.all()
-    return render(request, "select-passage.html", {"passages": passages})
+    return render(request, "index.html", {"passages": passages})
 
 
 def passage_handler(request):
@@ -19,6 +19,23 @@ def passage_handler(request):
         lemma_list.append(model_to_dict(Lemma.objects.get(id=lem_id)))
     return render(request, "select-words.html", \
         {"words": lemma_list, "p_id": passage_id})
+
+
+def show_word_search_result(request):
+    from json import loads
+    search_word = request.POST.get("word")
+    match_word = Word.objects.filter(name=search_word)
+    if match_word.exists():
+        sent_ids = LemToSent.objects.get(id=match_word.first().lem_id).sent_ids
+        # if sent_ids:
+        #     sent_ids = loads(sent_ids)
+        #     test_string = ""
+        #     for s_id in sent_ids:
+        #         test_string += Sentence.objects.get(id=s_id).text + "\n"
+        #     return render(request, "temp-show-string.html", {"test_string": test_string})
+    return render(request, "error-message.html", 
+        {"error_message": "'%s' does not exist\nTry another word" % search_word}
+    )
 
 
 def show_definition(request):

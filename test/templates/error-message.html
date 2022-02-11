@@ -1,0 +1,23 @@
+<html>
+
+<head>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
+  <title>word-select</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <h1 style="margin: 30px 0">{% autoescape off %}{{ error_message | linebreaksbr }}{% endautoescape %}</h1>
+      </div>
+      <div class="col-2"></div>
+    </div>
+  </div>
+</body>
+
+</html>
