@@ -145,7 +145,7 @@ def add_sentences_to_db(p_id, p_text):
     for sentence in sentences:
         new_sent = Sentence(passage_id=p_id, text=sentence)
         new_sent.save()
-        add_words(sentece, new_sent.id, stop_words)
+        add_words(sentence, new_sent.id, stop_words)
 
 
 class Passage(models.Model):
@@ -165,10 +165,13 @@ class Passage(models.Model):
 
     def save(self, *args, **kwargs):
         # generate `lemma_pos`
+        print(">>> STAGE 0")
         if not self.lemma_pos:
             self.lemma_pos = get_lemma_pos_string(self.text)
         # creat `Lemma` to `Sentence` mappings
+        super().save(*args, **kwargs)
+        print(">>> STAGE 1")
         if not Sentence.objects.filter(passage_id=self.id).exists():
             add_sentences_to_db(self.id, self.text)
-        super().save(*args, **kwargs)
+        print(">>> STAGE 2")
 
