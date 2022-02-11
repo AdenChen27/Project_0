@@ -70,7 +70,7 @@
 
 .word-def-row {
   margin: 0.75em 0;
-  border-style: solid;
+  /*border-style: solid;*/
   border-radius: 0.5em;
   border-width: 0.15em;
   background-color: var(--main-bg-color);
