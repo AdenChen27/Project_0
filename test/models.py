@@ -2,6 +2,23 @@ from django.db import models
 from django_mysql.models import ListCharField as model_ListCharField
 from jsonfield import JSONField
 
+
+from functools import wraps
+from time import time
+
+def timer(f):
+    @wraps(f)
+    def wrap(*args, **kw):
+        ts = time()
+        result = f(*args, **kw)
+        te = time()
+        # print("func:%r args:[%r, %r] took: %2.4f sec" % \
+          # (f.__name__, args, kw, te - ts))
+        print("[t]func:%s took: %2.4fs" % (f.__name__, te - ts))
+        return result
+    return wrap
+
+
 PASSAGE_TITLE_MAX_LEN = 100
 TAG_MAX_NUM = 5
 WORD_MAX_LEN = 34
@@ -26,8 +43,9 @@ class Word(models.Model):
 
 class LemToSent(models.Model):
     # share name & id with `Lemma`
+    # maps lemmas to sentences
     name = models.CharField(max_length=WORD_MAX_LEN, default="")
-    sent_ids = JSONField(null=True)
+    sent_ids = JSONField(null=True) # set
 
     def __str__(self):
         return self.name
@@ -82,6 +100,36 @@ def get_lemma_pos_string(text):
     return dumps(lemma_pos)
 
 
+@timer
+def add_sentences_to_db(p_id, p_text):
+    # delete all `Sentence` with same `passage_id`
+    # add all sentences in passage to db
+    # link `LemToSent` to newly created `Sentence` for lemma of each word in passage
+    if Sentence.objects.filter(passage_id=p_id).exists():
+        Sentence.objects.filter(passage_id=p_id).delete()
+    from nltk.corpus import stopwords
+    from nltk.tokenize import sent_tokenize, word_tokenize
+    from json import loads, dumps
+    sentences = sent_tokenize(p_text)
+    stop_words = list(stopwords.words("english"))
+    stop_words.extend([',', '.', '?', '!'])
+    for sentence in sentences:
+        new_sent = Sentence(passage_id=p_id, text=sentence)
+        new_sent.save()
+        words = word_tokenize(sentence)
+        for word in words:
+            if word in stop_words:
+                continue
+            word_objs = Word.objects.filter(name=word)
+            if not word_objs.exists():
+                continue
+            lemtosent = LemToSent.objects.get(id=word_objs.first().lem_id)
+            sent_ids = loads(lemtosent.sent_ids) if lemtosent.sent_ids else []
+            sent_ids.append(new_sent.id)
+            lemtosent.sent_ids = dumps(list(set(sent_ids)))
+            lemtosent.save()
+
+
 class Passage(models.Model):
     title = models.CharField(max_length=PASSAGE_TITLE_MAX_LEN)
     text = models.TextField(default="")
@@ -98,9 +146,11 @@ class Passage(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        # generate `lemma_pos`
         if not self.lemma_pos:
             self.lemma_pos = get_lemma_pos_string(self.text)
-        # if not Sentence.objects.filter(passage_id=self.id):
-            
+        # creat `LemToSent` mappings
+        if not Sentence.objects.filter(passage_id=self.id).exists():
+            add_sentences_to_db(self.id, self.text)
         super().save(*args, **kwargs)
 
