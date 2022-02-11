@@ -8,7 +8,7 @@ document.getElementById("lemma_search_input").addEventListener("keyup", function
 function search_word() {
     const form = document.createElement("form");
     form.method = "post";
-    form.action = "../../show_word_search_result/";
+    form.action = "../../show_word_info/";
     var data = {
         "word": document.getElementById("lemma_search_input").value,
         "csrfmiddlewaretoken": csrf_token

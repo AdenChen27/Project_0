@@ -30,7 +30,7 @@ class Lemma(models.Model):
     def_en = models.TextField(default="", blank=True)
     def_zh = models.TextField(default="", blank=True)
     sent_ids = JSONField(null=True)
-    # {passage_id1: [pos1, ], }
+    # {sentence_id1: {word1: [pos1, ], }, }
 
     def __str__(self):
         return self.name
@@ -111,12 +111,23 @@ def add_words(sentence, s_id, stop_words):
         lemma = Lemma.objects.get(id=word_objs.first().lem_id)
         sent_ids = loads(lemma.sent_ids) if lemma.sent_ids else {}
         all_pos = find_all_word_pos(word, sentence)
-        if s_id in sent_ids:
-            sent_ids[s_id].extend(all_pos)
-        else:
-            sent_ids[s_id] = all_pos
+        if s_id not in sent_ids:
+            sent_ids[s_id] = {}
+        if word not in sent_ids[s_id]:
+            sent_ids[s_id][word] = []
+        sent_ids[s_id][word].extend(all_pos)
+        # sent_ids = {sentence_id1: {word1: [pos1, ], }, }
         lemma.sent_ids = dumps(sent_ids)
         lemma.save()
+
+# def temp():
+#     from nltk.corpus import stopwords
+#     stop_words = list(stopwords.words("english"))
+#     stop_words.extend([',', '.', '?', '!'])
+#     for sent in Sentence.objects.all():
+#         add_words(sent.text, sent.id, stop_words)
+#         if i % 10000 == 0:
+#             print("done", i)
 
 
 @timer

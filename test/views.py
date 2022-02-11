@@ -3,6 +3,22 @@ from django.http import HttpResponse
 from test.models import *
 from django.forms.models import model_to_dict
 
+# `show_word_info` page
+HIGHLIGHT_WORD_TEMPLATE = """
+<span class="search-word-highlight">{}</span>
+""".replace("\n", "")
+
+# `show_definition` page
+P_START = r"<div class='passage-text-para'>"
+P_END = r"</div>"
+CHOICE_TEST_TEMPLATE = """
+<span class="lem-blank" id="blank_{}" onclick="click_blank({})">{}</span>
+""".replace("\n", "")
+BLANK_TEST_TEMPLATE = """
+<input type="text" class="test-blank" id="blank_{}" style="width: {}em;" placeholder="">
+<div class="hint-btn" onclick="document.getElementById('blank_' + {}).placeholder='{}'">hint</div>
+""".replace("\n", "")
+
 
 def index(request):
     passages = Passage.objects.all()
@@ -17,8 +33,23 @@ def passage_handler(request):
     for lem_id in lem_pos:
         lem_id = int(lem_id)
         lemma_list.append(model_to_dict(Lemma.objects.get(id=lem_id)))
-    return render(request, "select-words.html", \
-        {"words": lemma_list, "p_id": passage_id})
+    return render(request, "select-words.html", {
+        "words": lemma_list, 
+        "p_id": passage_id, 
+    })
+
+
+def render_sentence(text, word_pos_list):
+    # return [(rendered_text, passage_title), ]
+    # word_pos_list = {word1: [pos1, ], }
+    pos_offset = 0
+    for word in word_pos_list:
+        for pos in word_pos_list[word]:
+            word_len = len(word)
+            word_e = HIGHLIGHT_WORD_TEMPLATE.format(word)
+            text = text[:pos + pos_offset] + word_e + text[pos + pos_offset + word_len:]
+            pos_offset += len(word_e) - word_len
+    return text
 
 
 def show_word_search_result(request):
@@ -26,16 +57,25 @@ def show_word_search_result(request):
     search_word = request.POST.get("word")
     match_word = Word.objects.filter(name=search_word)
     if match_word.exists():
-        sent_ids = LemToSent.objects.get(id=match_word.first().lem_id).sent_ids
-        # if sent_ids:
-        #     sent_ids = loads(sent_ids)
-        #     test_string = ""
-        #     for s_id in sent_ids:
-        #         test_string += Sentence.objects.get(id=s_id).text + "\n"
-        #     return render(request, "temp-show-string.html", {"test_string": test_string})
-    return render(request, "error-message.html", 
-        {"error_message": "'%s' does not exist\nTry another word" % search_word}
-    )
+        lemma = Lemma.objects.get(id=match_word.first().lem_id)
+        sent_ids = lemma.sent_ids
+        if sent_ids:
+            sent_ids = loads(sent_ids)
+            sentences = [] # [(rendered_text, passage_title), ]
+            for s_id in sent_ids:
+                sent_obj = Sentence.objects.get(id=s_id)
+                sentences.append((
+                    render_sentence(sent_obj.text, sent_ids[s_id]), 
+                    Passage.objects.get(id=sent_obj.passage_id).title, 
+                    sent_obj.passage_id, 
+                ))
+            return render(request, "show_word_info.html", {
+                "lemma": lemma, 
+                "sentences": sentences, 
+            })
+    return render(request, "error-message.html", {
+        "error_message": "'%s' does not exist\nTry another word" % search_word, 
+    })
 
 
 def show_definition(request):
@@ -89,15 +129,6 @@ def blank_rep_init(lemma_pos, request):
     # ans = {blank_id: {"id": ans_id, "name": ans}, }
     return blank_rep_buf, hints, ans
 
-P_START = r"<div class='passage-text-para'>"
-P_END = r"</div>"
-CHOICE_TEST_BLANK = """
-<span class="lem-blank" id="blank_{}" onclick="click_blank({})">{}</span>
-""".replace("\n", "")
-BLANK_TEST_BLANK = """
-<input type="text" class="test-blank" id="blank_{}" style="width: {}em;" placeholder="">
-<div class="hint-btn" onclick="document.getElementById('blank_' + {}).placeholder='{}'">hint</div>
-""".replace("\n", "")
 
 def test_passage(request):
     test_mode = request.POST.get("test_mode");
@@ -107,16 +138,14 @@ def test_passage(request):
     
     from json import loads
 
-    blank_e_template = CHOICE_TEST_BLANK if test_mode == "choice" else BLANK_TEST_BLANK
+    blank_e_template = CHOICE_TEST_TEMPLATE if test_mode == "choice" else BLANK_TEST_TEMPLATE
     pos_offset = 0
     blank_rep_buf, hints, ans = blank_rep_init(loads(passage.lemma_pos), request)
-    print(blank_rep_buf)
     for pos, word_len, blank_id, lem_name in blank_rep_buf:
         if test_mode == "choice":
             blank_e = blank_e_template.format(blank_id, blank_id, "_"*5)
         else:
             blank_e = blank_e_template.format(blank_id, word_len/2 + 1, blank_id, lem_name)
-            print(blank_e)
         text = text[:pos + pos_offset] + blank_e + text[pos + pos_offset + word_len:]
         pos_offset += len(blank_e) - word_len
     text = P_START + text.replace("\n", P_END + P_START) + P_END

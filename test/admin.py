@@ -18,11 +18,6 @@ class LemmaAdmin(admin.ModelAdmin):
     search_fields = ('name', 'freq', 'id', )
     ordering = ('-freq', )
 
-# class LemToSentAdmin(admin.ModelAdmin):
-#     list_display = ('name', 'id', 'sent_ids', )
-#     search_fields = ('name', 'id', 'sent_ids', )
-#     ordering = ('name', )
-
 class SentenceAdmin(admin.ModelAdmin):
     list_display = ('text', 'id', 'passage_id', )
     search_fields = ('text', 'id', 'passage_id', )
@@ -32,5 +27,4 @@ class SentenceAdmin(admin.ModelAdmin):
 admin.site.register(Passage, PassageAdmin)
 admin.site.register(Word, WordAdmin)
 admin.site.register(Lemma, LemmaAdmin)
-# admin.site.register(LemToSent, LemToSentAdmin)
 admin.site.register(Sentence, SentenceAdmin)

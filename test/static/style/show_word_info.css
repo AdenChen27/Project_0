@@ -1,0 +1,14 @@
+.sentence {
+    font-size: 1.3em;
+}
+
+.passage_title {
+    font-size: 1.1em;
+    color: rgb(0, 0, 0, .7);
+    text-align: right;
+}
+
+.search-word-highlight {
+    color: rgb(30, 144, 255);
+}
+

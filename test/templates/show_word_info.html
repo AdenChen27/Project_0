@@ -1,0 +1,55 @@
+<html>
+
+<head>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
+  <link rel="stylesheet" type="text/css" href="../../static/style/show_word_info.css">
+  <script>
+    var audio_loaded = false;
+  </script>
+  <title>Word Info</title>
+</head>
+
+<body>
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+      
+      <div class="container row" id="def_holder">
+        <div class="row word-def-row" name="def-row">
+          <div class="col-3 def-name">
+            {{ lemma.name }}
+          </div>
+          <div class="col-8">
+            <div class="row def">
+              <p>{{ lemma.def_en }}</p>
+            </div>
+            <div class="row def">
+              <p>{{ lemma.def_zh }}</p>
+            </div>
+          </div>
+          <div class="col-1">
+            <img class="img-play" src="../../static/pictures/play.svg" onclick="play_audio({{ lemma.id }}, '{{ lemma.name }}')" />
+            <audio id="word_audio_{{ lemma.id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ lemma.name }}--_gb_1.mp3" onloadeddata="audio_loaded=true;"/>
+          </div>
+        </div>
+
+        <div class="row">
+          {% autoescape off %}
+          {% for sentence, passage_title, passage_id in sentences %}
+          <p class="sentence">{{ sentence }}</p>
+          <p class="passage_title" onclick="window.location.href = '/passage/?p_id={{ passage_id }}'">{{ passage_title }}</p>
+          {% endfor %}
+          {% endautoescape %}
+        </div>
+      </div>
+      
+    </div>
+    <div class="col-2"></div>
+  </div>
+  <script src="../../static/javascript/show_word_info.js"></script>
+</body>
+
+</html>
