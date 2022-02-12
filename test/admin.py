@@ -3,8 +3,8 @@ from test.models import *
 
 
 class PassageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'id', 'tags', )
-    search_fields = ('title', )
+    list_display = ('title', 'id', 'tags', 'author', )
+    search_fields = ('title', 'author', 'tags', )
     ordering = ('title', )
 
 

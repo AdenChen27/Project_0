@@ -20,6 +20,7 @@ def timer(f):
 
 
 PASSAGE_TITLE_MAX_LEN = 100
+PASSAGE_AUTHOR_MAX_LEN = 100
 TAG_MAX_NUM = 5
 WORD_MAX_LEN = 34
 
@@ -150,6 +151,7 @@ def add_sentences_to_db(p_id, p_text):
 
 class Passage(models.Model):
     title = models.CharField(max_length=PASSAGE_TITLE_MAX_LEN)
+    author = models.CharField(max_length=PASSAGE_AUTHOR_MAX_LEN, default="")
     text = models.TextField(default="")
     lemma_pos = models.TextField(default="", blank=True)
     # {lemma1.id: [(word1.id, len(word1.name), [pos1, ]), ], }
@@ -165,13 +167,10 @@ class Passage(models.Model):
 
     def save(self, *args, **kwargs):
         # generate `lemma_pos`
-        print(">>> STAGE 0")
         if not self.lemma_pos:
             self.lemma_pos = get_lemma_pos_string(self.text)
         # creat `Lemma` to `Sentence` mappings
         super().save(*args, **kwargs)
-        print(">>> STAGE 1")
         if not Sentence.objects.filter(passage_id=self.id).exists():
             add_sentences_to_db(self.id, self.text)
-        print(">>> STAGE 2")
 
