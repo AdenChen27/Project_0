@@ -16,7 +16,6 @@
   <div class="row">
     <div class="col-2"></div>
     <div class="col-8">
-      
       <div class="container row" id="def_holder">
         <div class="row word-def-row" name="def-row">
           <div class="col-3 def-name">
@@ -37,17 +36,16 @@
         </div>
 
         <div class="row">
-          {% autoescape off %}
+        {% autoescape off %}
           {% for sentence, passage_title, passage_id in sentences %}
           <div class="sentence-container">
             <p class="sentence">{{ sentence }}</p>
             <p class="passage_title" onclick="window.location.href = '/passage/?p_id={{ passage_id }}'">{{ passage_title }}</p>
           </div>
           {% endfor %}
-          {% endautoescape %}
+        {% endautoescape %}
         </div>
       </div>
-      
     </div>
     <div class="col-2"></div>
   </div>

@@ -69,10 +69,10 @@
 }
 
 .word-def-row {
-  margin: 0.75em 0;
+  margin: .75em 0;
   /*border-style: solid;*/
-  border-radius: 0.5em;
-  border-width: 0.15em;
+  border-radius: .8em;
+  /*border-width: 0.15em;*/
   background-color: var(--main-bg-color);
 }
 
@@ -85,8 +85,13 @@
 }
 
 .img-play {
-  height: 1em;
-  width: 1em;
+  height: 1.5em;
+  width: 1.5em;
+  transition: transform .15s linear;
+}
+
+.img-play:hover {
+  transform: scale(1.05);
 }
 
 ::placeholder {

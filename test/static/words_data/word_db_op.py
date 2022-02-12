@@ -10,7 +10,7 @@ def timer(f):
         te = time()
         # print("func:%r args:[%r, %r] took: %2.4f sec" % \
           # (f.__name__, args, kw, te - ts))
-        print("func:%s took: %2.4fs" % (f.__name__, te - ts))
+        print("[t]func:%s took: %2.4fs" % (f.__name__, te - ts))
         return result
     return wrap
 
@@ -47,6 +47,15 @@ def read_dict():
             lines[word.lower()] = (def1, def2)
     return lines
 
+def read_full_dict():
+    import csv
+    csv_reader = csv.reader(open(r"test/static/words_data/ecdict.csv"))
+    d = {}
+    for row in csv_reader:
+        if ',' in row[2] or ',' in row[3]:
+            d[row[0]] = [row[2], row[3]]
+    return d
+
 from test.models import Word, Lemma
 
 
@@ -64,10 +73,54 @@ def f2(length):
 
 # from test.static.words_data import word_db_op;import importlib
 # importlib.reload(word_db_op); word_db_op.main()
+# from test.static.words_data import word_db_op;import importlib; importlib.reload(word_db_op); word_db_op.main()
+@timer
 def main():
-    test_len = 10000
-    f1(test_len)
-    f2(test_len)
+    i = 0
+    for lemma in Lemma.objects.all():
+        lemma.def_en = lemma.def_en.replace("\\n", "\n")
+        lemma.def_zh = lemma.def_zh.replace("\\n", "\n")
+        lemma.save()
+        i += 1
+        if i % 1000 == 0:
+            print("[+]done", i)
+
+    # d = read_full_dict();
+    # lemmas = [a for a, b, c in read_lemma()]
+    # i = 0
+    # for lem in lemmas:
+    #     if lem in d and (',' in d[lem][0] or ',' in d[lem][1]):
+    #         lem_objs = Lemma.objects.filter(name=lem)
+    #         if lem_objs.exists():
+    #             lem_obj = lem_objs.first()
+    #             if lem_obj.name != lem:
+    #                 print("[-]diff name: %s %s" % (lem, lem_obj.name))
+    #             else:
+    #                 if ',' in d[lem][0]:
+    #                     if d[lem][0][:2] == 'v ':
+    #                         # print(">", type(d[lem][0]), d[lem][0])
+    #                         d[lem][0] = "v. " + d[lem][0][2:]
+    #                     if d[lem][0][:2] == 'n ':
+    #                         d[lem][0] = "n. " + d[lem][0][2:]
+    #                     # print("%s \n%s \n" % (lem_obj.def_en, d[lem][0]))
+    #                     lem_obj.def_en = d[lem][0]
+    #                     lem_obj.save()
+    #                 if ',' in d[lem][1]:
+    #                     if d[lem][1][:2] == 'v ':
+    #                         d[lem][1] = "v. " + d[lem][1][2:]
+    #                     if d[lem][1][:2] == 'n ':
+    #                         d[lem][1] = "n. " + d[lem][1][2:]
+    #                     # print("%s \n%s \n" % (lem_obj.def_zh, d[lem][1]))
+    #                     lem_obj.def_zh = d[lem][1]
+    #                     lem_obj.save()
+    #         i += 1
+    #         if i % 1000 == 0:
+    #             print("[+]done %d" % i)
+
+    # print(d["fly"])
+    # test_len = 10000
+    # f1(test_len)
+    # f2(test_len)
     # @timer
     # def f():
     #     from test.models import Lemma

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from test.models import *
 from django.forms.models import model_to_dict
+# from django.template.defaultfilters import linebreaksbr
 
 # `show_word_info` page
 HIGHLIGHT_WORD_TEMPLATE = """
@@ -38,6 +39,11 @@ def passage_handler(request):
         "p_id": passage_id, 
     })
 
+# def render_lemma_defs(lemma):
+#     lemma.def_en = linebreaksbr(lemma.def_en)
+#     lemma.def_zh = linebreaksbr(lemma.def_zh)
+#     return lemma
+
 
 def render_sentence(text, word_pos_list):
     # return [(rendered_text, passage_title), ]
@@ -59,9 +65,9 @@ def show_word_search_result(request):
     if match_word.exists():
         lemma = Lemma.objects.get(id=match_word.first().lem_id)
         sent_ids = lemma.sent_ids
+        sentences = [] # [(rendered_text, passage_title), ]
         if sent_ids:
             sent_ids = loads(sent_ids)
-            sentences = [] # [(rendered_text, passage_title), ]
             for s_id in sent_ids:
                 sent_obj = Sentence.objects.get(id=s_id)
                 sentences.append((
@@ -69,10 +75,10 @@ def show_word_search_result(request):
                     Passage.objects.get(id=sent_obj.passage_id).title, 
                     sent_obj.passage_id, 
                 ))
-            return render(request, "show_word_info.html", {
-                "lemma": lemma, 
-                "sentences": sentences, 
-            })
+        return render(request, "show_word_info.html", {
+            "lemma": lemma, 
+            "sentences": sentences, 
+        })
     return render(request, "error-message.html", {
         "error_message": "'%s' does not exist\nTry another word" % search_word, 
     })
