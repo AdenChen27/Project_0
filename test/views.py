@@ -94,8 +94,10 @@ def show_definition(request):
     lemmas = []
     lem_cnt = 0
     for lem_id in lemma_id:
-        lem_cnt += 1
-        lemmas.append(model_to_dict(Lemma.objects.get(id=lem_id)))
+        lem_obj = Lemma.objects.get(id=lem_id)
+        if lem_obj.def_en or lem_obj.def_zh:
+            lem_cnt += 1
+            lemmas.append(model_to_dict(lem_obj))
     return render(request, "show-definition.html", {
         "p_id": passage_id, 
         "lemmas": lemmas, 
