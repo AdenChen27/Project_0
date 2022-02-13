@@ -1,0 +1,38 @@
+<html>
+
+<head>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <title>test passage</title>
+  <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
+  <link rel="stylesheet" type="text/css" href="../../static/style/test-page.css">
+  <script>
+    {% autoescape off %}
+    var ans = {{ ans }}, 
+      choices = {{ choices }};
+    {% endautoescape %}
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <h1 style="text-align: center; margin: 1em 0">{{ passage_title }}</h1>
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8 passage-text">
+        {% autoescape off %}{{ passage_text }}{% endautoescape %}
+        <div class="row">
+          <div class="col-2"></div>
+          <button class="btn btn-outline-dark col-8" style="margin: 30px 0" onclick="check()">check</button>
+          <div class="col-2"></div>
+        </div>
+      </div>
+      <div class="col-2"></div>
+    </div>
+
+  </div>
+  <script src="../../static/javascript/test-choice-0.js"></script>
+</body>
+
+</html>

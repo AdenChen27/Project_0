@@ -2,6 +2,16 @@
   --blank-color: rgb(30, 144, 255);
 }
 
+.multiple-choice {
+  width: 9em;
+  display: inline;
+  color: var(--blank-color);
+}
+
+option {
+  width: 7em;
+}
+
 .test-blank {
   height: 1em;
   width: 5em;

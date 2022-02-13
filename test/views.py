@@ -12,13 +12,20 @@ HIGHLIGHT_WORD_TEMPLATE = """
 # `show_definition` page
 P_START = r"<div class='passage-text-para'>"
 P_END = r"</div>"
-CHOICE_TEST_TEMPLATE = """
-<span class="lem-blank" id="blank_{}" onclick="click_blank({})">{}</span>
-""".replace("\n", "")
-BLANK_TEST_TEMPLATE = """
-<input type="text" class="test-blank" id="blank_{}" style="width: {}em;" placeholder="">
-<div class="hint-btn" onclick="document.getElementById('blank_' + {}).placeholder='{}'">hint</div>
-""".replace("\n", "")
+# args: blank_id, width, lem_name, blank_placeholder, lem_name(hint), ans
+BLANK_E_TEMPLATE = {
+    "choice-grammar": """<select class="form-select multiple-choice" id="blank_{blank_id}"></select>""", 
+    "choice": """<span class="lem-blank" id="blank_{blank_id}" onclick="click_blank({blank_id})">{blank_placeholder}</span>""", 
+    "blank": """<input type="text" class="test-blank" id="blank_{blank_id}" style="width: {width}em;" placeholder="">
+<div class="hint-btn" onclick="document.getElementById('blank_' + {blank_id}).placeholder='{hint}'">hint</div>
+""".replace("\n", ""), 
+}
+HTML_TEMPLATE = {
+    "choice-grammar": "test-chioce-0.html", # focus on grammar
+    "choice": "test-standard.html", 
+    "blank": "test-blank.html",
+}
+CHOICE_NUM = 4
 
 
 def index(request):
@@ -127,10 +134,10 @@ def blank_rep_init(lemma_pos, request):
             for pos in pos_list:
                 blank_id += 1
                 ans[blank_id] = {"id": int(word_id), "name": word_name}
-                blank_rep_buf.append((pos, len(word_name), blank_id, lem_name))
+                blank_rep_buf.append((pos, len(word_name), blank_id, word_name, lem_name, lem_id))
         hints.append((lem_id, lem_name, cur_lemma_hint))
     blank_rep_buf.sort(key=lambda x: x[0])
-    # blank_rep_buf = {(pos, word_len, blank_id), }
+    # blank_rep_buf = [(pos, word_len, blank_id, word_name, lem_name, lem_id), ]
     # hints = [
     #     (lemma.name, lemma.id, [(word1, word1.id), ]), 
     # ]
@@ -138,30 +145,59 @@ def blank_rep_init(lemma_pos, request):
     return blank_rep_buf, hints, ans
 
 
+def get_grammar_choices(ans_lem_id, ans):
+    # return [ans, wrong_choice1, ]
+    # all choices from same lemma
+    from random import sample, choice
+    word_objs = Word.objects.filter(lem_id=ans_lem_id)
+    choices = sample(list(word_objs), min(CHOICE_NUM + 1, len(word_objs)))
+    choices = [word_obj.name for word_obj in choices if word_obj.name != ans]
+    choices = [ans] + choices
+    # print(choices)
+    return choices
+
+
 def test_passage(request):
-    test_mode = request.POST.get("test_mode");
+    mode = request.POST.get("test_mode")
     passage_id = request.POST.get("p_id")
     passage = Passage.objects.get(id=passage_id)
     text = passage.text
     
     from json import loads
-
-    blank_e_template = CHOICE_TEST_TEMPLATE if test_mode == "choice" else BLANK_TEST_TEMPLATE
     pos_offset = 0
     blank_rep_buf, hints, ans = blank_rep_init(loads(passage.lemma_pos), request)
-    for pos, word_len, blank_id, lem_name in blank_rep_buf:
-        if test_mode == "choice":
-            blank_e = blank_e_template.format(blank_id, blank_id, "_"*5)
-        else:
-            blank_e = blank_e_template.format(blank_id, word_len/2 + 1, blank_id, lem_name)
+
+    # for "choice-grammar"
+    # {blank_id: [ans, wrong_choice1, ], }
+    choices = {}
+
+    for pos, word_len, blank_id, word_name, lem_name, lem_id in blank_rep_buf:
+        # if test_mode == "choice-grammar":
+        #     pass
+        # elif test_mode == "choice":
+        #     blank_e = BLANK_E_TEMPLATE[mode].format(blank_id, blank_id, "_"*5)
+        # else:
+        #     blank_e = BLANK_E_TEMPLATE[mode].format(blank_id, word_len/2 + 1, blank_id, lem_name)
+        blank_e = BLANK_E_TEMPLATE[mode].format(
+            blank_id=blank_id, 
+            width=word_len/2 + 1, 
+            hint=lem_name, 
+            blank_placeholder="_____", 
+        )
         text = text[:pos + pos_offset] + blank_e + text[pos + pos_offset + word_len:]
         pos_offset += len(blank_e) - word_len
+        choices[blank_id] = get_grammar_choices(lem_id, word_name)
     text = P_START + text.replace("\n", P_END + P_START) + P_END
-
-    return render(request, "test-standard.html" if test_mode == "choice" else "test-blank.html", {
+    context = {
         "passage_text": text, 
         "passage_title": passage.title, 
-        "hints": sorted(hints, key=lambda x: x[0]), 
-        "ans": ans, 
-    })
+        "hints": sorted(hints, key=lambda x: x[0]),
+        "ans": ans, # {blank_id: {"id": ans_id, "name": ans}, }
+    }
+    if mode == "choice-grammar":
+        context["choices"] = choices
+    return render(request, HTML_TEMPLATE[mode], context)
+
+
+
 
