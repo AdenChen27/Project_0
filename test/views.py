@@ -12,11 +12,12 @@ HIGHLIGHT_WORD_TEMPLATE = """
 # `show_definition` page
 P_START = r"<div class='passage-text-para'>"
 P_END = r"</div>"
-# args: blank_id, width, lem_name, blank_placeholder, lem_name(hint), ans
+# args: blank_id, blank_width, select_width
+#   lem_name, blank_placeholder, lem_name(hint), ans
 BLANK_E_TEMPLATE = {
-    "choice-grammar": """<select class="form-select multiple-choice" id="blank_{blank_id}"></select>""", 
+    "choice-grammar": """<select class="form-select multiple-choice" style="width: {select_width}em;" id="blank_{blank_id}"></select>""", 
     "choice": """<span class="lem-blank" id="blank_{blank_id}" onclick="click_blank({blank_id})">{blank_placeholder}</span>""", 
-    "blank": """<input type="text" class="test-blank" id="blank_{blank_id}" style="width: {width}em;" placeholder="">
+    "blank": """<input type="text" class="test-blank" id="blank_{blank_id}" style="width: {blank_width}em;" placeholder="">
 <div class="hint-btn" onclick="document.getElementById('blank_' + {blank_id}).placeholder='{hint}'">hint</div>
 """.replace("\n", ""), 
 }
@@ -182,15 +183,10 @@ def test_passage(request):
     choices = {}
 
     for pos, word_len, blank_id, word_name, lem_name, lem_id in blank_rep_buf:
-        # if test_mode == "choice-grammar":
-        #     pass
-        # elif test_mode == "choice":
-        #     blank_e = BLANK_E_TEMPLATE[mode].format(blank_id, blank_id, "_"*5)
-        # else:
-        #     blank_e = BLANK_E_TEMPLATE[mode].format(blank_id, word_len/2 + 1, blank_id, lem_name)
         blank_e = BLANK_E_TEMPLATE[mode].format(
             blank_id=blank_id, 
-            width=word_len/2 + 1, 
+            blank_width=word_len/2 + 1, 
+            select_width=word_len/1.5 + 3, 
             hint=lem_name, 
             blank_placeholder="_____", 
         )
