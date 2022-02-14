@@ -66,22 +66,32 @@ def render_sentence(text, word_pos_list):
 
 
 def show_word_search_result(request):
-    from json import loads
+    from json import loads, dumps
     search_word = request.POST.get("word")
     match_word = Word.objects.filter(name=search_word)
     if match_word.exists():
         lemma = Lemma.objects.get(id=match_word.first().lem_id)
         sent_ids = lemma.sent_ids
-        sentences = [] # [(rendered_text, passage_title), ]
+        sentences = [] # [(rendered_text, passage_obj), ]
         if sent_ids:
+            sent_ids_changed = False
             sent_ids = loads(sent_ids)
+            new_sent_ids = sent_ids.copy() # del sent_id when sent deleted
             for s_id in sent_ids:
-                sent_obj = Sentence.objects.get(id=s_id)
-                sentences.append((
-                    render_sentence(sent_obj.text, sent_ids[s_id]), 
-                    Passage.objects.get(id=sent_obj.passage_id).title, 
-                    sent_obj.passage_id, 
-                ))
+                sent_objs = Sentence.objects.filter(id=s_id)
+                if sent_objs.exists():
+                    sent_obj = sent_objs.first()
+                    sentences.append((
+                        render_sentence(sent_obj.text, sent_ids[s_id]), 
+                        Passage.objects.get(id=sent_obj.passage_id), 
+                    ))
+                else:
+                    # pop when sent deleted
+                    new_sent_ids.pop(s_id)
+                    sent_ids_changed = True
+            if sent_ids_changed:
+                lemma.sent_ids = dumps(new_sent_ids)
+                lemma.save()
         return render(request, "show_word_info.html", {
             "lemma": lemma, 
             "sentences": sentences, 

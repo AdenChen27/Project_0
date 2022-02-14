@@ -16,3 +16,9 @@
     margin: 1em 0;
 }
 
+.passage_author {
+    font-size: 1em;
+    color: rgb(0, 0, 0, .7);
+    text-align: right;
+}
+

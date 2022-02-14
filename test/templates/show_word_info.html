@@ -8,6 +8,7 @@
   <link rel="stylesheet" type="text/css" href="../../static/style/show_word_info.css">
   <script>
     var audio_loaded = false;
+    var csrf_token = "{{ csrf_token }}";
   </script>
   <title>Word Info</title>
 </head>
@@ -16,6 +17,14 @@
   <div class="row">
     <div class="col-2"></div>
     <div class="col-8">
+      <div class="row" style="margin: 30px 0">
+        <div class="col-9">
+          <input type="text" class="form-control" id="lemma_search_input">
+        </div>
+        <div class="col-3">
+          <button class="btn btn-outline-dark col-12" id="search_word_btn" onclick="search_word()">Search</button>
+        </div>
+      </div>
       <div class="container row" id="def_holder">
         <div class="row word-def-row" name="def-row">
           <div class="col-3 def-name">
@@ -34,22 +43,23 @@
             <audio id="word_audio_{{ lemma.id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ lemma.name }}--_gb_1.mp3" onloadeddata="audio_loaded=true;"/>
           </div>
         </div>
+      </div>
 
-        <div class="row">
-        {% autoescape off %}
-          {% for sentence, passage_title, passage_id in sentences %}
-          <div class="sentence-container">
-            <p class="sentence">{{ sentence }}</p>
-            <p class="passage_title" onclick="window.location.href = '/passage/?p_id={{ passage_id }}'">{{ passage_title }}</p>
-          </div>
-          {% endfor %}
-        {% endautoescape %}
+      <div class="row">
+      {% autoescape off %}
+        {% for sentence, passage in sentences %}
+        <div class="sentence-container">
+          <p class="sentence">{{ sentence }}</p>
+          <p class="passage_title" onclick="window.location.href = '/passage/?p_id={{ passage.id }}'">{{ passage.title }} - {{ passage.author }}</p>
         </div>
+        {% endfor %}
+      {% endautoescape %}
       </div>
     </div>
     <div class="col-2"></div>
   </div>
   <script src="../../static/javascript/show_word_info.js"></script>
+  <script src="../../static/javascript/word_search.js"></script>
 </body>
 
 </html>
