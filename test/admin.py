@@ -3,7 +3,7 @@ from test.models import *
 
 
 class PassageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'id', 'tags', 'author', )
+    list_display = ('title', 'id', 'tags', 'author', 'lemma_pos')
     search_fields = ('title', 'author', 'tags', )
     ordering = ('title', )
 

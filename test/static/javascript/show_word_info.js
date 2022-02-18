@@ -6,3 +6,5 @@ function play_audio(word_id, word_name) {
         window.speechSynthesis.speak(words);
     }
 }
+
+

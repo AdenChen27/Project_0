@@ -1,4 +1,10 @@
-document.getElementById("lemma_search_input").addEventListener("keyup", function(event) {
+var lemma_search_input = document.getElementById("lemma_search_input")
+lemma_search_input.addEventListener("mouseover", function() {
+    lemma_search_input.focus();
+});
+
+
+lemma_search_input.addEventListener("keyup", function(event) {
     if (event.keyCode === 13) {
         event.preventDefault();
         document.getElementById("search_word_btn").click();
