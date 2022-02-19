@@ -3,17 +3,15 @@ const WORD_PER_ROW = 6;
 
 
 function choose_word(word_id) {
+    console.log(word_id)
     word_id = Number(word_id);
     word_block = document.getElementById("word_" + word_id);
     if (selected_words.has(word_id)) {
         selected_words.delete(word_id);
-        word_block.style.backgroundColor = "#FFFFFF";
-        // word_block.style.borderBottomStyle = "hidden";
+        word_block.classList.remove("selected");
     } else {
         selected_words.add(word_id)
-        word_block.style.backgroundColor = "#FCFBB0";
-        // word_block.style.borderBottomColor = "#808080";
-        // word_block.style.borderBottomStyle = "solid";
+        word_block.classList.add("selected");
     }
 }
 

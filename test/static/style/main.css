@@ -1,5 +1,10 @@
 :root {
-  --main-bg-color: rgb(224, 255, 255, 1);
+  --color-0: #edf6f9;
+  --color-1: #caf0f8;
+}
+
+body {
+  background-color: var(--color-0);
 }
 
 .tag {
@@ -8,7 +13,7 @@
   border-style: solid;
   border-radius: 0.3em;
   border-width: 0.1em;
-  background-color: rgb(224, 255, 255, 1);
+  background-color: var(--color-1);
   transition: transform .15s linear;
   position: relative;
   display: block;
@@ -50,6 +55,7 @@
   font-size: 1.2em;
   line-height: 1.5em;
   margin: 0.1em 0em;
+  text-align: center;
 }
 
 .def-name {
@@ -65,7 +71,7 @@
 }
 
 .text-hide {
-  color: var(--main-bg-color);
+  color: var(--color-1);
 }
 
 .word-def-row {
@@ -73,7 +79,7 @@
   /*border-style: solid;*/
   border-radius: .8em;
   /*border-width: 0.15em;*/
-  background-color: var(--main-bg-color);
+  background-color: var(--color-1);
 }
 
 .block-space {
@@ -97,5 +103,10 @@
 ::placeholder {
   color: rgb(30, 144, 255, 0.2);
   opacity: 1;
+}
+
+.selected {
+  background-color: var(--color-1);
+  border-radius: .2em;
 }
 
