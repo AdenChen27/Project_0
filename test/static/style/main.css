@@ -1,10 +1,16 @@
 :root {
   --color-0: #edf6f9;
   --color-1: #caf0f8;
+  --color-2: #1E90FF;
 }
 
 body {
   background-color: var(--color-0);
+}
+
+.btn:hover {
+  background-color: var(--color-1);
+  color: black;
 }
 
 .tag {
@@ -32,7 +38,7 @@ body {
 }
 
 .lem-blank {
-  color: rgb(30, 144, 255);
+  color: var(--color-2);
 }
 
 .hint-container {
@@ -42,7 +48,8 @@ body {
 
 .hint {
   border-style: solid;
-  border-color: white;
+  border-color: var(--color-0);
+  border-radius: 0.2em;
   padding: 0 0.3em;
 }
 

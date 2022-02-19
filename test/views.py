@@ -18,7 +18,7 @@ BLANK_E_TEMPLATE = {
     "choice-grammar": """<select class="form-select multiple-choice" style="width: {select_width}em;" id="blank_{blank_id}"></select>""", 
     "choice": """<span class="lem-blank" id="blank_{blank_id}" onclick="click_blank({blank_id})">{blank_placeholder}</span>""", 
     "blank": """<input type="text" class="test-blank" id="blank_{blank_id}" style="width: {blank_width}em;" placeholder="">
-<div class="hint-btn" onclick="document.getElementById('blank_' + {blank_id}).placeholder='{hint}'">hint</div>
+<div class="hint-btn" onclick="document.getElementById('blank_' + {blank_id}).value='{hint}'">hint</div>
 """.replace("\n", ""), 
 }
 HTML_TEMPLATE = {

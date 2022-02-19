@@ -1,11 +1,8 @@
-:root {
-  --blank-color: rgb(30, 144, 255);
-}
-
+@import "main.css";
 .multiple-choice {
   width: 9em;
   display: inline;
-  color: var(--blank-color);
+  color: var(--color-2);
 }
 
 option {
@@ -13,12 +10,13 @@ option {
 }
 
 .test-blank {
+  background-color: var(--color-0);
   height: 1em;
   width: 5em;
-  color: var(--blank-color);
+  color: var(--color-2);
   border-style: none;
   border-bottom: solid;
-  border-color: var(--blank-color);
+  border-color: var(--color-2);
 }
 
 .test-blank:focus {
@@ -30,19 +28,19 @@ option {
   height: 1em;
   padding: 0 .3em;
   font-size: .7em;
-  color: var(--blank-color);
-  border-color: var(--blank-color);
+  color: var(--color-2);
+  border-color: var(--color-2);
   border-style: solid;
   border-radius: .5em;
 }
 
 .hint-btn:hover {
-  background-color: var(--blank-color);
+  background-color: var(--color-2);
   color: white;
 }
 
 .hint-btn:active {
   filter: brightness(75%);
   outline: solid;
-  outline-color: var(--blank-color);
+  outline-color: var(--color-2);
 }

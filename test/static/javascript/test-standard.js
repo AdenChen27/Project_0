@@ -23,10 +23,10 @@ function click_hint(word_id, word_name) {
     if (hint_clipboard_word_id != -1) {
         var pre_hint = document.getElementById("hint_" + hint_clipboard_word_id);
         pre_hint.style.backgroundColor = `rgb(30, 144, 255, ${get_chosen_cnt(hint_clipboard_word_id)/10})`;
-        pre_hint.style.borderColor = "#FFF";
+        pre_hint.style.borderColor = "var(--color-0)";
     }
     var hint = document.getElementById("hint_" + word_id);
-    hint.style.borderColor = "rgb(30, 144, 255)";
+    hint.style.borderColor = "var(--color-2)";
     hint_clipboard_word_id = word_id;
     hint_clipboard_word_name = word_name;
 }
