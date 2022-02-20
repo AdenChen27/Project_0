@@ -33,7 +33,7 @@
           </thead>
           <tbody>
             {% for passage in passages %}
-            <tr onclick="window.location.href = '/passage/?p_id={{ passage.id }}'">
+            <tr class="sel-passage-tr" onclick="window.location.href = '/passage/?p_id={{ passage.id }}'">
               <td>{{ passage.title }}</td>
               <td>
                 <span class="">{{ passage.author }}</span>
