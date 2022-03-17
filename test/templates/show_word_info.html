@@ -39,7 +39,7 @@
             </div>
           </div>
           <div class="col-1">
-            <img class="img-play" src="../../static/pictures/play.svg" onclick="play_audio({{ lemma.id }}, '{{ lemma.name }}')" />
+            <img class="img-play" src="../../static/pictures/play.png" onclick="play_audio({{ lemma.id }}, '{{ lemma.name }}')" />
             <audio id="word_audio_{{ lemma.id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ lemma.name }}--_gb_1.mp3" onloadeddata="audio_loaded=true;"/>
           </div>
         </div>

@@ -103,13 +103,14 @@ body {
 }
 
 .img-play {
+  margin: 1em 0 0 0;
   height: 1.5em;
   width: 1.5em;
   transition: transform .15s linear;
 }
 
 .img-play:hover {
-  transform: scale(1.05);
+  transform: scale(1.15);
 }
 
 ::placeholder {
