@@ -2,16 +2,25 @@ var selected_words = new Set([]);
 const WORD_PER_ROW = 6;
 
 
-function choose_word(word_id) {
-    console.log(word_id)
-    word_id = Number(word_id);
-    word_block = document.getElementById("word_" + word_id);
+function choose_word(word_element) {
+    var word_id = word_element.id;
     if (selected_words.has(word_id)) {
         selected_words.delete(word_id);
-        word_block.classList.remove("selected");
+        word_element.classList.remove("selected");
     } else {
         selected_words.add(word_id)
-        word_block.classList.add("selected");
+        word_element.classList.add("selected");
+    }
+}
+
+function onclick_listener(event) {
+    console.log("sdfs");
+    choose_word(event.target);
+}
+
+function mouseover_listener(event) {
+    if (event.shiftKey) {
+        choose_word(event.target);
     }
 }
 
@@ -106,10 +115,13 @@ function main() {
         }
         var word_div = create_div("col-2", cur_row_div);
         var new_word = create_div("sel-word-block", word_div, {
-            "id": "word_" + word["id"],
+            // "id": "word_" + word["id"],
+            "id": word["id"],
             "text": word["name"],
         });
-        new_word.setAttribute("onclick", "choose_word(" + word["id"] + ")");
+        // new_word.setAttribute("onclick", "choose_word(" + word["id"] + ")");
+        new_word.addEventListener("click", onclick_listener);
+        new_word.addEventListener("mouseover", mouseover_listener);
         word_list.push([new_word, word]);
         word_n += 1;
     }
