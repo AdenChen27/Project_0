@@ -2,25 +2,43 @@ var selected_words = new Set([]);
 const WORD_PER_ROW = 6;
 
 
-function choose_word(word_element) {
-    var word_id = word_element.id;
+function word_reverse_sel(word_e) {
+    var word_id = word_e.id;
     if (selected_words.has(word_id)) {
         selected_words.delete(word_id);
-        word_element.classList.remove("selected");
+        word_e.classList.remove("selected");
     } else {
         selected_words.add(word_id)
-        word_element.classList.add("selected");
+        word_e.classList.add("selected");
+    }
+}
+
+// (un)select word_e
+// sel: true/false
+function word_set_sel(word_e, sel) {
+    var word_id = word_e.id;
+    if (sel && !selected_words.has(word_id)) {
+        // select word
+        selected_words.add(word_id)
+        word_e.classList.add("selected");
+    } else if (!sel && selected_words.has(word_id)) {
+        // unselect word
+        selected_words.delete(word_id);
+        word_e.classList.remove("selected");
     }
 }
 
 function onclick_listener(event) {
-    console.log("sdfs");
-    choose_word(event.target);
+    word_reverse_sel(event.target);
 }
 
+// mousemove holding shift -> sel
+// mousemove holding ctrl/cmd -> unsel
 function mouseover_listener(event) {
     if (event.shiftKey) {
-        choose_word(event.target);
+        word_set_sel(event.target, true);
+    } else if (event.altKey) {
+        word_set_sel(event.target, false);
     }
 }
 
