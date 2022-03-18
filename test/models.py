@@ -75,13 +75,14 @@ def get_lem_word_map(text):
 
 def find_all_word_pos(word, text):
     import re
-    pos_offset = 0
     if word[0] == "'":
         reg = r"(%s)(\W|'|$)" % (word)
+        return [w.start() for w in re.finditer(reg, text)]
     else:
-        reg = r"(\W|'|^)(%s)(\W|'|$)" % (word)
-        pos_offset = 1
-    return [w.start() + pos_offset for w in re.finditer(reg, text)]
+        reg = r"(\W|')(%s)(\W|'|$)" % (word)
+        reg2 = r"^(%s)(\W|'|$)" % (word)
+        return [w.start() + 1 for w in re.finditer(reg, text)] + \
+            [w.start() + 1 for w in re.finditer(reg2, text)]
 
 
 @timer
@@ -173,4 +174,11 @@ class Passage(models.Model):
         super().save(*args, **kwargs)
         if not Sentence.objects.filter(passage_id=self.id).exists():
             add_sentences_to_db(self.id, self.text)
+
+
+def del_passage(p_id):
+    # del passage & sentences
+    Passage.objects.get(id=p_id).delete()
+    if Sentence.objects.filter(passage_id=p_id).exists():
+        Sentence.objects.filter(passage_id=p_id).delete()
 
