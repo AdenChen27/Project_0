@@ -30,7 +30,8 @@ CHOICE_NUM = 4
 
 
 def index(request):
-    passages = Passage.objects.all()
+    passages = list(Passage.objects.all())
+    passages.sort(key=lambda x: x.title)
     return render(request, "index.html", {"passages": passages})
 
 
