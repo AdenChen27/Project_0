@@ -1,6 +1,7 @@
 var lemma_search_input = document.getElementById("lemma_search_input")
 lemma_search_input.addEventListener("mouseover", function() {
     lemma_search_input.focus();
+    lemma_search_input.select();
 });
 
 
