@@ -33,4 +33,4 @@ function search_word() {
     form.submit();
 }
 
-
+lemma_search_input.focus();
