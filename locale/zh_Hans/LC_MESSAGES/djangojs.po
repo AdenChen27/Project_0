@@ -1,0 +1,54 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-25 21:01+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: test/static/javascript/show-definition.js:53
+#: test/static/javascript/show-definition.js:55
+#: test/static/javascript/show-definition.js:58
+msgid "Hide"
+msgstr "隐藏"
+
+#: test/static/javascript/show-definition.js:55
+#: test/static/javascript/show-definition.js:58
+msgid "Show"
+msgstr "显示"
+
+#: test/static/javascript/show-definition.js:73
+msgid "English"
+msgstr "英文"
+
+#: test/static/javascript/show-definition.js:75
+msgid "Show Chinese Definition Only"
+msgstr "只显示中文释义"
+
+#: test/static/javascript/show-definition.js:76
+msgid "Chinese"
+msgstr "中文"
+
+#: test/static/javascript/show-definition.js:78
+msgid "Show Both Definitions"
+msgstr "显示中英释义"
+
+#: test/static/javascript/show-definition.js:81
+msgid "Show English Definition Only"
+msgstr "只显示英文释义"
+
+#: test/static/javascript/show-definition.js:135
+msgid "Please Select Export Format."
+msgstr "请选择导出格式"

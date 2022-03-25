@@ -11,9 +11,7 @@ word to lemma mapping from https://github.com/skywind3000/lemma.en
 TODO:
 - Author page
 - Users & points
-- I18n
-  - ~~setup & Html~~
-  - js
+- ~~multi-language support~~
 
 - Page view
   - ~~passage model -> counter~~

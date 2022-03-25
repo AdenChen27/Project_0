@@ -50,12 +50,12 @@ function element_hide_control(element_id, show) {
 function flip_all(btn_id, element_suffix) {
     const button = document.getElementById(btn_id);
     var show;
-    if (button.innerText.includes("Hide")) {
+    if (button.innerText.includes(gettext("Hide"))) {
         show = false;
-        button.innerText = button.innerText.replace("Hide", "Show");
+        button.innerText = button.innerText.replace(gettext("Hide"), gettext("Show"));
     } else {
         show = true;
-        button.innerText = button.innerText.replace("Show", "Hide");
+        button.innerText = button.innerText.replace(gettext("Show"), gettext("Hide"));
     }
     for (var i in lemmas_id) {
         element_hide_control(element_suffix + lemmas_id[i], show);
@@ -70,15 +70,15 @@ function change_defs_show_state(btn_id) {
     // 0 -> show all defs
     // 1 -> show only def_en
     // 2 -> show only def_zh
-    if (button.innerHTML.includes("English")) {
+    if (button.innerHTML.includes(gettext("English"))) {
         show = 1;
-        button.innerHTML = "Show Chinese Definition Only";
-    } else if (button.innerHTML.includes("Chinese")) {
+        button.innerHTML = gettext("Show Chinese Definition Only");
+    } else if (button.innerHTML.includes(gettext("Chinese"))) {
         show = 2;
-        button.innerHTML = "Show Both Definitions";
+        button.innerHTML = gettext("Show Both Definitions");
     } else {
         show = 0;
-        button.innerHTML = "Show English Definition Only";
+        button.innerHTML = gettext("Show English Definition Only");
     }
     for (var i in lemmas_id) {
         lem_id = lemmas_id[i];
@@ -132,7 +132,7 @@ function export_words() {
     document.getElementById("export_copy_textarea_block").style.display = "block";
     if (format == "null")
     {
-        alert("Please Select Export Format.");
+        alert(gettext("Please Select Export Format."));
         return;
     }
 
