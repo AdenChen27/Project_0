@@ -3,7 +3,7 @@ from test.models import *
 
 
 class PassageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'id', 'tags', 'author', )
+    list_display = ('title', 'id', 'tags', 'author', 'counter', )
     search_fields = ('title', 'author', 'tags', )
     ordering = ('title', )
 
@@ -23,8 +23,12 @@ class SentenceAdmin(admin.ModelAdmin):
     search_fields = ('text', 'id', 'passage_id', )
     ordering = ('text', )
 
+class SystemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'counter', )
+
 
 admin.site.register(Passage, PassageAdmin)
 admin.site.register(Word, WordAdmin)
 admin.site.register(Lemma, LemmaAdmin)
 admin.site.register(Sentence, SentenceAdmin)
+admin.site.register(System, SystemAdmin)

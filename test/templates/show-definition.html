@@ -1,5 +1,5 @@
 <html>
-
+{% load i18n %}
 <head>
   {% load bootstrap5 %}
   {% bootstrap_css %}
@@ -11,7 +11,7 @@
     csrf_token = "{{ csrf_token }}";
   </script>
   <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
-  <title>word-select</title>
+  <title>{% trans "select words" %}</title>
 </head>
 
 <body>
@@ -22,24 +22,24 @@
         <div class="row">
           <div class="col-4 button-holder">
             <button class="btn btn-outline-dark col-12" onclick="shuffel()">
-              Shuffel
+              {% trans "Shuffel" %}
             </button>
           </div>
           <div class="col-8 button-holder">
             <button class="btn btn-outline-dark col-12" onclick="change_defs_show_state('btn_change_defs_show_state')" id="btn_change_defs_show_state">
-              Show English Definition Only
+              {% trans "Show English Definition" %}
             </button>
           </div>
         </div>
         <div class="row">
           <div class="col-3 button-holder">
             <button class="btn btn-outline-dark col-12" onclick="flip_all('btn_flip_words', 'word_name_')" id="btn_flip_words">
-              Hide All Words
+              {% trans "Hide All Words" %}
             </button>
           </div>
           <div class="col-9 button-holder">
             <button class="btn btn-outline-dark col-12" onclick="flip_all('btn_flip_defs', 'word_defs_')" id="btn_flip_defs">
-              Hide All Definitions
+              {% trans "Hide All Definitions" %}
             </button>
           </div>
         </div>
@@ -67,32 +67,32 @@
       </div>
       <div class="block-space">
         <div class="block-space">
-          <h1 class="row"> Test Yourself! </h1>
+          <h1 class="row">{% trans "Test" %}</h1>
           <div class="row">
             <div class="col-4 button-holder">
-              <button type="button" class="btn btn-outline-dark btn-lg col-12" onclick="next('choice-grammar')">Easy</button>
+              <button type="button" class="btn btn-outline-dark btn-lg col-12" onclick="next('choice-grammar')">{% trans "Easy" %}</button>
             </div>
             <div class="col-4 button-holder">
-              <button type="button" class="btn btn-outline-dark btn-lg col-12" onclick="next('choice')">Medium</button>
+              <button type="button" class="btn btn-outline-dark btn-lg col-12" onclick="next('choice')">{% trans "Medium" %}</button>
             </div>
             <div class="col-4 button-holder">
-              <button type="button" class="btn btn-outline-dark btn-lg col-12" onclick="next('blank')">Hard</button>
+              <button type="button" class="btn btn-outline-dark btn-lg col-12" onclick="next('blank')">{% trans "Hard" %}</button>
             </div>
           </div>
         </div>
 
         <div class="block-space">
-          <h1 class="row"> Learn in other platforms </h1>
+          <h1 class="row">{% trans "Export" %}</h1>
           <div class="row">
             <div class="col-6">
               <select class="form-select" id="export_option">
-                <option selected value="null">Select Export Format</option>
-                <option value="wtE Zn">Quizlet (Words with Definitions)</option>
-                <option value="wn">不背单词 (Words only)</option>
+                <option selected value="null">{% trans "Select Export Format" %}</option>
+                <option value="wtE Zn">Quizlet</option>
+                <option value="wn">不背单词</option>
               </select>
             </div>
             <div class="col-6 button-holder">
-              <button type="button" class="btn btn-outline-dark col-12" onclick="export_words()" id="">Export Words</button>
+              <button type="button" class="btn btn-outline-dark col-12" onclick="export_words()" id="">{% trans "Export Words" %}</button>
             </div>
           </div>
         </div>
@@ -100,7 +100,7 @@
         <div class="row" id="export_copy_textarea_block" style="display: none;">
           <form>
             <div class="form-group">
-              <label for="export_copy_textarea">Copy</label>
+              <label for="export_copy_textarea">{% trans "Copy" %}</label>
               <textarea class="form-control" id="export_copy_textarea" rows="10"></textarea>
             </div>
           </form>

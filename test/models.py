@@ -156,12 +156,17 @@ class Passage(models.Model):
     text = models.TextField(default="")
     lemma_pos = models.TextField(default="", blank=True)
     # {lemma1.id: [(word1.id, len(word1.name), [pos1, ]), ], }
+    counter = models.IntegerField(default=0) # test count
     tags = model_ListCharField(
         base_field=models.CharField(max_length=WORD_MAX_LEN), 
         size=TAG_MAX_NUM, 
         max_length=TAG_MAX_NUM*(WORD_MAX_LEN + 1), 
         default=""
     )
+
+    def counter_add(self):
+        self.counter += 1
+        self.save()
 
     def __str__(self):
         return self.title
@@ -174,6 +179,15 @@ class Passage(models.Model):
         super().save(*args, **kwargs)
         if not Sentence.objects.filter(passage_id=self.id).exists():
             add_sentences_to_db(self.id, self.text)
+
+
+# one instance only, for storing system information
+class System(models.Model):
+    counter = models.IntegerField(default=0) # total visit
+
+    def counter_add(self):
+        self.counter += 1
+        self.save()
 
 
 def del_passage(p_id):

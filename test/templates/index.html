@@ -1,5 +1,6 @@
 <html>
-
+{% load static %}
+{% load i18n %}
 <head>
   {% load bootstrap5 %}
   {% bootstrap_css %}
@@ -11,22 +12,43 @@
   <title>passage-select</title>
 </head>
 
+
 <body>
   <div class="container">
+    {% get_available_languages as LANGUAGES %}
     <div class="row">
+
+      <div class="input-group">
+        <button class="btn btn-outline-secondary" type="button" onclick="set_lang('zh-hans')">中</button>
+        <button class="btn btn-outline-secondary" type="button" onclick="set_lang('en')">En</button>
+      </div>
+
+      <form style="display: none;" id="testform" method='post'>
+        {% csrf_token %}
+        <select id="language" name="language">
+          {% for lang in LANGUAGES %}
+          <option value="{{ lang.0 }}" > {{ lang.1 }}</option>
+          {% endfor %}
+        </select>
+      </form>
+
       <div class="col-2"></div>
       <div class="col-8">
-        <h1 style="margin: 30px 0">Search a Word</h1>
+        <h1 style="margin: 30px 0">{% trans "Dictionary" %}</h1>
         <div class="row">
           <div class="col-9">
             <input type="text" class="form-control" id="lemma_search_input">
           </div>
           <div class="col-3">
-            <button class="btn btn-outline-dark col-12" id="search_word_btn" onclick="search_word()">Search</button>
+            <button class="btn btn-outline-dark col-12" id="search_word_btn" onclick="search_word()">{% trans "Search" %}</button>
           </div>
         </div>
-        <h1 style="margin: 30px 0">Select a Passage</h1>
+        <h1 style="margin: 30px 0">{% trans "Select Passage" %}</h1>
         <table class="table table-hover">
+          <thead>
+            <td>{% trans "Passage" %}</td>
+            <td>{% trans "Author" %}</td>
+          </thead>
           <tbody>
             {% for passage in passages %}
             <tr class="sel-passage-tr" onclick="window.location.href = '/passage/?p_id={{ passage.id }}'">
@@ -43,6 +65,8 @@
     </div>
   </div>
   <script src="../../static/javascript/word_search.js"></script>
+  <script src="../../static/javascript/language.js"></script>
+
 </body>
 
 </html>

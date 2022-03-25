@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from test.models import *
 from django.forms.models import model_to_dict
+from django.utils.translation import gettext as _
 # from django.template.defaultfilters import linebreaksbr
 
 # `show_word_info` page
@@ -28,14 +29,20 @@ HTML_TEMPLATE = {
 }
 CHOICE_NUM = 4
 
+app_system = System.objects.first()
 
-def index(request):
+
+# renew view counter
+# return Passage list
+def index_page(request):
+    app_system.counter_add()
+    print(app_system.counter)
     passages = list(Passage.objects.all())
     passages.sort(key=lambda x: x.title)
     return render(request, "index.html", {"passages": passages})
 
 
-def passage_handler(request):
+def select_words_page(request):
     from json import loads
     passage_id = request.GET.get("p_id", None)
     lem_pos = loads(Passage.objects.get(id=passage_id).lemma_pos)
@@ -48,14 +55,9 @@ def passage_handler(request):
         "p_id": passage_id, 
     })
 
-# def render_lemma_defs(lemma):
-#     lemma.def_en = linebreaksbr(lemma.def_en)
-#     lemma.def_zh = linebreaksbr(lemma.def_zh)
-#     return lemma
 
-
+# return [(rendered_text, passage_title), ]
 def render_sentence(text, word_pos_list):
-    # return [(rendered_text, passage_title), ]
     # word_pos_list = {word1: [pos1, ], }
     pos_offset = 0
     for word in word_pos_list:
@@ -67,9 +69,9 @@ def render_sentence(text, word_pos_list):
     return text
 
 
-def show_word_search_result(request):
+def show_word_info_page(request):
     from json import loads, dumps
-    search_word = request.POST.get("word")
+    search_word = request.POST.get("word").lower()
     match_word = Word.objects.filter(name=search_word)
     if match_word.exists():
         lemma = Lemma.objects.get(id=match_word.first().lem_id)
@@ -103,7 +105,7 @@ def show_word_search_result(request):
     })
 
 
-def show_definition(request):
+def show_definition_page(request):
     passage_id = request.POST.get("p_id")
     lemma_id = request.POST.get("lemma_id")
     if (lemma_id):
@@ -169,17 +171,16 @@ def get_grammar_choices(ans_lem_id, ans):
     return choices
 
 
-def test_passage(request):
+def test_passage_page(request):
     mode = request.POST.get("test_mode")
     passage_id = request.POST.get("p_id")
     passage = Passage.objects.get(id=passage_id)
+    passage.counter_add()
     text = passage.text
     
     from json import loads
     pos_offset = 0
     blank_rep_buf, hints, ans = blank_rep_init(loads(passage.lemma_pos), request)
-
-    # for "choice-grammar"
     # {blank_id: [ans, wrong_choice1, ], }
     choices = {}
 

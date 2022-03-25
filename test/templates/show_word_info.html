@@ -10,7 +10,7 @@
     var audio_loaded = false;
     var csrf_token = "{{ csrf_token }}";
   </script>
-  <title>Word Info</title>
+  <title>{% trans "Word Info" %}</title>
 </head>
 
 <body>
@@ -22,7 +22,7 @@
           <input type="text" class="form-control" id="lemma_search_input">
         </div>
         <div class="col-3">
-          <button class="btn btn-outline-dark col-12" id="search_word_btn" onclick="search_word()">Search</button>
+          <button class="btn btn-outline-dark col-12" id="search_word_btn" onclick="search_word()">{% trans "Search" %}</button>
         </div>
       </div>
       <div class="container row" id="def_holder">
