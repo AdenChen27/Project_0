@@ -1,21 +1,20 @@
-[Website](https://adenchen27.pythonanywhere.com/index/) which tests vocab in passage contexts
+English reading ability training [website](https://adenchen27.pythonanywhere.com/index/)
 
 Backend: Python + Django
 Frontend: Html(bootstrap5) + css + JS
+Hosted on [pythonanywhere](https://www.pythonanywhere.com/)
 
-word definitions from https://github.com/skywind3000/ECDICT
+[Definitions](https://github.com/skywind3000/ECDICT) and [word to lemma mapping](https://github.com/skywind3000/lemma.en) from [Linwei](https://github.com/skywind3000)
 
-word to lemma mapping from https://github.com/skywind3000/lemma.en
-
+Requirements see `requirements.txt`
 
 TODO:
-- help/info btn
-- Author page
-- Users & points
-- ~~multi-language support~~
+- info/help btn
+- author page
+- user & competitions
+- (dynamic word freq)
 
-- Page view
-  - ~~passage model -> counter~~
-  - show counter
-  - words counter -> dynamic freq
+- ~~multi-language support~~
+- ~~visit counter~~
+
 

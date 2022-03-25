@@ -9,6 +9,7 @@
       pre_word_list = {{ words|safe }},
       csrf_token = "{{ csrf_token }}";
   </script>
+
   <style src="../static/style/main.css"></style>
   <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
   <title>word-select</title>
@@ -19,20 +20,29 @@
     <div class="row">
       <div class="col-2"></div>
       <div class="col-8">
-        <!-- <button class="btn btn-outline-dark col-12" style="margin: 30px 0" onclick="submit()">Read first</button> -->
-        <h1 style="margin: 0.5em 0">{% trans "Select Words to Learn" %}</h1>
-        <p>Hold down Shift and move mouse over words to select (or just click)</p>
-        <p>Hold down Alt/Option and move mouse over words to unselect (or just click again)</p>
-<!--         <button class="btn btn-outline-dark col-12" style="margin: 30px 0" onclick="submit()">Just read passage</button> -->
+        <h1 style="margin: 0.5em 0; display: inline;">{% trans "Select Words to Learn" %}</h1>
+        <span class="tooltip_img_holder" data-bs-toggle="tooltip" data-bs-placement="bottom" title='{% trans "Click to choose words" %}'>
+          <img class="tooltip_img" src="../../static/pictures/help_48.png"/>
+        </span>
+
         <button class="btn btn-outline-dark col-12" style="margin: 30px 0" onclick="submit()">{% trans "Next" %}</button>
-        <!-- <label for="lem_rank_filter" class="form-label">Filter</label> -->
         <input type="range" class="form-range" id="lem_rank_filter" onchange="filter_select()">
         <div class="well" id="word_holder"></div>
+
       </div>
       <div class="col-2"></div>
     </div>
   </div>
+  
   <script src="../static/javascript/select-words.js"></script>
+  
+  <script>
+  // enable bootstrap tooltip
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+  })
+  </script>
 </body>
 
 </html>

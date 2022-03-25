@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-25 20:52+0800\n"
+"POT-Creation-Date: 2022-03-25 21:56+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,11 @@ msgstr "作者"
 msgid "Select Words to Learn"
 msgstr "选择不会的单词"
 
-#: test/templates/select-words.html:27
+#: test/templates/select-words.html:24
+msgid "Click to choose words"
+msgstr "点击选择"
+
+#: test/templates/select-words.html:28
 msgid "Next"
 msgstr "提交"
 
