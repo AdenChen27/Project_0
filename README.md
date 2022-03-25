@@ -9,12 +9,13 @@ word to lemma mapping from https://github.com/skywind3000/lemma.en
 
 
 TODO:
+- help/info btn
 - Author page
 - Users & points
 - ~~multi-language support~~
 
 - Page view
   - ~~passage model -> counter~~
+  - show counter
   - words counter -> dynamic freq
-- help/info btn
 
