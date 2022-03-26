@@ -6,15 +6,17 @@ Hosted on [pythonanywhere](https://www.pythonanywhere.com/)
 
 [Definitions](https://github.com/skywind3000/ECDICT) and [word to lemma mapping](https://github.com/skywind3000/lemma.en) from [Linwei](https://github.com/skywind3000)
 
-Requirements see `requirements.txt`
+
 
 TODO:
-- info/help btn
-- author page
-- user & competitions
-- (dynamic word freq)
+- [ ] info/help
+- [ ] author page
+- [ ] user & competitions
+    - [ ] upload passage
+    - [ ] edit
+    - [ ] error report (error model)
+- [ ] dynamic word freq
 
-- ~~multi-language support~~
-- ~~visit counter~~
-
+- [x] multi-language support
+- [x] visit counter
 
