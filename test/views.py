@@ -29,14 +29,14 @@ HTML_TEMPLATE = {
 }
 CHOICE_NUM = 4
 
-app_system = System.objects.first()
+# app_system_info = System.objects.first()
 
 
 # renew view counter
 # return Passage list
 def index_page(request):
-    app_system.counter_add()
-    print(app_system.counter)
+    # app_system_info.counter_add()
+    # print(app_system_info.counter)
     passages = list(Passage.objects.all())
     passages.sort(key=lambda x: x.title)
     return render(request, "index.html", {"passages": passages})

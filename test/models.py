@@ -241,7 +241,7 @@ class User(models.Model):
 
 
 # one instance only, for storing system information
-class System(models.Model):
+class SystemInfo(models.Model):
     counter = models.IntegerField(default=0) # total visit
 
     def counter_add(self):

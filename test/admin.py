@@ -29,7 +29,7 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'last_name', )
     ordering = ('first_name', )
 
-class SystemAdmin(admin.ModelAdmin):
+class SystemInfoAdmin(admin.ModelAdmin):
     list_display = ('id', 'counter', )
 
 
@@ -38,4 +38,4 @@ admin.site.register(Word, WordAdmin)
 admin.site.register(Lemma, LemmaAdmin)
 admin.site.register(Sentence, SentenceAdmin)
 admin.site.register(User, UserAdmin)
-admin.site.register(System, SystemAdmin)
+admin.site.register(SystemInfo, SystemInfoAdmin)

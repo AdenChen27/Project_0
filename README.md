@@ -51,6 +51,8 @@ deploy
 
 cd Project_0; git pull
 python3 manage.py loaddata db.json
+
+pip install -r requirements.txt
 ```
 
 
