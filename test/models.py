@@ -18,39 +18,16 @@ def timer(f):
         return result
     return wrap
 
-
+# passage
 PASSAGE_TITLE_MAX_LEN = 100
 PASSAGE_AUTHOR_MAX_LEN = 100
 TAG_MAX_NUM = 5
+# word
 WORD_MAX_LEN = 34
-
-
-class Lemma(models.Model):
-    name = models.CharField(max_length=WORD_MAX_LEN, default="")
-    freq = models.IntegerField(default=0)
-    def_en = models.TextField(default="", blank=True)
-    def_zh = models.TextField(default="", blank=True)
-    sent_ids = JSONField(null=True)
-    # {sentence_id1: {word1: [pos1, ], }, }
-
-    def __str__(self):
-        return self.name
-
-
-class Word(models.Model):
-    name = models.CharField(max_length=WORD_MAX_LEN, default="")
-    lem_id = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.name
-
-
-class Sentence(models.Model):
-    passage_id = models.IntegerField(default=0)
-    text = models.TextField(default="")
-
-    def __str__(self):
-        return self.text
+# user
+FIRST_NAME_MAX_LEN = 15
+LAST_NAME_MAX_LEN = 15
+PASSWORD_MAX_LEN = 32
 
 
 def get_lem_word_map(text):
@@ -122,21 +99,11 @@ def add_words(sentence, s_id, stop_words):
         lemma.sent_ids = dumps(sent_ids)
         lemma.save()
 
-# def temp():
-#     from nltk.corpus import stopwords
-#     stop_words = list(stopwords.words("english"))
-#     stop_words.extend([',', '.', '?', '!'])
-#     for sent in Sentence.objects.all():
-#         add_words(sent.text, sent.id, stop_words)
-#         if i % 10000 == 0:
-#             print("done", i)
-
-
+# delete all `Sentence` with same `passage_id`
+# add all sentences in passage to db
+# link `Lemma` to newly created `Sentence` for lemma of each word in passage
 @timer
 def add_sentences_to_db(p_id, p_text):
-    # delete all `Sentence` with same `passage_id`
-    # add all sentences in passage to db
-    # link `Lemma` to newly created `Sentence` for lemma of each word in passage
     if Sentence.objects.filter(passage_id=p_id).exists():
         Sentence.objects.filter(passage_id=p_id).delete()
     from nltk.corpus import stopwords
@@ -148,6 +115,35 @@ def add_sentences_to_db(p_id, p_text):
         new_sent = Sentence(passage_id=p_id, text=sentence)
         new_sent.save()
         add_words(sentence, new_sent.id, stop_words)
+
+
+
+class Lemma(models.Model):
+    name = models.CharField(max_length=WORD_MAX_LEN, default="")
+    freq = models.IntegerField(default=0)
+    def_en = models.TextField(default="", blank=True)
+    def_zh = models.TextField(default="", blank=True)
+    sent_ids = JSONField(null=True)
+    # {sentence_id1: {word1: [pos1, ], }, }
+
+    def __str__(self):
+        return self.name
+
+
+class Word(models.Model):
+    name = models.CharField(max_length=WORD_MAX_LEN, default="")
+    lem_id = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name
+
+
+class Sentence(models.Model):
+    passage_id = models.IntegerField(default=0)
+    text = models.TextField(default="")
+
+    def __str__(self):
+        return self.text
 
 
 class Passage(models.Model):
@@ -181,6 +177,19 @@ class Passage(models.Model):
             add_sentences_to_db(self.id, self.text)
 
 
+class User(models.Model):
+    first_name = models.CharField(max_length=FIRST_NAME_MAX_LEN, default="")
+    last_name = models.CharField(max_length=LAST_NAME_MAX_LEN, default="")
+    # stored in md5
+    password = models.CharField(max_length=PASSWORD_MAX_LEN, default="")
+
+    points = models.IntegerField(default=0)
+
+    def points_add(self, v):
+        self.points += v
+        self.save()
+
+
 # one instance only, for storing system information
 class System(models.Model):
     counter = models.IntegerField(default=0) # total visit
@@ -190,8 +199,9 @@ class System(models.Model):
         self.save()
 
 
+
+# del passage & sentences in the passage
 def del_passage(p_id):
-    # del passage & sentences
     Passage.objects.get(id=p_id).delete()
     if Sentence.objects.filter(passage_id=p_id).exists():
         Sentence.objects.filter(passage_id=p_id).delete()

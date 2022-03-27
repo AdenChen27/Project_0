@@ -10,15 +10,32 @@ Hosted on [pythonanywhere](https://www.pythonanywhere.com/)
 
 TODO:
 - [ ] bootstrap sass
+- [ ] main.css structure
 - [ ] author page
 - [ ] info/help
-- [ ] user & competitions
-    - [ ] upload passage
-    - [ ] edit
-    - [ ] error report (error model)
+- [ ] users
+    - [ ] user model
+    - [ ] login page
+    - [ ] register page
+- [ ] upload passage page
+- [ ] edit page
+- [ ] error model
+- [ ] error report page
+
 - [ ] dynamic word freq
 
 - [x] 3.26 multi-language support
 - [x] 3.26 visit counter
 - [x] 3.27 word select
 
+
+quick actions
+```
+./manage.py makemigrations;./manage.py migrate
+
+./manage.py makemessages -l zh_hans
+./manage.py makemessages -d djangojs -l zh_Hans
+./manage.py compilemessages
+
+./manage.py runserver 127.0.0.1:7227
+```

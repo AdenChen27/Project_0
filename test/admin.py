@@ -23,6 +23,12 @@ class SentenceAdmin(admin.ModelAdmin):
     search_fields = ('text', 'id', 'passage_id', )
     ordering = ('text', )
 
+
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'password', )
+    search_fields = ('first_name', 'last_name', )
+    ordering = ('first_name', )
+
 class SystemAdmin(admin.ModelAdmin):
     list_display = ('id', 'counter', )
 
@@ -31,4 +37,5 @@ admin.site.register(Passage, PassageAdmin)
 admin.site.register(Word, WordAdmin)
 admin.site.register(Lemma, LemmaAdmin)
 admin.site.register(Sentence, SentenceAdmin)
+admin.site.register(User, UserAdmin)
 admin.site.register(System, SystemAdmin)
