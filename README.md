@@ -9,14 +9,16 @@ Hosted on [pythonanywhere](https://www.pythonanywhere.com/)
 
 
 TODO:
-- [ ] info/help
+- [ ] bootstrap sass
 - [ ] author page
+- [ ] info/help
 - [ ] user & competitions
     - [ ] upload passage
     - [ ] edit
     - [ ] error report (error model)
 - [ ] dynamic word freq
 
-- [x] multi-language support
-- [x] visit counter
+- [x] 3.26 multi-language support
+- [x] 3.26 visit counter
+- [x] 3.27 word select
 

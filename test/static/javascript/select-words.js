@@ -32,13 +32,11 @@ function onclick_listener(event) {
     word_reverse_sel(event.target);
 }
 
-// mousemove holding shift -> sel
-// mousemove holding ctrl/cmd -> unsel
+// mouseover + left button down -> select
+// mouseover + left button down + alt/option -> unselect
 function mouseover_listener(event) {
-    if (event.shiftKey) {
-        word_set_sel(event.target, true);
-    } else if (event.altKey) {
-        word_set_sel(event.target, false);
+    if (event.buttons == 1) {
+        word_set_sel(event.target, !event.altKey);
     }
 }
 
@@ -132,14 +130,14 @@ function main() {
             });
         }
         var word_div = create_div("col-2", cur_row_div);
-        var new_word = create_div("sel-word-block", word_div, {
+        var new_word = create_div("sel-word-block noselect", word_div, {
             // "id": "word_" + word["id"],
             "id": word["id"],
             "text": word["name"],
         });
         // new_word.setAttribute("onclick", "choose_word(" + word["id"] + ")");
         new_word.addEventListener("click", onclick_listener);
-        new_word.addEventListener("mouseover", mouseover_listener);
+        new_word.addEventListener("mouseout", mouseover_listener);
         word_list.push([new_word, word]);
         word_n += 1;
     }
