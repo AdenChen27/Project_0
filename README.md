@@ -9,12 +9,13 @@ Hosted on [pythonanywhere](https://www.pythonanywhere.com/)
 
 
 TODO:
-- [ ] passage Flesch–Kincaid readability Level
 - [ ] users
-    - [ ] user model
+    - [x] user model
     - [ ] login page
     - [ ] register page
 - [ ] author page
+    - link to github & projects
+    - todo
 - [ ] test page show answer function
 
 - [ ] bootstrap sass
@@ -22,7 +23,6 @@ TODO:
 - [ ] info/help
 - [ ] upload passage page
 - [ ] edit page
-- [ ] error model
 - [ ] error report page
 
 - [ ] dynamic word freq
@@ -30,6 +30,7 @@ TODO:
 - [x] 3.26 multi-language support
 - [x] 3.26 visit counter
 - [x] 3.27 word select
+- [x] 3.27 passage Flesch–Kincaid readability Level
 
 
 quick actions
@@ -41,4 +42,16 @@ quick actions
 ./manage.py compilemessages; ./manage.py runserver 127.0.0.1:7227
 
 ./manage.py runserver 127.0.0.1:7227
+
 ```
+
+deploy
+```
+./manage.py dumpdata test > db.json
+
+cd Project_0; git pull
+python3 manage.py loaddata db.json
+```
+
+
+
