@@ -3,9 +3,9 @@ from test.models import *
 
 
 class PassageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'id', 'tags', 'author', 'counter', )
+    list_display = ('title', 'id', 'tags', 'author', 'counter', 'difficulty', )
     search_fields = ('title', 'author', 'tags', )
-    ordering = ('title', )
+    ordering = ('difficulty', )
 
 
 class WordAdmin(admin.ModelAdmin):

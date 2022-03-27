@@ -22,7 +22,7 @@
       <div class="col-8">
         <h1 style="margin: 0.5em 0; display: inline;">{% trans "Select Words to Learn" %}</h1>
         <span class="tooltip_img_holder" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title='{% trans "Click to select" %}'>
-          <img class="tooltip_img" src="../../static/pictures/help_48.png"/>
+          <img class="tooltip-img" src="../../static/pictures/help_48.png"/>
         </span>
         <button class="btn btn-outline-dark col-12" style="margin: 30px 0" onclick="submit()">{% trans "Next" %}</button>
         <input type="range" class="form-range" id="lem_rank_filter" onchange="filter_select()">
@@ -34,14 +34,8 @@
   </div>
   
   <script src="../static/javascript/select-words.js"></script>
-  
-  <script>
-  // enable bootstrap tooltip
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
-  </script>
+  <script src="../static/javascript/bootstrap-tooltip.js"></script>
+
 </body>
 
 </html>

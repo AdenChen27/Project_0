@@ -28,6 +28,7 @@ WORD_MAX_LEN = 34
 FIRST_NAME_MAX_LEN = 15
 LAST_NAME_MAX_LEN = 15
 PASSWORD_MAX_LEN = 32
+LANGUAGE_CODE_MAX_LEN = 2
 
 
 def get_lem_word_map(text):
@@ -146,18 +147,62 @@ class Sentence(models.Model):
         return self.text
 
 
+def count_syllable(word):
+    if len(word) <= 1:
+        return int(word == 'a') # filter punctuations
+    word = word.lower()
+    vowels = "aeiouy"
+    count = 0
+    if word[0] in vowels:
+        count += 1
+    for index in range(1, len(word)):
+        if word[index] in vowels and word[index - 1] not in vowels:
+            count += 1
+    if word.endswith("e"):
+        count -= 1
+    if count == 0:
+        count += 1
+    return count
+
+# return Flesch-Kincaid Grade Level = (.39 × ASL) + (11.8 × ASW) - 15.59
+def get_text_difficulty(text):
+    from nltk import word_tokenize, sent_tokenize
+    sents = sent_tokenize(text)
+    syllable_cnt = 0
+    word_cnt = 0
+    sent_cnt = len(sents)
+
+    for sent in sents:
+        words = word_tokenize(sent)
+        word_cnt += len(words)
+        for word in words:
+            syllable_cnt += count_syllable(word)
+
+    asl = word_cnt/sent_cnt
+    # average sentence length (average number of words per sentence)
+    asw = syllable_cnt/word_cnt
+    # average number of syllables per word
+    print(.39*asl + 11.8*asw - 15.59)
+    return .39*asl + 11.8*asw - 15.59
+
+
+
 class Passage(models.Model):
     title = models.CharField(max_length=PASSAGE_TITLE_MAX_LEN)
-    author = models.CharField(max_length=PASSAGE_AUTHOR_MAX_LEN, default="")
+    author = models.CharField(max_length=PASSAGE_AUTHOR_MAX_LEN, default="", blank=True)
     text = models.TextField(default="")
     lemma_pos = models.TextField(default="", blank=True)
     # {lemma1.id: [(word1.id, len(word1.name), [pos1, ]), ], }
+    
     counter = models.IntegerField(default=0) # test count
+    difficulty = models.FloatField(default=0, blank=True) # Flesch–Kincaid Level
+
     tags = model_ListCharField(
         base_field=models.CharField(max_length=WORD_MAX_LEN), 
         size=TAG_MAX_NUM, 
         max_length=TAG_MAX_NUM*(WORD_MAX_LEN + 1), 
-        default=""
+        default="", 
+        blank=True, 
     )
 
     def counter_add(self):
@@ -171,8 +216,12 @@ class Passage(models.Model):
         # generate `lemma_pos`
         if not self.lemma_pos:
             self.lemma_pos = get_lemma_pos_string(self.text)
-        # creat `Lemma` to `Sentence` mappings
+        
+        self.difficulty = get_text_difficulty(self.text)
+
         super().save(*args, **kwargs)
+
+        # creat `Lemma` to `Sentence` mappings
         if not Sentence.objects.filter(passage_id=self.id).exists():
             add_sentences_to_db(self.id, self.text)
 
@@ -183,8 +232,9 @@ class User(models.Model):
     # stored in md5
     password = models.CharField(max_length=PASSWORD_MAX_LEN, default="")
 
+    # ISO 639-1 Code
+    language_code = models.CharField(max_length=LANGUAGE_CODE_MAX_LEN, default="")
     points = models.IntegerField(default=0)
-
     def points_add(self, v):
         self.points += v
         self.save()

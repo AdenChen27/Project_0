@@ -9,14 +9,17 @@ Hosted on [pythonanywhere](https://www.pythonanywhere.com/)
 
 
 TODO:
-- [ ] bootstrap sass
-- [ ] main.css structure
-- [ ] author page
-- [ ] info/help
+- [ ] passage Flesch–Kincaid readability Level
 - [ ] users
     - [ ] user model
     - [ ] login page
     - [ ] register page
+- [ ] author page
+- [ ] test page show answer function
+
+- [ ] bootstrap sass
+- [ ] main.css structure
+- [ ] info/help
 - [ ] upload passage page
 - [ ] edit page
 - [ ] error model
@@ -35,7 +38,7 @@ quick actions
 
 ./manage.py makemessages -l zh_hans
 ./manage.py makemessages -d djangojs -l zh_Hans
-./manage.py compilemessages
+./manage.py compilemessages; ./manage.py runserver 127.0.0.1:7227
 
 ./manage.py runserver 127.0.0.1:7227
 ```

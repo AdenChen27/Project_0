@@ -88,9 +88,7 @@ body {
 
 .word-def-row {
   margin: .75em 0;
-  /*border-style: solid;*/
   border-radius: .8em;
-  /*border-width: 0.15em;*/
   background-color: var(--color-1);
 }
 
@@ -98,13 +96,23 @@ body {
   margin: 1em 0;
 }
 
+.div-blank {
+  height: 1em;
+}
+
 .button-holder {
   padding: 0.3em 0.5em;
 }
 
-.tooltip_img {
+/* bootstra tooltip \ */
+.tooltip-img {
   height: 1.5em;
   width: 1.5em;
+}
+
+.tooltip-img-small {
+  height: 1em;
+  width: 1em;
 }
 
 .tooltip_img_holder {
@@ -130,6 +138,13 @@ body {
 .selected {
   background-color: var(--color-1);
   border-radius: .2em;
+}
+
+.set-lang-btn {
+  margin: 1em 0;
+  font-size: .6em;
+  width: 4em;
+  /*height: 2.5em;*/
 }
 
 

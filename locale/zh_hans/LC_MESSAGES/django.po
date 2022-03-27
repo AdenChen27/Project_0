@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-25 21:56+0800\n"
+"POT-Creation-Date: 2022-03-27 22:09+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,25 +18,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: test/templates/index.html:37
+#: test/templates/index.html:41
 msgid "Dictionary"
 msgstr "字典"
 
-#: test/templates/index.html:43 test/templates/show_word_info.html:25
+#: test/templates/index.html:47 test/templates/show_word_info.html:25
 msgid "Search"
 msgstr "搜索"
 
-#: test/templates/index.html:46
+#: test/templates/index.html:51
 msgid "Select Passage"
 msgstr "选择文章"
 
-#: test/templates/index.html:49
+#: test/templates/index.html:55
 msgid "Passage"
 msgstr "文章"
 
-#: test/templates/index.html:50
+#: test/templates/index.html:56
 msgid "Author"
 msgstr "作者"
+
+#: test/templates/index.html:58
+msgid "Difficulty"
+msgstr "难度"
+
+#: test/templates/index.html:59
+msgid "difficulty in U.S. grade level (Flesch–Kincaid grade level)"
+msgstr "对应的美国年级（用Flesch–Kincaid grade level方法计算）"
 
 #: test/templates/select-words.html:23
 msgid "Select Words to Learn"
@@ -46,7 +54,7 @@ msgstr "选择不会的单词"
 msgid "Click to select"
 msgstr "点击选择"
 
-#: test/templates/select-words.html:28
+#: test/templates/select-words.html:27
 msgid "Next"
 msgstr "提交"
 
