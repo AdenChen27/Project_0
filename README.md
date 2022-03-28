@@ -24,8 +24,10 @@ TODO:
 - [ ] upload passage page
 - [ ] edit page
 - [ ] error report page
+- [ ] cProfile
 
 - [ ] dynamic word freq
+- [ ] .gitignore for better performance on server
 
 - [x] 3.26 multi-language support
 - [x] 3.26 visit counter
@@ -49,7 +51,9 @@ deploy
 ```
 ./manage.py dumpdata test > db.json
 
-cd Project_0; git pull
+cd Project_0
+git clean -d -f
+git pull
 python3 manage.py loaddata db.json
 
 pip install -r requirements.txt

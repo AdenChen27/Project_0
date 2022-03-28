@@ -116,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 
 LANGUAGE_CODE = 'zh-hans'
 

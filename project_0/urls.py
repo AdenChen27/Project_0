@@ -21,7 +21,7 @@ from django.urls import path, re_path, include
 from django.views.static import serve
 
 
-from django.conf.urls import url
+# from django.conf.urls import url
 from test import views as test_views
 
 from django.views.i18n import JavaScriptCatalog
