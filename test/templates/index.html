@@ -25,18 +25,19 @@
     </select>
   </form>
   <!-- END language control form -->
-
   <div class="container">
     <div class="row">
 
       <div class="col-2"></div>
       <!-- main column -->
       <div class="col-8">
-
-        <div class="input-group">
-          <button class="btn btn-outline-secondary set-lang-btn" type="button" onclick="set_lang('zh-hans')">中</button>
-          <button class="btn btn-outline-secondary set-lang-btn" type="button" onclick="set_lang('en')">En</button>
-        </div>
+        <header>
+          <div class="input-group">
+            <button class="btn btn-outline-secondary set-lang-btn" type="button" onclick="set_lang('zh-hans')">中</button>
+            <button class="btn btn-outline-secondary set-lang-btn" type="button" onclick="set_lang('en')">En</button>
+          </div>
+          <a href="/">Author page</a>
+        </header>
 
         <h1>{% trans "Dictionary" %}</h1>
         <div class="row">

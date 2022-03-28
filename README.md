@@ -10,31 +10,34 @@ Hosted on [pythonanywhere](https://www.pythonanywhere.com/)
 
 TODO:
 - [ ] author page
-    - [x] main
-    - [x] CTB proj
+    - [x] 3.28 main
+    - [x] 3.28 CTB proj
     - [ ] js func plot proj
-    - [ ] link from index page
     - [ ] imgs
     - [ ] translations
 - [ ] users
     - [x] 3.27 user model
     - [ ] login page
     - [ ] register page
+    - [ ] upload passage page
+    - [ ] edit page
+    - [ ] error report page
 - [ ] test page show answer function
 
+style
+- [ ] logo
 - [ ] bootstrap sass
 - [ ] main.css structure
-- [ ] info/help
-- [ ] upload passage page
-- [ ] edit page
-- [ ] error report page
-- [ ] cProfile
 
+performance
 - [ ] dynamic word freq
-- [ ] .gitignore for better performance on server
+- [ ] cProfile
+- [ ] .gitignore
+
 
 - [x] 3.26 multi-language support
 - [x] 3.26 visit counter
+- [x] 3.27 info/help
 - [x] 3.27 word select
 - [x] 3.28 passage Flesch–Kincaid readability Level
 
