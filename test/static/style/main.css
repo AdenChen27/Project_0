@@ -4,9 +4,60 @@
   --color-2: #1E90FF;
 }
 
+
 body {
-  background-color: var(--color-0);
+  background-image: url('../pictures/1_1.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: rgba(237, 246, 249, .9);
+  background-blend-mode: lighten;
 }
+
+h1,
+h2 {
+  margin: 1em 0 .5em 0;
+}
+
+h1 {
+  font-family: Georgia;
+}
+
+h2 {
+  font-family: Arial;
+  font-size: 1.7em;
+}
+
+p {
+  font-family: Arial;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-2);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+/*author page header*/
+header {
+  background-color: var(--color-1);
+  width: 100%;
+  height: 10em;
+}
+
+.header-img {
+  width: 20%;
+  height: auto;
+  float: right;
+}
+
+.passage-text-container {
+  font-family: Times New Romen;
+}
+
 
 .btn:hover {
   background-color: var(--color-1);
@@ -29,7 +80,8 @@ body {
   display: block;
 }
 
-.tag:hover, .tag:focus {
+.tag:hover,
+.tag:focus {
   background-color: rgb(224, 255, 255, 0.3);
   transform: scale(1.03);
 }
@@ -149,15 +201,17 @@ body {
 
 
 .noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
-
-
-
-

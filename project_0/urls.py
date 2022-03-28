@@ -25,21 +25,22 @@ from django.views.static import serve
 from test import views as test_views
 
 from django.views.i18n import JavaScriptCatalog
-js_info_dict = { 'packages': ('test',),}
+js_info_dict = {'packages': ('test',), }
 
 
 urlpatterns = [
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
-    # url(r'^jsi18n/$', JavaScriptCatalog, js_info_dict, name='javascript-catalog'), 
+    # url(r'^jsi18n/$', JavaScriptCatalog, js_info_dict, name='javascript-catalog'),
 
-    path(r'admin/', admin.site.urls), 
-    path(r'index/', test_views.index_page), 
-    path(r'show_word_info/', test_views.show_word_info_page), 
-    path(r'passage/', test_views.select_words_page), 
-    path(r'passage/show_definition/', test_views.show_definition_page), 
-    path(r'passage/submit_selected_words/', test_views.test_passage_page), 
+    path(r'admin/', admin.site.urls),
+    # author page
+    re_path(r'^$', test_views.main_page),
+    path(r'main/', test_views.main_page),
+    path(r'index/', test_views.index_page),  # index page for `test` app
+    path(r'show_word_info/', test_views.show_word_info_page),
+    path(r'passage/', test_views.select_words_page),
+    path(r'passage/show_definition/', test_views.show_definition_page),
+    path(r'passage/submit_selected_words/', test_views.test_passage_page),
 
-    path(r'i18n/', include('django.conf.urls.i18n')), 
+    path(r'i18n/', include('django.conf.urls.i18n')),
 ]
-
-

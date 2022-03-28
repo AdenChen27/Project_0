@@ -1,4 +1,4 @@
-English reading ability training [website](https://adenchen27.pythonanywhere.com/index/)
+A [website](https://adenchen27.pythonanywhere.com/index/) for practicing English reading ability
 
 Backend: Python + Django
 Frontend: Html(bootstrap5) + css + JS
@@ -9,13 +9,15 @@ Hosted on [pythonanywhere](https://www.pythonanywhere.com/)
 
 
 TODO:
+- [ ] author page
+    - [x] main
+    - [ ] CTB proj
+    - [ ] js func plot
+    - [ ] link from index page
 - [ ] users
-    - [x] user model
+    - [x] 3.27 user model
     - [ ] login page
     - [ ] register page
-- [ ] author page
-    - link to github & projects
-    - todo
 - [ ] test page show answer function
 
 - [ ] bootstrap sass
@@ -32,8 +34,7 @@ TODO:
 - [x] 3.26 multi-language support
 - [x] 3.26 visit counter
 - [x] 3.27 word select
-- [x] 3.27 passage Flesch–Kincaid readability Level
-
+- [x] 3.28 passage Flesch–Kincaid readability Level
 
 quick actions
 ```

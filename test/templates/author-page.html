@@ -1,0 +1,57 @@
+<html>
+{% load i18n %}
+
+<head>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
+  <title>Author page | A</title>
+</head>
+
+<body>
+  <header>
+    <!-- <img class="header-img" src="../../static/pictures/header-img.jpg"> -->
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-3"></div>
+      <div class="col-6">
+        <h1> About me </h1>
+        <p>I'm Aden Chen.</p>
+        <a href="https://github.com/AdenChen27"> {%trans "My Github page" %} </a>
+        <h1> Projects </h1>
+        <!-- project website -->
+        <h2> English-reading-website-thing </h2>
+        <p>
+          {%trans "" %}
+          <a href="/index"> {%trans "Website" %} </a>
+          {%trans "to practice English reading ability." %}
+        </p>
+        <a href="https://github.com/AdenChen27/Project_0"> {%trans "Github repositorie" %} </a>
+        <!-- END project website -->
+        <!-- project 2048 solver-->
+        <h2> 2048 solver </h2>
+        <img src="../../static/pictures/2048_solver_demo.gif" alt="2048_solver_demo">
+        <p> {%trans "A 2048 solver" %} </p>
+        <a href="https://github.com/AdenChen27/2048_solver"> {%trans "Github repositorie" %} </a>
+        <!-- END project 2048 solver -->
+        <!-- project CTB-->
+        <h2> 2048 solver </h2>
+        <img src="../../static/pictures/2048_solver_demo.gif" alt="2048_solver_demo">
+        <p> {%trans "A 2048 solver" %} </p>
+        <a href="https://github.com/AdenChen27/2048_solver"> {%trans "Github repositorie" %} </a>
+        <!-- END project CTB -->
+
+        <!-- contact -->
+        <h1> Contact </h1>
+        <p> AdenChen2005@gmail.com </p>
+        <!-- END contact -->
+      </div>
+      <div class="col-3"></div>
+    </div>
+  </div>
+</body>
+
+</html>
