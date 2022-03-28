@@ -11,9 +11,11 @@ Hosted on [pythonanywhere](https://www.pythonanywhere.com/)
 TODO:
 - [ ] author page
     - [x] main
-    - [ ] CTB proj
-    - [ ] js func plot
+    - [x] CTB proj
+    - [ ] js func plot proj
     - [ ] link from index page
+    - [ ] imgs
+    - [ ] translations
 - [ ] users
     - [x] 3.27 user model
     - [ ] login page

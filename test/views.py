@@ -34,7 +34,7 @@ app_system_info = SystemInfo.objects.first()
 
 # author page
 def main_page(request):
-    return render(request, "author-page.html")
+    return render(request, "author-page.html", {"view_count": app_system_info.counter})
 
 
 # renew view counter

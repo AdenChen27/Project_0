@@ -6,6 +6,14 @@
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
+  <style type="text/css">
+  p {
+    margin: 0;
+  }
+  .github_link, .github_link:hover {
+    color: #90c1d2;
+  }
+  </style>
   <title>Author page | A</title>
 </head>
 
@@ -20,29 +28,55 @@
       <div class="col-6">
         <h1> About me </h1>
         <p>I'm Aden Chen.</p>
-        <a href="https://github.com/AdenChen27"> {%trans "My Github page" %} </a>
+        <p>
+          <a href="https://github.com/AdenChen27">{%trans "My Github account" %}</a>
+          <!-- <a href="https://github.com/CHVSG"> {%trans "" %} </a> -->
+        </p>
+        
         <h1> Projects </h1>
         <!-- project website -->
         <h2> English-reading-website-thing </h2>
         <p>
           {%trans "" %}
-          <a href="/index"> {%trans "Website" %} </a>
+          <a href="/index"> {%trans "Website" %} </a> 
           {%trans "to practice English reading ability." %}
         </p>
-        <a href="https://github.com/AdenChen27/Project_0"> {%trans "Github repositorie" %} </a>
+        <p>{%trans "View count: " %}{{ view_count }}</p>
+        <a class="github_link" href="https://github.com/AdenChen27/Project_0"> {%trans "Github repositorie" %} </a>
         <!-- END project website -->
+
         <!-- project 2048 solver-->
         <h2> 2048 solver </h2>
-        <img src="../../static/pictures/2048_solver_demo.gif" alt="2048_solver_demo">
+        <img style="margin: 0 0 1em 0;" src="../../static/pictures/2048_solver_demo.gif" alt="2048_solver_demo">
         <p> {%trans "A 2048 solver" %} </p>
-        <a href="https://github.com/AdenChen27/2048_solver"> {%trans "Github repositorie" %} </a>
+        <a class="github_link" href="https://github.com/AdenChen27/2048_solver"> {%trans "Github repositorie" %} </a>
         <!-- END project 2048 solver -->
+
         <!-- project CTB-->
-        <h2> 2048 solver </h2>
-        <img src="../../static/pictures/2048_solver_demo.gif" alt="2048_solver_demo">
-        <p> {%trans "A 2048 solver" %} </p>
-        <a href="https://github.com/AdenChen27/2048_solver"> {%trans "Github repositorie" %} </a>
+        <h2> Project website for CTB group </h2>
+        <a href="https://chvsg.github.io/">
+          <img style="margin: 0 0 1em 0; " src="../../static/pictures/CHVSG_main.gif" alt="CHVSG_stereotype_board">
+        </a>
+        <p> 
+          <a href="https://chvsg.github.io/"> {%trans "Check out" %} </a>
+          {%trans "our group's progress in encouraging high school girls to do more sports." %} 
+        </p>
+        <a href="https://chvsg.github.io/2999/01/01/stereotypes-board/">
+          <img style="margin: 0 0 1em 0; width: 80%; height: auto;" src="../../static/pictures/CHVSG_stereotype_board.png" alt="CHVSG_stereotype_board">
+        </a>
+        <p>
+          <a href="https://chvsg.github.io/2999/01/01/stereotypes-board/"> {%trans "Share" %} </a>
+          {%trans "the stereotypes you've heard about girls taking part in sports" %}
+        </p>
+        <a class="github_link" href="https://github.com/CHVSG/CHVSG.github.io"> {%trans "Github repositorie" %} </a>
         <!-- END project CTB -->
+
+        <!-- project JS func plot -->
+        <h2> 2048 solver </h2>
+        <img style="margin: 0 0 1em 0;" src="../../static/pictures/2048_solver_demo.gif" alt="2048_solver_demo">
+        <p> {%trans "A 2048 solver" %} </p>
+        <a class="github_link" href="https://github.com/AdenChen27/2048_solver"> {%trans "Github repositorie" %} </a>
+        <!-- END project JS func plot-->
 
         <!-- contact -->
         <h1> Contact </h1>
