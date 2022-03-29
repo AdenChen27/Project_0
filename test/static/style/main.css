@@ -198,6 +198,15 @@ input {
   color: red;
 }
 
+.nav {
+  margin: 1em 0;
+  padding: 0em 1em;
+}
+
+.view-count {
+  color: #2f4f4f;
+}
+
 
 .noselect {
   -webkit-touch-callout: none;

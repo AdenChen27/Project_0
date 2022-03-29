@@ -9,12 +9,6 @@ Hosted on [pythonanywhere](https://www.pythonanywhere.com/)
 
 
 TODO:
-- [ ] author page
-    - [x] 3.28 main
-    - [x] 3.28 CTB proj
-    - [ ] js func plot proj
-    - [ ] imgs
-    - [ ] translations
 - [ ] users
     - [x] 3.27 user model
     - [x] 3.29 login/register page
@@ -25,7 +19,13 @@ TODO:
     - [ ] edit page
     - [ ] error report page
 - [ ] test page show answer function
-- [ ] titles
+- [ ] 3.29 titles
+- [ ] author page
+    - [x] 3.28 main
+    - [x] 3.28 CTB proj
+    - [ ] js func plot proj
+    - [ ] imgs
+    - [ ] translations
 
 style
 - [ ] logo

@@ -48,6 +48,7 @@ def index_page(request):
     return render(request, "index.html", {
         "passages": passages, 
         "user": request.session.get('name', ''), 
+        "view_count": app_system_info.counter, 
         })
 
 
