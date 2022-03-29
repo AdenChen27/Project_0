@@ -28,3 +28,41 @@ function to_register(){
     register_container.scrollIntoView();
 }
 
+
+function set_register_error(msg) {
+    document.getElementById("register-error-msg").innerHTML = msg;
+}
+
+
+function check_register_info(){
+    set_register_error("");
+    var name = document.getElementById("register-name").value;
+    var user = document.getElementById("register-user").value;
+    var pass = document.getElementById("register-password-1").value;
+    var pass2 = document.getElementById("register-password-2").value;
+    if (!name) {
+        set_register_error("Name cannot be blank");
+        return false;
+    }
+    if (!user) {
+        set_register_error("Username cannot be blank");
+        return false;
+    }
+    if (!pass) {
+        set_register_error("Password cannot be blank");
+        return false;
+    }
+    if (pass != pass2) {
+        set_register_error("Password and confirm password does not match");
+        return false;
+    }
+    return true;
+}
+
+
+if (init_page == "login") {
+    to_login();
+} else {
+    to_register();
+}
+

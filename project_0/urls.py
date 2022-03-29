@@ -39,6 +39,8 @@ urlpatterns = [
     # test app
     path(r'index/', test_views.index_page),
     path(r'login/', test_views.login_page),
+    path(r'login_action/', test_views.login_action),
+    path(r'register_action/', test_views.register_action),
     path(r'show_word_info/', test_views.show_word_info_page),
     path(r'passage/', test_views.select_words_page),
     path(r'passage/show_definition/', test_views.show_definition_page),

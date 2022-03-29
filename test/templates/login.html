@@ -7,7 +7,10 @@
   {% bootstrap_javascript %}
   <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
   <link rel="stylesheet" type="text/css" href="../../static/style/login.css">
-  <title>{% trans "Author page" %} | A</title>
+  <title>{% trans "Login" %} | A</title>
+  <script>
+    var init_page = "{{ init_page }}";
+  </script>
 </head>
 
 <body>
@@ -38,44 +41,52 @@
       role="tabpanel"
       aria-labelledby="tab-login"
     >
-      <form>
+      <form method="post" action="/login_action/">
 
         <!-- Email input -->
         <label class="form-label" for="loginName">Username</label>
-        <input type="email" id="loginName" class="form-control" />
+        <input type="" id="loginName" name="username" class="form-control" />
 
         <!-- Password input -->
         <label class="form-label" for="loginPassword">Password</label>
-        <input type="password" id="loginPassword" class="form-control" />
+        <input type="password" id="loginPassword" name="password" class="form-control" />
+
+        <!-- error info -->
+        <div class="error-msg" id="login-error-msg">{{ login_error }}</div>
 
         <!-- Submit button -->
         <div class="div-blank"></div>
         <button type="submit" class="btn btn-outline-secondary col-12">Sign in</button>
+        {% csrf_token %}
       </form>
     </div>
     <!-- END login -->
     <!-- register -->
     <div style="display: none;" id="register-container">
-      <form>
+      <form method="post" action="/register_action/">
         <!-- Name input -->
         <label class="form-label" for="registerName">Name</label>
-        <input type="text" id="registerName" class="form-control" />
+        <input type="text" id="register-name" name="name" class="form-control" />
 
         <!-- Username input -->
         <label class="form-label" for="registerUsername">Username</label>
-        <input type="text" id="registerUsername" class="form-control" />
+        <input type="text" id="register-user" name="username" class="form-control" />
 
         <!-- Password input -->
-        <label class="form-label" for="registerPassword">Password</label>
-        <input type="password" id="registerPassword" class="form-control" />
+        <label class="form-label" for="register-password-1">Password</label>
+        <input type="password" id="register-password-1" name="password" class="form-control" />
 
         <!-- Repeat Password input -->
-        <label class="form-label" for="registerRepeatPassword">Repeat password</label>
-        <input type="password" id="registerRepeatPassword" class="form-control" />
+        <label class="form-label" for="register-password-2">Repeat password</label>
+        <input type="password" id="register-password-2" name="password2" class="form-control" />
 
-        <!-- Submit button -->
+        <!-- error info -->
+        <div class="error-msg" id="register-error-msg">{{ register_error }}</div>
+
+        <!-- submit btn -->
         <div class="div-blank"></div>
-        <button type="submit" class="btn btn-outline-secondary col-12">Register and Sign in</button>
+        <button type="submit" class="btn btn-outline-secondary col-12" onclick="return check_register_info()">Register and Sign in</button>
+        {% csrf_token %}
       </form>
     </div>
     <!-- END register -->

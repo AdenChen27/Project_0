@@ -194,6 +194,11 @@ input {
 }
 
 
+.error-msg {
+  color: red;
+}
+
+
 .noselect {
   -webkit-touch-callout: none;
   /* iOS Safari */

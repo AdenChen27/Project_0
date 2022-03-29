@@ -41,14 +41,51 @@ def main_page(request):
 # return Passage list
 def index_page(request):
     app_system_info.counter_add()
-    print(app_system_info.counter)
     passages = list(Passage.objects.all())
     passages.sort(key=lambda x: x.title)
     return render(request, "index.html", {"passages": passages})
 
 
-def login_page(request):
-    return render(request, "login.html")
+def login_page(request, login_error="", register_error="", init_page="login"):
+    return render(request, "login.html", {
+        "init_page": init_page,  # login/register
+        "login_error": login_error,
+        "register_error": register_error,
+    })
+
+
+def login_action(request):
+    if request.method == "POST":
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+
+        if User.objects.filter(username=username).exists() and \
+            User.objects.get(username=username).password == password:
+            return index_page(request)
+        else:
+            return login_page(
+                request, 
+                init_page="login", 
+                login_error="username or password is incorrect"
+            )
+
+
+def register_action(request):
+    if request.method == "POST":
+        name = request.POST.get('name', '')
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+
+        if User.objects.filter(username=username).exists():
+            return login_page(
+                request, 
+                init_page="register", 
+                register_error="username already in use. pick another one."
+            )
+        else:
+            User(name=name, username=username, password=password).save()
+            return index_page(request)
+            # set language_code
 
 
 def select_words_page(request):
