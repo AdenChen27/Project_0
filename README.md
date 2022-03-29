@@ -19,7 +19,7 @@ TODO:
     - [x] 3.27 user model
     - [x] 3.29 login/register page
     - [x] 3.29 login/register control
-    - [ ] login control panel
+    - [x] 3.30 login control panel
     - [ ] user info page
     - [ ] upload passage page
     - [ ] edit page

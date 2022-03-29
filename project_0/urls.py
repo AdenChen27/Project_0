@@ -36,11 +36,13 @@ urlpatterns = [
     # author page
     re_path(r'^$', test_views.main_page),
     path(r'main/', test_views.main_page),
-    # test app
+    # login
     path(r'index/', test_views.index_page),
     path(r'login/', test_views.login_page),
     path(r'login_action/', test_views.login_action),
     path(r'register_action/', test_views.register_action),
+    path(r'jump-to-index/', test_views.jump_to_index),
+
     path(r'show_word_info/', test_views.show_word_info_page),
     path(r'passage/', test_views.select_words_page),
     path(r'passage/show_definition/', test_views.show_definition_page),

@@ -6,7 +6,8 @@
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   <script>
-    var csrf_token = "{{ csrf_token }}";
+    var csrf_token = "{{ csrf_token }}", 
+      user = "{{ user }}";
   </script>
   <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
   <title>A</title>
@@ -32,11 +33,21 @@
       <!-- main column -->
       <div class="col-8">
         <header>
-          <div class="input-group">
-            <button class="btn btn-outline-secondary set-lang-btn" type="button" onclick="set_lang('zh-hans')">中</button>
-            <button class="btn btn-outline-secondary set-lang-btn" type="button" onclick="set_lang('en')">En</button>
+          <div class="row">
+            <div class="col-4">
+              <div class="input-group">
+                <button class="btn btn-outline-secondary set-lang-btn" type="button" onclick="set_lang('zh-hans')">中</button>
+                <button class="btn btn-outline-secondary set-lang-btn" type="button" onclick="set_lang('en')">En</button>
+              </div>
+            </div>
+            <div class="col-4">
+              <a href="/">Author page</a>
+            </div>
+            <div class="col-4" id="log-in-control-panel">
+              <p id="logged-in-info">Logged in as <a href="">{{ user }}</a></p>
+              <a href="/login" id="log-in-link">Log in</a>
+            </div>
           </div>
-          <a href="/">Author page</a>
         </header>
 
         <h1>{% trans "Dictionary" %}</h1>
@@ -82,6 +93,7 @@
   </div>
   <script src="../../static/javascript/word_search.js"></script>
   <script src="../../static/javascript/language-setting.js"></script>
+  <script src="../../static/javascript/index.js"></script>
   <script src="../static/javascript/bootstrap-tooltip.js"></script>
 
 </body>

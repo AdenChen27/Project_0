@@ -43,7 +43,17 @@ def index_page(request):
     app_system_info.counter_add()
     passages = list(Passage.objects.all())
     passages.sort(key=lambda x: x.title)
-    return render(request, "index.html", {"passages": passages})
+    print(request.session.get('user', ''))
+    print(request.session)
+    return render(request, "index.html", {
+        "passages": passages, 
+        "user": request.session.get('name', ''), 
+        })
+
+
+# return a page that jumps back to index
+def jump_to_index(request):
+    return render(request, "jump-to-index.html")
 
 
 def login_page(request, login_error="", register_error="", init_page="login"):
@@ -61,7 +71,8 @@ def login_action(request):
 
         if User.objects.filter(username=username).exists() and \
             User.objects.get(username=username).password == password:
-            return index_page(request)
+            request.session['name'] = User.objects.get(username=username).name
+            return jump_to_index(request)
         else:
             return login_page(
                 request, 
@@ -84,7 +95,8 @@ def register_action(request):
             )
         else:
             User(name=name, username=username, password=password).save()
-            return index_page(request)
+            request.session['name'] = name
+            return jump_to_index(request)
             # set language_code
 
 
