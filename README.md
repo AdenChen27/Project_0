@@ -20,6 +20,7 @@ TODO:
     - [x] 3.29 login/register page
     - [x] 3.29 login/register control
     - [ ] login control panel
+    - [ ] user info page
     - [ ] upload passage page
     - [ ] edit page
     - [ ] error report page
