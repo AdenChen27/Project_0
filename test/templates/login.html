@@ -1,0 +1,87 @@
+<html>
+{% load i18n %}
+
+<head>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
+  <link rel="stylesheet" type="text/css" href="../../static/style/login.css">
+  <title>{% trans "Author page" %} | A</title>
+</head>
+
+<body>
+  <header>
+    <!-- <img class="header-img" src="../../static/pictures/header-img.jpg"> -->
+  </header>
+
+  <div style="width: 30em; margin: auto;" class="align-items-center">
+    
+    <!-- nav -->
+    <div class="row nav-container">
+      <div 
+        class="btn btn-outline-secondary col-6 nav-btn nav-active"
+        onclick="to_login()"
+        id="login-nav-btn"
+      >Login</div>
+      <div 
+        class="btn btn-outline-secondary col-6 nav-btn"
+        onclick="to_register()"
+        id="register-nav-btn"
+      >Register</div>
+      
+    </div>
+    <!-- END nav -->
+    <!-- login -->
+    <div
+      id="login-container"
+      role="tabpanel"
+      aria-labelledby="tab-login"
+    >
+      <form>
+
+        <!-- Email input -->
+        <label class="form-label" for="loginName">Username</label>
+        <input type="email" id="loginName" class="form-control" />
+
+        <!-- Password input -->
+        <label class="form-label" for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" class="form-control" />
+
+        <!-- Submit button -->
+        <div class="div-blank"></div>
+        <button type="submit" class="btn btn-outline-secondary col-12">Sign in</button>
+      </form>
+    </div>
+    <!-- END login -->
+    <!-- register -->
+    <div style="display: none;" id="register-container">
+      <form>
+        <!-- Name input -->
+        <label class="form-label" for="registerName">Name</label>
+        <input type="text" id="registerName" class="form-control" />
+
+        <!-- Username input -->
+        <label class="form-label" for="registerUsername">Username</label>
+        <input type="text" id="registerUsername" class="form-control" />
+
+        <!-- Password input -->
+        <label class="form-label" for="registerPassword">Password</label>
+        <input type="password" id="registerPassword" class="form-control" />
+
+        <!-- Repeat Password input -->
+        <label class="form-label" for="registerRepeatPassword">Repeat password</label>
+        <input type="password" id="registerRepeatPassword" class="form-control" />
+
+        <!-- Submit button -->
+        <div class="div-blank"></div>
+        <button type="submit" class="btn btn-outline-secondary col-12">Register and Sign in</button>
+      </form>
+    </div>
+    <!-- END register -->
+  </div>
+
+  <script src="../static/javascript/login.js"></script>
+</body>
+
+</html>

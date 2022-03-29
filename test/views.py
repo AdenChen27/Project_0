@@ -47,6 +47,10 @@ def index_page(request):
     return render(request, "index.html", {"passages": passages})
 
 
+def login_page(request):
+    return render(request, "login.html")
+
+
 def select_words_page(request):
     from json import loads
     passage_id = request.GET.get("p_id", None)

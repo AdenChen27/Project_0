@@ -367,8 +367,8 @@ class Passage(models.Model):
 
 
 class User(models.Model):
-    first_name = models.CharField(max_length=FIRST_NAME_MAX_LEN, default="")
-    last_name = models.CharField(max_length=LAST_NAME_MAX_LEN, default="")
+    name = models.CharField(max_length=FIRST_NAME_MAX_LEN, default="")
+    username = models.CharField(max_length=LAST_NAME_MAX_LEN, default="")
     # stored in md5
     password = models.CharField(max_length=PASSWORD_MAX_LEN, default="")
 
@@ -378,6 +378,8 @@ class User(models.Model):
         default=""
     )
     points = models.IntegerField(default=0)
+    # 0 -> root; 1 -> administrators; 10 -> users (default)
+    permission = models.IntegerField(default=10)
 
     def points_add(self, v):
         self.points += v

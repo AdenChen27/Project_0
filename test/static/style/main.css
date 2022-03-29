@@ -1,7 +1,10 @@
 :root {
+  /* light */
   --color-0: #edf6f9;
   --color-1: #caf0f8;
   --color-2: #1E90FF;
+
+  --color-light-blue: #daecf3;
 }
 
 
@@ -39,6 +42,14 @@ a:hover {
 
 .passage-text-container {
   font-family: Times New Romen;
+}
+
+.btn {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+input {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 

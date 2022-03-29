@@ -1,0 +1,40 @@
+p {
+  margin: 0;
+}
+
+.github_link, .github_link:hover {
+  color: #90c1d2;
+}
+
+body {
+  background-image: url('../../static/pictures/1_1.jpg');
+  background-repeat: no-repeat;
+  background-size: 170%;
+  background-color: rgba(237, 246, 249, .95);
+  background-blend-mode: lighten;
+}
+
+header {
+  /*background-color: var(--color-1);*/
+  background-image: url('../../static/pictures/3.jpeg');
+  width: 100%;
+  height: 10em;
+}
+
+.nav-container {
+  margin: 1.5em 0;
+}
+
+.nav-btn {
+  border-style: none;
+  height: 2em;
+}
+
+.nav-active {
+  background-color: var(--color-light-blue);
+}
+
+.nav-inactive {
+  background-color: var(--color-0);
+}
+

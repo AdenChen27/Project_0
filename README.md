@@ -17,8 +17,8 @@ TODO:
     - [ ] translations
 - [ ] users
     - [x] 3.27 user model
-    - [ ] login page
-    - [ ] register page
+    - [x] 3.29 login/register page
+    - [ ] login/register control
     - [ ] upload passage page
     - [ ] edit page
     - [ ] error report page
