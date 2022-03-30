@@ -49,6 +49,8 @@ performance
 
 quick actions
 ```
+./manage.py collectstatic
+
 ./manage.py makemigrations;./manage.py migrate
 
 ./manage.py makemessages -l zh_hans
@@ -62,11 +64,13 @@ quick actions
 deploy
 ```
 ./manage.py dumpdata test > db.json
+python3 manage.py loaddata db.json
 
 cd Project_0
 git clean -d -f
+git reset --hard
 git pull
-python3 manage.py loaddata db.json
+python3 manage.py collectstatic
 
 pip install -r requirements.txt
 ```
