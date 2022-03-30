@@ -12,6 +12,14 @@ body {
   background-color: var(--color-0);
 }
 
+body.bg-img {
+  background-image: url('../../static/pictures/1_1.jpg');
+  background-repeat: no-repeat;
+  background-size: 170%;
+  background-color: rgba(237, 246, 249, .95);
+  background-blend-mode: lighten;
+}
+
 h1,
 h2 {
   margin: 1em 0 .5em 0;
@@ -37,6 +45,14 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+header.bg-img {
+  background-color: var(--color-1);
+  background-image: url('../../static/pictures/header-img-3.svg');
+  /*background-image: url('../../static/pictures/3.jpeg');*/
+  width: 100%;
+  height: 10em;
 }
 
 

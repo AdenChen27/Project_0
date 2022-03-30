@@ -27,6 +27,9 @@ TODO:
     - [ ] imgs
     - [ ] translations
 
+quiz page
+- [ ] 2 col
+
 style
 - [ ] logo
 - [ ] bootstrap sass
