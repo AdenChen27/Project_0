@@ -31,7 +31,7 @@ quiz page
 - [ ] 2 col
 
 style
-- [ ] logo
+- [x] 3.30 logo & header img
 - [ ] bootstrap sass
 - [ ] main.css structure
 
