@@ -18,7 +18,6 @@ TODO:
     - [x] 3.29 login/register page
     - [x] 3.29 login/register control
     - [x] 3.30 login control panel
-- [ ] test page show answer function
 - [ ] author page
     - [ ] js func plot proj
     - [ ] imgs
@@ -28,6 +27,8 @@ TODO:
 
 quiz page
 - [ ] 2 col
+    - [x] 3.31 text render
+- [ ] show answer
 
 style
 - [ ] bootstrap sass
@@ -58,6 +59,8 @@ quick actions
 ./manage.py compilemessages; ./manage.py runserver 127.0.0.1:7227
 
 ./manage.py runserver 127.0.0.1:7227
+
+./manage.py collectstatic
 
 ```
 

@@ -44,10 +44,10 @@ def index_page(request):
     passages = list(Passage.objects.all())
     passages.sort(key=lambda x: x.title)
     return render(request, "index.html", {
-        "passages": passages, 
-        "user": request.session.get('name', ''), 
-        "view_count": app_system_info.counter, 
-        })
+        "passages": passages,
+        "user": request.session.get('name', ''),
+        "view_count": app_system_info.counter,
+    })
 
 
 # return a page that jumps back to index
@@ -69,13 +69,13 @@ def login_action(request):
         password = request.POST.get('password', '')
 
         if User.objects.filter(username=username).exists() and \
-            User.objects.get(username=username).password == password:
+                User.objects.get(username=username).password == password:
             request.session['name'] = User.objects.get(username=username).name
             return jump_to_index(request)
         else:
             return login_page(
-                request, 
-                init_page="login", 
+                request,
+                init_page="login",
                 login_error="username or password is incorrect"
             )
 
@@ -88,8 +88,8 @@ def register_action(request):
 
         if User.objects.filter(username=username).exists():
             return login_page(
-                request, 
-                init_page="register", 
+                request,
+                init_page="register",
                 register_error="username already in use. pick another one."
             )
         else:
@@ -185,47 +185,64 @@ def show_definition_page(request):
     })
 
 
-def blank_rep_init(lemma_pos, request):
-    blank_rep_buf = []
+def quiz_render_init(text_lemma_pos, request):
+    word_render_list = []
+    # word_render_list = [(pos, render_args), ]
+    # render_args = {blank_id, word_len, word_name, lem_name, lem_id}
+
+    # hints for test-standard
     hints = []
     # hints = [
     #     (lemma.name, lemma.id, [(word1, word1.id), ]),
     # ]
     ans = {}
     # ans = {blank_id: {"id": ans_id, "name": ans}, }
-    blank_id = 0
-    lemma_id = request.POST.get("lemma_id")
+    
+    tmp_blank_id = 0
 
+    # get lemma id list of words to be quizzed
+    lemma_id = request.POST.get("lemma_id")
     if (lemma_id):
         lemma_id = lemma_id.split(',')
     else:
         lemma_id = []
 
-    for lem_id in lemma_pos:
+
+    for lem_id in text_lemma_pos:
         if lem_id not in lemma_id:
             continue
 
         lem_name = Lemma.objects.get(id=lem_id).name
-
         cur_lemma_hint = []
 
-        for word_id, pos_list in lemma_pos[lem_id]:
+        for word_id, pos_list in text_lemma_pos[lem_id]:
             word_name = Word.objects.get(id=word_id).name
             cur_lemma_hint.append((word_name, int(word_id)))
+
             for pos in pos_list:
-                blank_id += 1
-                ans[blank_id] = {"id": int(word_id), "name": word_name}
-                blank_rep_buf.append(
-                    (pos, len(word_name), blank_id, word_name, lem_name, lem_id))
+                tmp_blank_id += 1
+                ans['t' + str(tmp_blank_id)] = {"id": int(word_id), "name": word_name}
+                render_args = {
+                    "blank_id": 't' + str(tmp_blank_id),
+                    "word_len": len(word_name),
+                    "word_name": word_name,
+                    "lem_name": lem_name,
+                    "lem_id": lem_id,
+                }
+                word_render_list.append((pos, render_args))
         hints.append((lem_id, lem_name, cur_lemma_hint))
-    blank_rep_buf.sort(key=lambda x: x[0])
-    # blank_rep_buf = [(pos, word_len, blank_id, word_name, lem_name, lem_id), ]
-    # [yet to change] blank_rep_buf = {
-    #     "pos":, "word_len":,
-    #     "blank_id":, "lem_id":, 
-    #     "word_name":, "lem_name":, 
-    # }
-    return blank_rep_buf, hints, ans
+
+    # sort by `pos` from smallest to greatest
+    word_render_list.sort(key=lambda x: x[0])
+
+    # reassign `blank_id` so that blank with smaller `pos` have smaller `blank_id`
+    blank_id = 0
+    for i in range(len(word_render_list)):
+        blank_id += 1
+        ans[blank_id] = ans.pop(word_render_list[i][1]["blank_id"], None)
+        word_render_list[i][1]["blank_id"] = blank_id
+
+    return word_render_list, hints, ans
 
 
 # return [ans, wrong_choice1, ]
@@ -239,19 +256,49 @@ def get_grammar_choices(ans_lem_id, ans):
     return choices
 
 
-def multiple_choice_quiz(request):
+# wrap each paragraoh with <p> tag and
+#   replace words to be tested in text with empty <span> tag
+# <span>.id: `blank_{id}`
+def render_text(text, word_render_list):
+    pos_offset = 0
+    for pos, word_render_args in word_render_list:
+        word_len = word_render_args["word_len"]
+        # blank_id = word_render_args["blank_id"]
+        # word_name = word_render_args["word_name"]
+        # lem_name = word_render_args["lem_name"]
+        # lem_id = word_render_args["lem_id"]
+
+        # replacement = "<span id='blank_{blank_id}'></span>".format(
+        replacement = "<span id='blank_{blank_id}'></span>".format(
+            blank_id=word_render_args["blank_id"],
+        )
+        text = text[:pos + pos_offset] + replacement + \
+            text[pos + pos_offset + word_len:]
+        pos_offset += len(replacement) - word_len
+        # choices[blank_id] = get_grammar_choices(lem_id, word_name)
+    return P_START + text.replace("\n", P_END + P_START) + P_END
+
+
+# return rendered multiple choice quiz page
+def multiple_choice_quiz_page(request):
+    from json import loads
     passage_id = request.POST.get("p_id")
     passage = Passage.objects.get(id=passage_id)
     passage.counter_add()
     text = passage.text
-    blank_rep_buf, hints, ans = blank_rep_init(loads(passage.lemma_pos), request)
+    word_render_list, hints, ans = quiz_render_init(
+        loads(passage.lemma_pos), request)
 
+    return render(request, "quiz-choice.html", {
+        "passage_text": render_text(text, word_render_list),
+        "ans": ans,
+    })
 
 
 def test_passage_page(request):
     mode = request.POST.get("test_mode")
     if mode == "choice-grammar":
-        return multiple_choice_quiz(request)
+        return multiple_choice_quiz_page(request)
 
     passage_id = request.POST.get("p_id")
     passage = Passage.objects.get(id=passage_id)
@@ -260,12 +307,18 @@ def test_passage_page(request):
 
     from json import loads
     pos_offset = 0
-    blank_rep_buf, hints, ans = blank_rep_init(
+    word_render_list, hints, ans = quiz_render_init(
         loads(passage.lemma_pos), request)
     # {blank_id: [ans, wrong_choice1, ], }
     choices = {}
 
-    for pos, word_len, blank_id, word_name, lem_name, lem_id in blank_rep_buf:
+    for pos, word_render_args in word_render_list:
+        word_len = word_render_args["word_len"]
+        blank_id = word_render_args["blank_id"]
+        word_name = word_render_args["word_name"]
+        lem_name = word_render_args["lem_name"]
+        lem_id = word_render_args["lem_id"]
+
         blank_e = BLANK_E_TEMPLATE[mode].format(
             blank_id=blank_id,
             blank_width=word_len/2 + 1,

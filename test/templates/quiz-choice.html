@@ -10,8 +10,7 @@
   <link rel="shortcut icon" type="image/png" href="../../static/pictures/favicon.svg"/>
   <script>
     {% autoescape off %}
-    var ans = {{ ans }}, 
-      choices = {{ choices }};
+    var ans = {{ ans }};
     {% endautoescape %}
   </script>
   <title>{% trans "Quiz" %} | A</title>
@@ -23,18 +22,18 @@
     <div class="row">
       <div class="col-2"></div>
       <!-- passage text -->
-      <div class="col-4 passage-text-container">
+      <div class="col-5 passage-text-container">
         {% autoescape off %}{{ passage_text }}{% endautoescape %}
       </div>
       <!-- questions -->
-      <div class="col-4">
+      <div id="quiz-container" class="col-3">
       </div>
 
       <div class="col-2"></div>
     </div>
 
   </div>
-  <script src="../../static/javascript/test-choice-0.js"></script>
+  <script src="../../static/javascript/quiz-choice.js"></script>
 </body>
 
 </html>
