@@ -43,8 +43,6 @@ def index_page(request):
     app_system_info.counter_add()
     passages = list(Passage.objects.all())
     passages.sort(key=lambda x: x.title)
-    print(request.session.get('user', ''))
-    print(request.session)
     return render(request, "index.html", {
         "passages": passages, 
         "user": request.session.get('name', ''), 
@@ -190,18 +188,27 @@ def show_definition_page(request):
 def blank_rep_init(lemma_pos, request):
     blank_rep_buf = []
     hints = []
+    # hints = [
+    #     (lemma.name, lemma.id, [(word1, word1.id), ]),
+    # ]
     ans = {}
+    # ans = {blank_id: {"id": ans_id, "name": ans}, }
     blank_id = 0
     lemma_id = request.POST.get("lemma_id")
+
     if (lemma_id):
         lemma_id = lemma_id.split(',')
     else:
         lemma_id = []
+
     for lem_id in lemma_pos:
         if lem_id not in lemma_id:
             continue
+
         lem_name = Lemma.objects.get(id=lem_id).name
+
         cur_lemma_hint = []
+
         for word_id, pos_list in lemma_pos[lem_id]:
             word_name = Word.objects.get(id=word_id).name
             cur_lemma_hint.append((word_name, int(word_id)))
@@ -213,27 +220,39 @@ def blank_rep_init(lemma_pos, request):
         hints.append((lem_id, lem_name, cur_lemma_hint))
     blank_rep_buf.sort(key=lambda x: x[0])
     # blank_rep_buf = [(pos, word_len, blank_id, word_name, lem_name, lem_id), ]
-    # hints = [
-    #     (lemma.name, lemma.id, [(word1, word1.id), ]),
-    # ]
-    # ans = {blank_id: {"id": ans_id, "name": ans}, }
+    # [yet to change] blank_rep_buf = {
+    #     "pos":, "word_len":,
+    #     "blank_id":, "lem_id":, 
+    #     "word_name":, "lem_name":, 
+    # }
     return blank_rep_buf, hints, ans
 
 
+# return [ans, wrong_choice1, ]
+# all choices from same lemma
 def get_grammar_choices(ans_lem_id, ans):
-    # return [ans, wrong_choice1, ]
-    # all choices from same lemma
     from random import sample, choice
     word_objs = Word.objects.filter(lem_id=ans_lem_id)
     choices = sample(list(word_objs), min(CHOICE_NUM + 1, len(word_objs)))
     choices = [word_obj.name for word_obj in choices if word_obj.name != ans]
     choices = [ans] + choices
-    # print(choices)
     return choices
+
+
+def multiple_choice_quiz(request):
+    passage_id = request.POST.get("p_id")
+    passage = Passage.objects.get(id=passage_id)
+    passage.counter_add()
+    text = passage.text
+    blank_rep_buf, hints, ans = blank_rep_init(loads(passage.lemma_pos), request)
+
 
 
 def test_passage_page(request):
     mode = request.POST.get("test_mode")
+    if mode == "choice-grammar":
+        return multiple_choice_quiz(request)
+
     passage_id = request.POST.get("p_id")
     passage = Passage.objects.get(id=passage_id)
     passage.counter_add()

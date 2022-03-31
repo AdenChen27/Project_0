@@ -13,10 +13,7 @@ media
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
-test/javascipt/
-test/style/
-test/pictures/
-test/words_data.zip
+test/static/
 
 ### Django.Python Stack ###
 # Byte-compiled / optimized / DLL files

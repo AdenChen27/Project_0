@@ -1,0 +1,26 @@
+@import "main.css";
+
+.sentence {
+    font-size: 1.3em;
+}
+
+.passage_title {
+    font-size: 1.1em;
+    color: rgb(0, 0, 0, .7);
+    text-align: right;
+}
+
+.search-word-highlight {
+    color: var(--color-2);
+}
+
+.sentence-container {
+    margin: 1em 0;
+}
+
+.passage_author {
+    font-size: 1em;
+    color: rgb(0, 0, 0, .7);
+    text-align: right;
+}
+

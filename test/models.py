@@ -310,9 +310,15 @@ def get_text_difficulty(text):
         sent_cnt += sent.count(" - ") + sent.count(" — ")
 
         words = word_tokenize(sent)
-        word_cnt += len(words)
         for word in words:
-            syllable_cnt += count_syllable(word)
+            if len(word) <= 1:
+                # 'a'
+                if word == 'a':
+                    word_cnt += 1
+                    syllable_cnt += 1
+            else:
+                word_cnt += 1
+                syllable_cnt += count_syllable_2(word)
             # syllable_cnt += sylco(word)
 
     asl = word_cnt/sent_cnt

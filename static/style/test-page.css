@@ -1,0 +1,46 @@
+@import "main.css";
+.multiple-choice {
+  width: 9em;
+  display: inline;
+  color: var(--color-2);
+}
+
+option {
+  width: 7em;
+}
+
+.test-blank {
+  background-color: var(--color-0);
+  height: 1em;
+  width: 5em;
+  color: var(--color-2);
+  border-style: none;
+  border-bottom: solid;
+  border-color: var(--color-2);
+}
+
+.test-blank:focus {
+  outline: none;
+}
+
+.hint-btn {
+  display: inline;
+  height: 1em;
+  padding: 0 .3em;
+  font-size: .7em;
+  color: var(--color-2);
+  border-color: var(--color-2);
+  border-style: solid;
+  border-radius: .5em;
+}
+
+.hint-btn:hover {
+  background-color: var(--color-2);
+  color: white;
+}
+
+.hint-btn:active {
+  filter: brightness(75%);
+  outline: solid;
+  outline-color: var(--color-2);
+}
