@@ -18,20 +18,62 @@
 
 <body>
   <div class="container">
-    <h1 style="text-align: center; margin: 1em 0">{{ passage_title }}</h1>
+    <div class="row">
+      <h1 style="text-align: center; margin: 1em 0">{{ passage_title }}</h1>
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+          {% autoescape off %}
+          {% for paragraph in page %}
+            <div class="row">
+              <div class="col-8">
+                {{ paragraph.text }}
+              </div>
+              <div class="col-4">
+                {% for blank_id, args in paragraph.quiz.items %}
+                  <div class="row">
+                    <div class="col-1">
+                      <p><b>{{args.index}}.</b></p>
+                    </div>
+                    <!-- options -->
+                    <div class="col-11">
+                      {% for option in args.options %}
+                        <span class="quiz">
+                          <input 
+                            class="option-check"
+                            type="radio"
+                            name="radio_group_{{ blank_id }}"
+                            id="radio_{{ blank_id }}_{{ option }}"
+                            onclick="set_blank('{{ blank_id }}', '{{ option }}');"
+                            />
+                          <label
+                            class="option-label"
+                            for="radio_{{ blank_id }}_{{ option }}"
+                          >{{ option }}</label>
+                          <br>
+                        </span>
+                      {% endfor %}
+                      <br>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+          {% endautoescape %}
+        </div>
+        </div>
+
+
+        <div class="col-2"></div>
+      </div>
+    </div>
+    <!-- check btn -->
     <div class="row">
       <div class="col-2"></div>
-      <!-- passage text -->
-      <div class="col-5 passage-text-container">
-        {% autoescape off %}{{ passage_text }}{% endautoescape %}
-      </div>
-      <!-- questions -->
-      <div id="quiz-container" class="col-3">
-      </div>
-
+      <button class="btn btn-outline-dark col-8" style="margin: 30px 0" onclick="check()">{% trans "check" %}</button>
       <div class="col-2"></div>
     </div>
-
   </div>
   <script src="../../static/javascript/quiz-choice.js"></script>
 </body>

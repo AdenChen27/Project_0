@@ -14,39 +14,24 @@ TODO:
     - [ ] upload passage page
     - [ ] edit page
     - [ ] error report page
-    - [x] 3.27 user model
-    - [x] 3.29 login/register page
-    - [x] 3.29 login/register control
-    - [x] 3.30 login control panel
 - [ ] author page
     - [ ] js func plot proj
     - [ ] imgs
     - [ ] translations
-    - [x] 3.28 main
-    - [x] 3.28 CTB proj
 
 quiz page
 - [ ] 2 col
-    - [x] 3.31 text render
 - [ ] show answer
+- [ ] passage info
 
 style
 - [ ] bootstrap sass
 - [ ] main.css structure
-- [x] 3.30 logo & header img
 
 performance
 - [ ] dynamic word freq
 - [ ] cProfile
-- [x] 3.30 .gitignore
-
-
-- [x] 3.26 multi-language support
-- [x] 3.26 visit counter
-- [x] 3.27 info/help
-- [x] 3.27 word select
-- [x] 3.28 passage Flesch–Kincaid readability Level
-- [x] 3.29 titles
+- [ ] edict data
 
 quick actions
 ```

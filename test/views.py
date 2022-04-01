@@ -185,18 +185,23 @@ def show_definition_page(request):
     })
 
 
-def quiz_render_init(text_lemma_pos, request):
+# index: display index
+# blank_id: html id
+def quiz_render_init(text_lemma_pos, request, blank_id_format="%d"):
+    # word_render_list = {
+    #     pos: {blank_id, word_len, word_name, lem_name, lem_id, index}
+    # }
+    # order: pos from small to big
     word_render_list = []
-    # word_render_list = [(pos, render_args), ]
-    # render_args = {blank_id, word_len, word_name, lem_name, lem_id}
 
     # hints for test-standard
-    hints = []
     # hints = [
     #     (lemma.name, lemma.id, [(word1, word1.id), ]),
     # ]
+    hints = []
+
+    # ans = {blank_id: {"id": word_id, "name":, 'index':, }, }
     ans = {}
-    # ans = {blank_id: {"id": ans_id, "name": ans}, }
     
     tmp_blank_id = 0
 
@@ -221,7 +226,10 @@ def quiz_render_init(text_lemma_pos, request):
 
             for pos in pos_list:
                 tmp_blank_id += 1
-                ans['t' + str(tmp_blank_id)] = {"id": int(word_id), "name": word_name}
+                ans['t' + str(tmp_blank_id)] = {
+                    "id": int(word_id), 
+                    "name": word_name, 
+                }
                 render_args = {
                     "blank_id": 't' + str(tmp_blank_id),
                     "word_len": len(word_name),
@@ -232,15 +240,18 @@ def quiz_render_init(text_lemma_pos, request):
                 word_render_list.append((pos, render_args))
         hints.append((lem_id, lem_name, cur_lemma_hint))
 
-    # sort by `pos` from smallest to greatest
-    word_render_list.sort(key=lambda x: x[0])
+    # to dict and sort by `pos` from smallest to greatest
+    word_render_list = dict(sorted(word_render_list, key=lambda x: x[0]))
 
     # reassign `blank_id` so that blank with smaller `pos` have smaller `blank_id`
-    blank_id = 0
-    for i in range(len(word_render_list)):
-        blank_id += 1
-        ans[blank_id] = ans.pop(word_render_list[i][1]["blank_id"], None)
-        word_render_list[i][1]["blank_id"] = blank_id
+    _index = 0
+    for pos in word_render_list:
+        _index += 1
+        blank_id = blank_id_format % (_index)
+        ans[blank_id] = ans.pop(word_render_list[pos]["blank_id"], None)
+        ans[blank_id]["index"] = _index
+        word_render_list[pos]["index"] = _index
+        word_render_list[pos]["blank_id"] = blank_id
 
     return word_render_list, hints, ans
 
@@ -261,7 +272,8 @@ def get_grammar_choices(ans_lem_id, ans):
 # <span>.id: `blank_{id}`
 def render_text(text, word_render_list):
     pos_offset = 0
-    for pos, word_render_args in word_render_list:
+    for pos in word_render_list:
+        word_render_args = word_render_list[pos]
         word_len = word_render_args["word_len"]
         # blank_id = word_render_args["blank_id"]
         # word_name = word_render_args["word_name"]
@@ -279,6 +291,37 @@ def render_text(text, word_render_list):
     return P_START + text.replace("\n", P_END + P_START) + P_END
 
 
+# render multiple choice quiz
+# return {blank_id: {"index":, options": [opt1, ... ]}
+def render_quiz_mcq(word_render_list, option_num=5):
+    # word_render_list = {
+    #     pos: {blank_id, word_len, word_name, lem_name, lem_id}
+    # }
+    from random import sample, choice
+    quiz = {}
+    # index = 0
+    for pos in word_render_list:
+        # index += 1
+        render_args = word_render_list[pos]
+        blank_id = render_args["blank_id"]
+        ans = render_args["word_name"]
+
+        # get different forms of same lemma
+        word_objs = Word.objects.filter(lem_id=render_args["lem_id"])
+        options = sample(list(word_objs), min(option_num + 1, len(word_objs)))
+        options = [word_obj.name for word_obj in options if word_obj.name != ans]
+        options = [ans] + options
+        quiz[blank_id] = {}
+        quiz[blank_id]["index"] = render_args["index"]
+        quiz[blank_id]["options"] = options
+    return quiz
+
+
+# get a list of paragraphs from text
+def get_paragraphs(text):
+    return text.split("\n")
+
+
 # return rendered multiple choice quiz page
 def multiple_choice_quiz_page(request):
     from json import loads
@@ -286,12 +329,23 @@ def multiple_choice_quiz_page(request):
     passage = Passage.objects.get(id=passage_id)
     passage.counter_add()
     text = passage.text
-    word_render_list, hints, ans = quiz_render_init(
-        loads(passage.lemma_pos), request)
+    paragraphs = get_paragraphs(passage.text)
+    # page: [{
+    #     text: rendered_text, 
+    #     quiz: rendered_quiz, 
+    # }]
 
-    return render(request, "quiz-choice.html", {
+    word_render_list, hints, ans = quiz_render_init(
+        loads(passage.lemma_pos), 
+        request, 
+        blank_id_format="%d", 
+    )
+
+    return render(request, "quiz-choice-o.html", {
+        "passage_title": passage.title,
         "passage_text": render_text(text, word_render_list),
         "ans": ans,
+        "quiz": render_quiz_mcq(word_render_list), 
     })
 
 
@@ -312,7 +366,8 @@ def test_passage_page(request):
     # {blank_id: [ans, wrong_choice1, ], }
     choices = {}
 
-    for pos, word_render_args in word_render_list:
+    for pos in word_render_list:
+        word_render_args = word_render_list[pos]
         word_len = word_render_args["word_len"]
         blank_id = word_render_args["blank_id"]
         word_name = word_render_args["word_name"]
