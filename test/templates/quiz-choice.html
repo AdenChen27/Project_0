@@ -24,20 +24,24 @@
         <div class="col-2"></div>
         <div class="col-8">
           {% autoescape off %}
-          {% for paragraph in page %}
+          {% for text, quiz in page %}
             <div class="row">
-              <div class="col-8">
-                {{ paragraph.text }}
+              <!-- text -->
+              <div class="col-8 passage-text-container">
+                <div class='passage-text-para'>
+                  {{ text }}
+                </div>
               </div>
+              <!-- quiz -->
               <div class="col-4">
-                {% for blank_id, args in paragraph.quiz.items %}
-                  <div class="row">
+                {% for blank_id, options in quiz.items %}
+                  <div class="row quiz-container">
                     <div class="col-1">
-                      <p><b>{{args.index}}.</b></p>
+                      <p><b>{{blank_id}}.</b></p>
                     </div>
                     <!-- options -->
                     <div class="col-11">
-                      {% for option in args.options %}
+                      {% for option in options %}
                         <span class="quiz">
                           <input 
                             class="option-check"
