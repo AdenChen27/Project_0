@@ -1,8 +1,10 @@
 :root {
   /* light */
   --color-0: #edf6f9;
+  /*--color-0: #FFFFFF;*/
   --color-1: #caf0f8;
   --color-2: #1E90FF;
+  --color-3: #4256B1;
 
   --color-light-blue: #daecf3;
 }
@@ -10,6 +12,7 @@
 
 body {
   background-color: var(--color-0);
+  font-family: Helvetica;
 }
 
 body.bg-img {
@@ -26,17 +29,18 @@ h2 {
 }
 
 h1 {
-  font-family: Georgia;
+  font-size: 2em;
+  font-family: Helvetica;
 }
 
 h2 {
   font-family: Arial;
-  font-size: 1.7em;
+  font-size: 1.5em;
 }
 
-p {
-  font-family: Arial;
-}
+/*p {
+  font-family: Times;
+}*/
 
 a {
   text-decoration: none;
@@ -47,6 +51,19 @@ a:hover {
   text-decoration: underline;
 }
 
+select {
+  background-color: var(--color-0);
+  margin: 0;
+  border-style: none;
+  font-size: .9em;
+}
+
+select:focus {
+  border-style: none;
+  outline: none;
+}
+
+
 header.bg-img {
   background-color: var(--color-1);
   background-image: url('../../static/pictures/header-img-3.svg');
@@ -56,8 +73,15 @@ header.bg-img {
 }
 
 
-.passage-text-container {
-  font-family: Times New Romen;
+div.passage-text-container, div.quiz-container {
+  font-family: Arial;
+  font-size: 1.2em;
+  text-indent: 2em;
+  color: #111;
+}
+
+div.passage-text-para {
+  margin: 0 0 1em 0;
 }
 
 .btn {
@@ -66,6 +90,52 @@ header.bg-img {
 
 input {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+/*multiple choice quiz*/
+.blank_num {
+  color: var(--color-3);
+  font-weight: bold;
+  font-family: Georgia;
+  font-size: 1em;
+}
+
+.blank_word {
+  /*text-decoration: underline;
+  color: var(--color-3);*/
+}
+
+.ans-correct {
+  color: green;
+}
+
+.ans-wrong {
+  color: red;
+}
+
+
+.blank {
+  text-decoration: underline;
+  color: var(--color-3);
+}
+
+.quiz {
+  margin-left: 2.5em;
+  text-indent: 0;
+  display: flex;
+}
+
+.option-check {
+  margin-top: .5em;
+}
+
+.option-label {
+  padding-left: 1em;
+}
+
+
+.word-search-input, .btn{
+  border-radius: .75em;
 }
 
 
@@ -96,14 +166,6 @@ input {
   transform: scale(1.03);
 }
 
-.passage-text-para {
-  font-size: 1.5em;
-  line-height: 1.5em;
-  text-indent: 2em;
-  color: #111;
-  margin: 1em 0;
-}
-
 .lem-blank {
   color: var(--color-2);
 }
@@ -130,6 +192,7 @@ input {
   line-height: 1.5em;
   margin: 0.1em 0em;
   text-align: center;
+  border-radius: .2em;
 }
 
 .def-name {
@@ -152,6 +215,7 @@ input {
   margin: .75em 0;
   border-radius: .8em;
   background-color: var(--color-1);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .block-space {
@@ -199,7 +263,7 @@ input {
 
 .selected {
   background-color: var(--color-1);
-  border-radius: .2em;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .set-lang-btn {
@@ -222,7 +286,6 @@ input {
 .view-count {
   color: #2f4f4f;
 }
-
 
 .noselect {
   -webkit-touch-callout: none;
