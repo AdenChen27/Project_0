@@ -194,12 +194,6 @@ def quiz_render_init(text_lemma_pos, request, blank_id_format="%d"):
     # order: pos from small to big
     word_render_list = []
 
-    # hints for test-standard
-    # hints = [
-    #     (lemma.name, lemma.id, [(word1, word1.id), ]),
-    # ]
-    hints = []
-
     # ans = {blank_id: {"id": word_id, "name":, 'index':, 'lem_id':, }, }
     ans = {}
     
@@ -239,7 +233,6 @@ def quiz_render_init(text_lemma_pos, request, blank_id_format="%d"):
                     "lem_id": lem_id,
                 }
                 word_render_list.append((pos, render_args))
-        hints.append((lem_id, lem_name, cur_lemma_hint))
 
     # to dict and sort by `pos` from smallest to greatest
     word_render_list = dict(sorted(word_render_list, key=lambda x: x[0]))
@@ -254,7 +247,7 @@ def quiz_render_init(text_lemma_pos, request, blank_id_format="%d"):
         word_render_list[pos]["index"] = _index
         word_render_list[pos]["blank_id"] = blank_id
 
-    return word_render_list, hints, ans
+    return word_render_list, ans
 
 
 # return [ans, wrong_choice1, ]
@@ -319,12 +312,18 @@ def render_quiz_mcq_old(word_render_list, option_num=5):
     return quiz
 
 
+# get all forms of a lemma
+def get_all_forms(lemma_id):
+    return set([word.name for word in Word.objects.filter(lem_id=lemma_id)])
+
+
 # extract arguments need for quiz in `ans`
 # return {blank_id: [opt1, ... ]}
-def render_quiz_mcq(ans, option_num=5):
+def render_quiz_mcq(ans, option_num=5, opt_list1=[], opt_backup=[]):
     # ans = {blank_id: {"id": word_id, "name":, 'index':, 'lem_id':, }, }
-    from random import sample, choice
+    from random import sample, choice, shuffle
     quiz = {}
+    # all_ans_name
     # index = 0
     for blank_id in ans:
         # index += 1
@@ -332,11 +331,27 @@ def render_quiz_mcq(ans, option_num=5):
         ans_name = ans_args["name"]
 
         # get different forms of same lemma
-        word_objs = Word.objects.filter(lem_id=ans_args["lem_id"])
-        options = sample(list(word_objs), min(option_num + 1, len(word_objs)))
-        options = [word_obj.name for word_obj in options if word_obj.name != ans]
-        options = [ans_name] + options
+        
+        options = set([])
+        # options.update(sample(
+        #     all_forms, 
+        #     min(option_num + 1, len(all_forms))
+        # ))
+        options.update(get_all_forms(ans_args["lem_id"]))
+        options.update(opt_list1)
+        # mix with other words
+        #  
+        # options = sample(options)
+        options.add(ans_name)
+        if len(options) >= option_num:
+            options = sample(options, option_num)
+        else:
+            options.update(sample(
+                opt_backup, 
+                min(len(opt_backup), option_num - len(options))
+            ))
         quiz[blank_id] = options
+
     return quiz
 
 
@@ -358,12 +373,12 @@ def multiple_choice_quiz_page(request):
     #     text: rendered_text, 
     #     quiz: rendered_quiz, 
     # }]
-
-    word_render_list, hints, ans = quiz_render_init(
+    word_render_list, ans = quiz_render_init(
         loads(passage.lemma_pos), 
         request, 
         blank_id_format="%d", 
     )
+    opt_list1 = [ans[blank_id]["name"] for blank_id in ans]
 
     page = []
     paragraphs = render_text(text, word_render_list).split("\n")
@@ -372,8 +387,17 @@ def multiple_choice_quiz_page(request):
         cur_render_list = {}
         for blank_id in findall("<span id='blank_([\s\S]*?)'></span>", para):
             cur_render_list[blank_id] = ans[blank_id]
-        page.append((para, render_quiz_mcq(cur_render_list)))
-        print(render_quiz_mcq(cur_render_list))
+        if request.POST.get("test_mode") == "choice-grammar":
+            page.append((para, render_quiz_mcq(
+                cur_render_list, 
+                opt_list1=[], 
+                opt_backup=opt_list1, 
+            )))
+        else:
+            page.append((para, render_quiz_mcq(
+                cur_render_list, 
+                opt_list1=opt_list1 
+            )))
 
     return render(request, "quiz-choice.html", {
         "passage_title": passage.title,
@@ -384,7 +408,7 @@ def multiple_choice_quiz_page(request):
 
 def test_passage_page(request):
     mode = request.POST.get("test_mode")
-    if mode == "choice-grammar":
+    if mode == "choice-grammar" or mode == "choice":
         return multiple_choice_quiz_page(request)
 
     passage_id = request.POST.get("p_id")
@@ -394,7 +418,7 @@ def test_passage_page(request):
 
     from json import loads
     pos_offset = 0
-    word_render_list, hints, ans = quiz_render_init(
+    word_render_list, ans = quiz_render_init(
         loads(passage.lemma_pos), request)
     # {blank_id: [ans, wrong_choice1, ], }
     choices = {}
@@ -422,7 +446,6 @@ def test_passage_page(request):
     context = {
         "passage_text": text,
         "passage_title": passage.title,
-        "hints": sorted(hints, key=lambda x: x[0]),
         "ans": ans,  # {blank_id: {"id": ans_id, "name": ans}, }
     }
     if mode == "choice-grammar":

@@ -20,7 +20,7 @@ TODO:
     - [ ] translations
 
 quiz page
-- [ ] 2 col
+- [ ] act style
 - [ ] show answer
 - [ ] passage info
 
@@ -44,8 +44,6 @@ quick actions
 ./manage.py compilemessages; ./manage.py runserver 127.0.0.1:7227
 
 ./manage.py runserver 127.0.0.1:7227
-
-./manage.py collectstatic
 
 ```
 
