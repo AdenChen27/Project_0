@@ -16,15 +16,11 @@ P_END = r"</div>"
 # args: blank_id, blank_width, select_width
 #   lem_name, blank_placeholder, lem_name(hint), ans
 BLANK_E_TEMPLATE = {
-    "choice-grammar": """<select class="form-select multiple-choice" style="width: {select_width}em;" id="blank_{blank_id}"></select>""",
-    "choice": """<span class="lem-blank" id="blank_{blank_id}" onclick="click_blank({blank_id})">{blank_placeholder}</span>""",
     "blank": """<input type="text" class="test-blank" id="blank_{blank_id}" style="width: {blank_width}em;" placeholder="">
 <div class="hint-btn" onclick="document.getElementById('blank_' + {blank_id}).value='{hint}'">hint</div>
 """.replace("\n", ""),
 }
 HTML_TEMPLATE = {
-    "choice-grammar": "test-chioce-0.html",  # focus on grammar
-    "choice": "test-standard.html",
     "blank": "test-blank.html",
 }
 CHOICE_NUM = 4
@@ -400,7 +396,8 @@ def multiple_choice_quiz_page(request):
             )))
 
     return render(request, "quiz-choice.html", {
-        "passage_title": passage.title,
+        "passage_title": passage.title, 
+        "author": passage.author, 
         "page": page, 
         "ans": ans,
     })
@@ -447,6 +444,7 @@ def test_passage_page(request):
         "passage_text": text,
         "passage_title": passage.title,
         "ans": ans,  # {blank_id: {"id": ans_id, "name": ans}, }
+        "author": passage.author, 
     }
     if mode == "choice-grammar":
         context["choices"] = choices

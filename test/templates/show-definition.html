@@ -93,7 +93,7 @@
               </select>
             </div>
             <div class="col-6 button-holder">
-              <button type="button" class="btn btn-outline-dark col-12" onclick="export_words()" id="">{% trans "Export Words" %}</button>
+              <button type="button" class="btn btn-outline-dark col-12" onclick="export_words()">{% trans "Export Words" %}</button>
             </div>
           </div>
         </div>
@@ -101,7 +101,8 @@
         <div class="row" id="export_copy_textarea_block" style="display: none;">
           <form>
             <div class="form-group">
-              <label for="export_copy_textarea">{% trans "Copy" %}</label>
+              <button type="button" class="btn btn-outline-dark" onclick="copy_to_clipboard()">{% trans "Copy to clipboard" %}</button>
+
               <textarea class="form-control" id="export_copy_textarea" rows="10"></textarea>
             </div>
           </form>
