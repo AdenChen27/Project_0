@@ -49,9 +49,6 @@ quick actions
 
 deploy
 ```
-./manage.py dumpdata test > db.json
-python3 manage.py loaddata db.json
-
 cd Project_0
 git clean -d -f
 git reset --hard

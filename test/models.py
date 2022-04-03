@@ -362,8 +362,8 @@ class Passage(models.Model):
         # generate `lemma_pos`
         if not self.lemma_pos:
             self.lemma_pos = get_lemma_pos_string(self.text)
-
-        self.difficulty = get_text_difficulty(self.text)
+        if !self.difficulty:
+            self.difficulty = get_text_difficulty(self.text)
 
         super().save(*args, **kwargs)
 
