@@ -56,6 +56,15 @@ function check_register_info(){
         set_register_error("Password and confirm password does not match");
         return false;
     }
+    var pass_input = document.getElementById("register-password-1");
+    pass_input.value = md5(pass_input.value);
+    return true;
+}
+
+
+function submit_signin_info(){
+    var pass_input = document.getElementById("login-password");
+    pass_input.value = md5(pass_input.value);
     return true;
 }
 

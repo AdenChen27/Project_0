@@ -145,6 +145,18 @@ function export_words() {
 }
 
 
+// copy export string to clipboard
+function copy_to_clipboard() {
+    var copyText = document.getElementById("export_copy_textarea");
+
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+
+    navigator.clipboard.writeText(copyText.value);
+    alert("Copied successfully to clipboard");
+}
+
+
 function shuffel() {
     var def_rows = document.getElementsByName("def-row");
     for (const i in def_rows) {

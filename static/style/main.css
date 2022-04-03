@@ -114,6 +114,11 @@ input {
 }
 
 
+.author {
+  text-align: center;
+}
+
+
 .blank {
   text-decoration: underline;
   color: var(--color-3);

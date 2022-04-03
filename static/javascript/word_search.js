@@ -12,6 +12,18 @@ lemma_search_input.addEventListener("keyup", function(event) {
     }
 });
 
+
+function loadDoc() {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function() {
+        alert("load");
+        // document.getElementById("demo").innerHTML = this.responseText;
+    }
+    xhttp.open("GET", "ajax_info.txt", true);
+    xhttp.send();
+}
+
+
 function search_word() {
     const form = document.createElement("form");
     form.method = "post";

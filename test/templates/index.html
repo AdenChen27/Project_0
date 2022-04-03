@@ -5,11 +5,12 @@
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
+  <script src="{% static 'javascript/jquery-3.6.0.min.js' %}"></script>
   <script>
     var csrf_token = "{{ csrf_token }}", 
       user = "{{ user }}";
   </script>
-  <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'style/main.css' %}">
   <link rel="shortcut icon" type="image/png" href="../../static/pictures/favicon.svg"/>
   <title>A</title>
 </head>
