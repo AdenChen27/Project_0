@@ -78,7 +78,7 @@
             <tr class="sel-passage-tr" onclick="window.location.href = '/passage/?p_id={{ passage.id }}'">
               <td>{{ passage.title }}</td>
               <td>{{ passage.author }}</td>
-              <td style="text-align:center">{{ passage.difficulty|floatformat:"0" }}</td>
+              <td style="text-align:center">{{ passage.difficulty|floatformat:"0"|add:"-2" }}</td>
             </tr>
             {% endfor%}
           </tbody>

@@ -317,7 +317,13 @@ def get_all_forms(lemma_id):
 # return {blank_id: [opt1, ... ]}
 def render_quiz_mcq(ans, option_num=5, opt_list1=[], opt_backup=[]):
     # ans = {blank_id: {"id": word_id, "name":, 'index':, 'lem_id':, }, }
-    from random import sample, choice, shuffle
+    from random import sample
+
+    # get a random sample of `sample_list`
+    # with len(sample_list) <= length
+    def rand_sample(sample_list, length):
+        return sample(sample_list, min(len(sample_list), length))
+
     quiz = {}
     # all_ans_name
     # index = 0
@@ -329,23 +335,14 @@ def render_quiz_mcq(ans, option_num=5, opt_list1=[], opt_backup=[]):
         # get different forms of same lemma
         
         options = set([])
-        # options.update(sample(
-        #     all_forms, 
-        #     min(option_num + 1, len(all_forms))
-        # ))
         options.update(get_all_forms(ans_args["lem_id"]))
         options.update(opt_list1)
-        # mix with other words
-        #  
-        # options = sample(options)
+
+        if len(options) < option_num:
+            options.update(rand_sample(opt_backup, option_num - len(options) - 1))
         options.add(ans_name)
-        if len(options) >= option_num:
-            options = sample(options, option_num)
-        else:
-            options.update(sample(
-                opt_backup, 
-                min(len(opt_backup), option_num - len(options))
-            ))
+        options = rand_sample(options, option_num)
+
         quiz[blank_id] = options
 
     return quiz
@@ -424,9 +421,7 @@ def test_passage_page(request):
         word_render_args = word_render_list[pos]
         word_len = word_render_args["word_len"]
         blank_id = word_render_args["blank_id"]
-        word_name = word_render_args["word_name"]
         lem_name = word_render_args["lem_name"]
-        lem_id = word_render_args["lem_id"]
 
         blank_e = BLANK_E_TEMPLATE[mode].format(
             blank_id=blank_id,
@@ -438,7 +433,6 @@ def test_passage_page(request):
         text = text[:pos + pos_offset] + blank_e + \
             text[pos + pos_offset + word_len:]
         pos_offset += len(blank_e) - word_len
-        choices[blank_id] = get_grammar_choices(lem_id, word_name)
     text = P_START + text.replace("\n", P_END + P_START) + P_END
     context = {
         "passage_text": text,

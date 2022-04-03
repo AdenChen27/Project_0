@@ -50,14 +50,14 @@
 
         <!-- Password input -->
         <label class="form-label" for="loginPassword">Password</label>
-        <input type="password" id="loginPassword" name="password" class="form-control" />
+        <input id="login-password" type="password" id="loginPassword" name="password" class="form-control" />
 
         <!-- error info -->
         <div class="error-msg" id="login-error-msg">{{ login_error }}</div>
 
         <!-- Submit button -->
         <div class="div-blank"></div>
-        <button type="submit" class="btn btn-outline-secondary col-12">Sign in</button>
+        <button type="submit" class="btn btn-outline-secondary col-12" onclick="return submit_signin_info()">Sign in</button>
         {% csrf_token %}
       </form>
     </div>
@@ -93,6 +93,7 @@
     <!-- END register -->
   </div>
 
+  <script src="../static/javascript/md5.js"></script>
   <script src="../static/javascript/login.js"></script>
 </body>
 
