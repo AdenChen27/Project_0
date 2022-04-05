@@ -1,12 +1,15 @@
 <html>
+{% load static %}
 {% load i18n %}
 <head>
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
-  <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
-  <link rel="stylesheet" type="text/css" href="../../static/style/show_word_info.css">
-  <link rel="shortcut icon" type="image/png" href="../../static/pictures/favicon.svg"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'style/main.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'style/show_word_info.css' %}">
+  <link rel="shortcut icon" type="image/png" href="{% static 'pictures/favicon.svg' %}"/>
+  
+  <script src="{% static 'javascript/jquery-3.6.0.min.js' %}"></script>
   <script>
     var audio_loaded = false;
     var csrf_token = "{{ csrf_token }}";
@@ -23,34 +26,34 @@
           <input type="text" class="form-control" id="lemma_search_input">
         </div>
         <div class="col-3">
-          <button class="btn btn-outline-dark col-12" id="search_word_btn" onclick="search_word()">{% trans "Search" %}</button>
+          <button class="btn btn-outline-dark col-12" id="search_word_btn" onclick="ajax_search_word()">{% trans "Search" %}</button>
         </div>
       </div>
       <div class="container row" id="def_holder">
         <div class="row word-def-row" name="def-row">
           <div class="col-3 def-name">
-            {{ lemma.name }}
+            {{ lem_name }}
           </div>
           <div class="col-8">
             <div class="row def">
-              <p>{{ lemma.def_en }}</p>
+              <p>{{ def_en }}</p>
             </div>
             <div class="row def">
-              <p>{{ lemma.def_zh }}</p>
+              <p>{{ def_zh }}</p>
             </div>
           </div>
           <div class="col-1">
-            <img class="img-play" src="../../static/pictures/play.png" onclick="play_audio({{ lemma.id }}, '{{ lemma.name }}')" />
-            <audio id="word_audio_{{ lemma.id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ lemma.name }}--_gb_1.mp3" onloadeddata="audio_loaded=true;"/>
+            <img class="img-play" src="../../static/pictures/play.png" onclick="play_audio({{ lem_id }}, '{{ lem_name }}')" />
+            <audio id="word_audio_{{ lem_id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ lem_name }}--_gb_1.mp3" onloadeddata="audio_loaded=true;"/>
           </div>
         </div>
       </div>
 
       <div class="row">
       {% autoescape off %}
-        {% for sentence, passage in sentences %}
+        {% for passage in sentences %}
         <div class="sentence-container">
-          <p class="sentence">{{ sentence }}</p>
+          <p class="sentence">{{ passage.text }}</p>
           <p class="passage_title" onclick="window.location.href = '/passage/?p_id={{ passage.id }}'">{{ passage.title }} - {{ passage.author }}</p>
         </div>
         {% endfor %}
@@ -59,8 +62,8 @@
     </div>
     <div class="col-2"></div>
   </div>
-  <script src="../../static/javascript/show_word_info.js"></script>
-  <script src="../../static/javascript/word_search.js"></script>
+  <script src="{% static 'javascript/show_word_info.js' %}"></script>
+  <script src="{% static 'javascript/word_search.js' %}"></script>
 </body>
 
 </html>

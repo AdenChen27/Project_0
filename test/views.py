@@ -46,6 +46,18 @@ def index_page(request):
     })
 
 
+def user_page(request):
+    if "name" in request.session:
+        return render(request, "user.html", {
+            "name": request.session["name"],
+            "user": User.objects.get(id=request.session["user_id"]),
+        })
+    else:
+        return render(request, "error-message.html", {
+            "error_message": "You havn't logged in yet.",
+        })
+
+
 # return a page that jumps back to index
 def jump_to_index(request):
     return render(request, "jump-to-index.html")
@@ -59,21 +71,33 @@ def login_page(request, login_error="", register_error="", init_page="login"):
     })
 
 
+# set user status to logged in
+# (session)
+# user: `User` object or username (str)
+def set_login(request, user):
+    if type(user) == str:
+        user = User.objects.get(username=user)
+    request.session['name'] = user.name
+    request.session['user_id'] = user.id
+
+
 def login_action(request):
     if request.method == "POST":
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
 
-        if User.objects.filter(username=username).exists() and \
-                User.objects.get(username=username).password == password:
-            request.session['name'] = User.objects.get(username=username).name
-            return jump_to_index(request)
-        else:
-            return login_page(
-                request,
-                init_page="login",
-                login_error="username or password is incorrect"
-            )
+        if User.objects.filter(username=username).exists():
+            user = User.objects.get(username=username)
+            if user.password == password:
+                set_login(request, user)
+                return jump_to_index(request)
+
+        # login fail
+        return login_page(
+            request,
+            init_page="login",
+            login_error="username or password is incorrect"
+        )
 
 
 def register_action(request):
@@ -90,7 +114,7 @@ def register_action(request):
             )
         else:
             User(name=name, username=username, password=password).save()
-            request.session['name'] = name
+            set_login(request, username)
             return jump_to_index(request)
             # set language_code
 
@@ -123,39 +147,63 @@ def render_sentence(text, word_pos_list):
     return text
 
 
-def show_word_info_page(request):
+# get example sentences that contain a word(lemma)
+# sentences: [{"text":, "title":, "author":, }]
+def get_example_sentences(lemma_obj):
     from json import loads, dumps
+    sent_ids = lemma_obj.sent_ids
+    sentences = []
+    if sent_ids:
+        sent_ids_changed = False
+        sent_ids = loads(sent_ids)
+        new_sent_ids = sent_ids.copy()  # del sent_id when sent deleted
+        for s_id in sent_ids:
+            sent_objs = Sentence.objects.filter(id=s_id)
+            if sent_objs.exists():
+                sent_obj = sent_objs.first()
+                passage_obj = Passage.objects.get(id=sent_obj.passage_id)
+                sentences.append({
+                    "text": render_sentence(sent_obj.text, sent_ids[s_id]), 
+                    "title": passage_obj.title, 
+                    "author": passage_obj.author, 
+                })
+            else:
+                # pop when sent deleted
+                new_sent_ids.pop(s_id)
+                sent_ids_changed = True
+        if sent_ids_changed:
+            lemma_obj.sent_ids = dumps(new_sent_ids)
+            lemma_obj.save()
+    return sentences
+
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
+def show_word_info_page(request):
+    from json import dumps
     search_word = request.POST.get("word").lower()
     match_word = Word.objects.filter(name=search_word)
-    if match_word.exists():
-        lemma = Lemma.objects.get(id=match_word.first().lem_id)
-        sent_ids = lemma.sent_ids
-        sentences = []  # [(rendered_text, passage_obj), ]
-        if sent_ids:
-            sent_ids_changed = False
-            sent_ids = loads(sent_ids)
-            new_sent_ids = sent_ids.copy()  # del sent_id when sent deleted
-            for s_id in sent_ids:
-                sent_objs = Sentence.objects.filter(id=s_id)
-                if sent_objs.exists():
-                    sent_obj = sent_objs.first()
-                    sentences.append((
-                        render_sentence(sent_obj.text, sent_ids[s_id]),
-                        Passage.objects.get(id=sent_obj.passage_id),
-                    ))
-                else:
-                    # pop when sent deleted
-                    new_sent_ids.pop(s_id)
-                    sent_ids_changed = True
-            if sent_ids_changed:
-                lemma.sent_ids = dumps(new_sent_ids)
-                lemma.save()
-        return render(request, "show_word_info.html", {
-            "lemma": lemma,
-            "sentences": sentences,
+    if not match_word.exists():
+        return render(request, "error-message.html", {
+            "error_message": "'%s' does not exist\nTry another word" % search_word,
         })
-    return render(request, "error-message.html", {
-        "error_message": "'%s' does not exist\nTry another word" % search_word,
+
+    lem_id = match_word.first().lem_id
+    lemma = Lemma.objects.get(id=lem_id)
+    sentences = get_example_sentences(lemma)
+    if is_ajax(request):
+        return HttpResponse(dumps({
+            "lemma": dict(vars(lemma)),
+            # "sentences": sentences,
+        }), content_type="application/json")
+    return render(request, "show_word_info.html", {
+        "lem_id": lemma.id,
+        "lem_name": lemma.name,
+        "def_en": lemma.def_en,
+        "def_zh": lemma.def_zh,
+        "sentences": sentences,
     })
 
 
@@ -192,7 +240,7 @@ def quiz_render_init(text_lemma_pos, request, blank_id_format="%d"):
 
     # ans = {blank_id: {"id": word_id, "name":, 'index':, 'lem_id':, }, }
     ans = {}
-    
+
     tmp_blank_id = 0
 
     # get lemma id list of words to be quizzed
@@ -201,7 +249,6 @@ def quiz_render_init(text_lemma_pos, request, blank_id_format="%d"):
         lemma_id = lemma_id.split(',')
     else:
         lemma_id = []
-
 
     for lem_id in text_lemma_pos:
         if lem_id not in lemma_id:
@@ -217,9 +264,9 @@ def quiz_render_init(text_lemma_pos, request, blank_id_format="%d"):
             for pos in pos_list:
                 tmp_blank_id += 1
                 ans['t' + str(tmp_blank_id)] = {
-                    "id": int(word_id), 
-                    "name": word_name, 
-                    "lem_id": lem_id, 
+                    "id": int(word_id),
+                    "name": word_name,
+                    "lem_id": lem_id,
                 }
                 render_args = {
                     "blank_id": 't' + str(tmp_blank_id),
@@ -333,13 +380,14 @@ def render_quiz_mcq(ans, option_num=5, opt_list1=[], opt_backup=[]):
         ans_name = ans_args["name"]
 
         # get different forms of same lemma
-        
+
         options = set([])
         options.update(get_all_forms(ans_args["lem_id"]))
         options.update(opt_list1)
 
         if len(options) < option_num:
-            options.update(rand_sample(opt_backup, option_num - len(options) - 1))
+            options.update(rand_sample(
+                opt_backup, option_num - len(options) - 1))
         options.add(ans_name)
         options = rand_sample(options, option_num)
 
@@ -363,13 +411,13 @@ def multiple_choice_quiz_page(request):
     text = passage.text
     paragraphs = get_paragraphs(passage.text)
     # page: [{
-    #     text: rendered_text, 
-    #     quiz: rendered_quiz, 
+    #     text: rendered_text,
+    #     quiz: rendered_quiz,
     # }]
     word_render_list, ans = quiz_render_init(
-        loads(passage.lemma_pos), 
-        request, 
-        blank_id_format="%d", 
+        loads(passage.lemma_pos),
+        request,
+        blank_id_format="%d",
     )
     opt_list1 = [ans[blank_id]["name"] for blank_id in ans]
 
@@ -382,20 +430,20 @@ def multiple_choice_quiz_page(request):
             cur_render_list[blank_id] = ans[blank_id]
         if request.POST.get("test_mode") == "choice-grammar":
             page.append((para, render_quiz_mcq(
-                cur_render_list, 
-                opt_list1=[], 
-                opt_backup=opt_list1, 
+                cur_render_list,
+                opt_list1=[],
+                opt_backup=opt_list1,
             )))
         else:
             page.append((para, render_quiz_mcq(
-                cur_render_list, 
-                opt_list1=opt_list1 
+                cur_render_list,
+                opt_list1=opt_list1
             )))
 
     return render(request, "quiz-choice.html", {
-        "passage_title": passage.title, 
-        "author": passage.author, 
-        "page": page, 
+        "passage_title": passage.title,
+        "author": passage.author,
+        "page": page,
         "ans": ans,
     })
 
@@ -438,11 +486,8 @@ def test_passage_page(request):
         "passage_text": text,
         "passage_title": passage.title,
         "ans": ans,  # {blank_id: {"id": ans_id, "name": ans}, }
-        "author": passage.author, 
+        "author": passage.author,
     }
     if mode == "choice-grammar":
         context["choices"] = choices
     return render(request, HTML_TEMPLATE[mode], context)
-
-
-

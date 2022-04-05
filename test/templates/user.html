@@ -1,0 +1,34 @@
+<!-- user page -->
+<html>
+
+<head>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
+  <link rel="shortcut icon" type="image/png" href="../../static/pictures/favicon.svg"/>
+  <title>Error</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <h1>User Info</h1>
+        <p>Id: {{ user.id }}</p>
+        <p>Name: {{ user.name }}</p>
+        <p>Username: {{ user.username }}</p>
+        <p>Points: {{ user.points }}</p>
+        <h1>Change password</h1>
+        <p>Old Password:</p>
+        <p>New Password:</p>
+        <p>Repeat New Password:</p>
+      </div>
+      <div class="col-2"></div>
+    </div>
+  </div>
+</body>
+
+</html>
+

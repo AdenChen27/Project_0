@@ -46,3 +46,14 @@ function search_word() {
 }
 
 lemma_search_input.focus();
+
+
+function ajax_search_word() {
+    console.log($("lemma_search_input").value);
+    $.post('/get-word-info/', {
+        word: $("lemma_search_input").value,
+    }).done(function (data) {
+        console.log("test");
+    });
+}
+

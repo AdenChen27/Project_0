@@ -19,6 +19,10 @@ TODO:
     - [ ] imgs
     - [ ] translations
 
+dictionary
+- [ ] edict data
+- [ ] ajax
+
 quiz page
 - [ ] act style
 - [ ] show answer
@@ -28,10 +32,11 @@ style
 - [ ] bootstrap sass
 - [ ] main.css structure
 
-performance
+performance/code style
 - [ ] dynamic word freq
 - [ ] cProfile
-- [ ] edict data
+- [ ] jQuery
+- [ ] local bootstrap
 
 quick actions
 ```
@@ -44,6 +49,8 @@ quick actions
 ./manage.py compilemessages; ./manage.py runserver 127.0.0.1:7227
 
 ./manage.py runserver 127.0.0.1:7227
+
+./manage.py runprofileserver --use-cprofile --prof-path=/tmp/my-profile-data 127.0.0.1:7227
 
 ```
 

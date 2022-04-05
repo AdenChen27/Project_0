@@ -157,7 +157,7 @@ function copy_to_clipboard() {
 }
 
 
-function shuffel() {
+function shuffle() {
     var def_rows = document.getElementsByName("def-row");
     for (const i in def_rows) {
         if (def_rows[i].style) {
