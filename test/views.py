@@ -148,7 +148,7 @@ def render_sentence(text, word_pos_list):
 
 
 # get example sentences that contain a word(lemma)
-# sentences: [{"text":, "title":, "author":, }]
+# sentences: [{"text":, "title":, "author":, "passage_id":, }]
 def get_example_sentences(lemma_obj):
     from json import loads, dumps
     sent_ids = lemma_obj.sent_ids
@@ -166,6 +166,7 @@ def get_example_sentences(lemma_obj):
                     "text": render_sentence(sent_obj.text, sent_ids[s_id]), 
                     "title": passage_obj.title, 
                     "author": passage_obj.author, 
+                    "passage_id": passage_obj.id, 
                 })
             else:
                 # pop when sent deleted
@@ -193,18 +194,17 @@ def show_word_info_page(request):
     lem_id = match_word.first().lem_id
     lemma = Lemma.objects.get(id=lem_id)
     sentences = get_example_sentences(lemma)
-    if is_ajax(request):
-        return HttpResponse(dumps({
-            "lemma": dict(vars(lemma)),
-            # "sentences": sentences,
-        }), content_type="application/json")
-    return render(request, "show_word_info.html", {
+    render_context = {
         "lem_id": lemma.id,
         "lem_name": lemma.name,
         "def_en": lemma.def_en,
         "def_zh": lemma.def_zh,
+        
         "sentences": sentences,
-    })
+    }
+    if is_ajax(request):
+        return HttpResponse(dumps(render_context), content_type="application/json")
+    return render(request, "show_word_info.html", render_context)
 
 
 def show_definition_page(request):

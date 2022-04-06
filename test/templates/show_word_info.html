@@ -31,15 +31,15 @@
       </div>
       <div class="container row" id="def_holder">
         <div class="row word-def-row" name="def-row">
-          <div class="col-3 def-name">
+          <div class="col-3 def-name" id="lem-name">
             {{ lem_name }}
           </div>
           <div class="col-8">
             <div class="row def">
-              <p>{{ def_en }}</p>
+              <p id="def-en">{{ def_en }}</p>
             </div>
             <div class="row def">
-              <p>{{ def_zh }}</p>
+              <p id="def-zh">{{ def_zh }}</p>
             </div>
           </div>
           <div class="col-1">
@@ -49,12 +49,12 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" id="sentence-container">
       {% autoescape off %}
-        {% for passage in sentences %}
+        {% for sentence in sentences %}
         <div class="sentence-container">
-          <p class="sentence">{{ passage.text }}</p>
-          <p class="passage_title" onclick="window.location.href = '/passage/?p_id={{ passage.id }}'">{{ passage.title }} - {{ passage.author }}</p>
+          <p class="sentence">{{ sentence.text }}</p>
+          <p class="passage_title" onclick="window.location.href = '/passage/?p_id={{ sentence.passage_id }}'">{{ sentence.title }} - {{ sentence.author }}</p>
         </div>
         {% endfor %}
       {% endautoescape %}
