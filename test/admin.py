@@ -25,7 +25,8 @@ class SentenceAdmin(admin.ModelAdmin):
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('name', 'username', 'password', 'points', 'permission', 'id', )
+    list_display = ('name', 'username', 'password', 'points', 'permission', 
+        'id', 'words_studied', 'tests_taken', )
     search_fields = ('name', 'username', 'permission', )
     ordering = ('username', )
 

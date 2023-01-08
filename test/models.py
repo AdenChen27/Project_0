@@ -384,11 +384,23 @@ class User(models.Model):
         default=""
     )
     points = models.IntegerField(default=0)
+
+    tests_taken = models.IntegerField(default=0)
+    words_studied = models.IntegerField(default=0)
+
     # 0 -> root; 1 -> administrators; 10 -> users (default)
     permission = models.IntegerField(default=10)
 
     def points_add(self, v):
         self.points += v
+        self.save()
+
+    def tests_taken_add(self):
+        self.tests_taken += 1
+        self.save()
+
+    def words_studied_add(self, v):
+        self.words_studied += v
         self.save()
 
 

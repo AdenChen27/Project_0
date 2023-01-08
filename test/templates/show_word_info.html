@@ -43,7 +43,7 @@
             </div>
           </div>
           <div class="col-1">
-            <img class="img-play" src="../../static/pictures/play.png" onclick="play_audio({{ lem_id }}, '{{ lem_name }}')" />
+            <img class="img-play" src="{% static 'pictures/play.png' %}" onclick="play_audio({{ lem_id }}, '{{ lem_name }}')" />
             <audio id="word_audio_{{ lem_id }}" src="https://ssl.gstatic.com/dictionary/static/sounds/oxford/{{ lem_name }}--_gb_1.mp3" onloadeddata="audio_loaded=true;"/>
           </div>
         </div>

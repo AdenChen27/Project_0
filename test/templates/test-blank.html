@@ -1,4 +1,5 @@
 <html>
+{% load static %}
 {% load i18n %}
 <head>
   {% load bootstrap5 %}
@@ -8,6 +9,7 @@
   <link rel="stylesheet" type="text/css" href="../../static/style/main.css">
   <link rel="stylesheet" type="text/css" href="../../static/style/test-page.css">
   <link rel="shortcut icon" type="image/png" href="../../static/pictures/favicon.svg"/>
+  <script src="{% static 'javascript/jquery-3.6.0.min.js' %}"></script>
   <script>
     {% autoescape off %}
     var ans = {{ ans }};

@@ -9,11 +9,16 @@ Hosted on [pythonanywhere](https://www.pythonanywhere.com/)
 
 
 TODO:
+- [ ] user points
+    tests taken cnt
+    words studied cnt
+
 - [ ] users
     - [ ] user info page
     - [ ] upload passage page
     - [ ] edit page
     - [ ] error report page
+
 - [ ] author page
     - [ ] js func plot proj
     - [ ] imgs
