@@ -34,8 +34,10 @@ urlpatterns = [
 
     path(r'admin/', admin.site.urls),
     # author page
-    re_path(r'^$', test_views.main_page),
-    path(r'main/', test_views.main_page),
+    # re_path(r'^$', test_views.main_page),
+    # path(r'main/', test_views.main_page),
+    re_path(r'^$', test_views.index_page),
+    path(r'main/', test_views.index_page),
     # login & user
     path(r'index/', test_views.index_page),
     path(r'login/', test_views.login_page),
