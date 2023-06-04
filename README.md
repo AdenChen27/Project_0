@@ -45,17 +45,17 @@ performance/code style
 
 quick actions
 ```
-./manage.py collectstatic
+python3.10 ./manage.py collectstatic; python3.10 ./manage.py runserver 127.0.0.1:7227
 
-./manage.py makemigrations;./manage.py migrate
+python3.10 ./manage.py makemigrations; python3.10 ./manage.py migrate
 
-./manage.py makemessages -l zh_hans
-./manage.py makemessages -d djangojs -l zh_Hans
-./manage.py compilemessages; ./manage.py runserver 127.0.0.1:7227
+python3.10 ./manage.py makemessages -l zh_hans
+python3.10 ./manage.py makemessages -d djangojs -l zh_Hans
+python3.10 ./manage.py compilemessages; ./manage.py runserver 127.0.0.1:7227
 
-./manage.py runserver 127.0.0.1:7227
+python3.10 ./manage.py runserver 127.0.0.1:7227
 
-./manage.py runprofileserver --use-cprofile --prof-path=/tmp/my-profile-data 127.0.0.1:7227
+python3.10 ./manage.py runprofileserver --use-cprofile --prof-path=/tmp/my-profile-data 127.0.0.1:7227
 
 ```
 

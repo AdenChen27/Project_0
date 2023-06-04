@@ -18,7 +18,7 @@
 
 <body>
   <!-- language control form -->
-  {% get_available_languages as LANGUAGES %}
+  <!-- {% get_available_languages as LANGUAGES %}
   <form style="display: none;" id="testform" method='post'>
     {% csrf_token %}
     <select id="language" name="language">
@@ -26,7 +26,7 @@
       <option value="{{ lang.0 }}" > {{ lang.1 }}</option>
       {% endfor %}
     </select>
-  </form>
+  </form> -->
   <!-- END language control form -->
   <div class="container">
     <div class="row">
@@ -35,7 +35,7 @@
       <!-- main column -->
       <div class="col-8">
         <header>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-8 nav">
               <div class="input-group">
                 <button class="btn btn-outline-secondary set-lang-btn" type="button" onclick="set_lang('zh-hans')">中</button>
@@ -46,7 +46,7 @@
               <p id="logged-in-info">Signed in as <a href="/user/">{{ user }}</a></p>
               <a href="/login" id="log-in-link">Log in</a>
             </div>
-          </div>
+          </div> -->
         </header>
 
         <h1>{% trans "Dictionary" %}</h1>
@@ -87,7 +87,7 @@
         <!-- END passage list -->
 
         <div style="width: 10em; margin: auto; text-align: center;">
-          <a href="/">About</a>
+          <!-- <a href="/">About</a> -->
           <p>View count: <span class="view-count">{{ view_count }}</span></p>
         </div>
       </div>
