@@ -68,6 +68,23 @@ git pull
 python3 manage.py collectstatic
 
 pip install -r requirements.txt
+
+
+
+git clone 
+cd Project_0 https://github.com/AdenChen27/Project_0
+mkvirtualenv Project_0
+
+pip install django
+pip install django-bootstrap-v5
+pip install django-mysql
+pip install django-jsonfield
+pip install nltk
+
+python
+improt nltk
+nltk.download('stopwords')
+nltk.download('punkt')
 ```
 
 
