@@ -1,10 +1,10 @@
 :root {
   /* light */
-  --color-0: #edf6f9;
-  /*--color-0: #FFFFFF;*/
-  --color-1: #caf0f8;
-  --color-2: #1E90FF;
-  --color-3: #4256B1;
+  --color-0: #FFFFFF;
+  --color-1: #edf6f9;
+  --color-2: #caf0f8;
+  --color-3: #1E90FF;
+/*  --color-3: #4256B1;*/
 
   --color-light-blue: #daecf3;
 }

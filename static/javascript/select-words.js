@@ -2,8 +2,15 @@ var selected_words = new Set([]);
 const WORD_PER_ROW = 6;
 
 
-function word_reverse_sel(word_e) {
-    var word_id = word_e.id;
+function word_reverse_sel(word) {
+    // word: html tag or word_id
+    var word_id, word_e;
+    if (Number.isInteger(word)) {
+        word_id = word;
+    } else {
+        word_id = word.id;
+    }
+    word_e = document.getElementById(word_id);
     if (selected_words.has(word_id)) {
         selected_words.delete(word_id);
         word_e.classList.remove("selected");
@@ -74,9 +81,9 @@ function filter_select() {
         var word = word_list[i][1];
         var freq = word["freq"];
         if (i < threshold && !selected_words.has(word["id"])) {
-            choose_word(word["id"]);
+            word_reverse_sel(Number(word["id"]));
         } else if (i >= threshold && selected_words.has(word["id"])) {
-            choose_word(word["id"]);
+            word_reverse_sel(Number(word["id"]));
         }
     }
 }
