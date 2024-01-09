@@ -8,40 +8,6 @@ Hosted on [pythonanywhere](https://www.pythonanywhere.com/)
 
 
 
-TODO:
-- [ ] user points
-    tests taken cnt
-    words studied cnt
-
-- [ ] users
-    - [ ] user info page
-    - [ ] upload passage page
-    - [ ] edit page
-    - [ ] error report page
-
-- [ ] author page
-    - [ ] js func plot proj
-    - [ ] imgs
-    - [ ] translations
-
-dictionary
-- [ ] edict data
-- [ ] ajax
-
-quiz page
-- [ ] act style
-- [ ] show answer
-- [ ] passage info
-
-style
-- [ ] bootstrap sass
-- [ ] main.css structure
-
-performance/code style
-- [ ] dynamic word freq
-- [ ] cProfile
-- [ ] jQuery
-- [ ] local bootstrap
 
 quick actions
 ```
